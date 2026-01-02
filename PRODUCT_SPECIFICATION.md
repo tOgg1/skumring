@@ -1,4 +1,4 @@
-# Product Specification — “GlassFocus” (working title)
+# Product Specification — “Skumring”
 
 **One‑line:** A beautiful macOS focus-music player that mixes curated **internet radio streams**, **open audio URLs**, and **YouTube embeds**, with playlists, looping, and shareable JSON “packs”.
 
@@ -425,7 +425,7 @@ Store everything in:
 {
   "schemaVersion": 1,
   "exportedAt": "2026-01-02T10:10:00Z",
-  "appIdentifier": "com.example.GlassFocus",
+  "appIdentifier": "com.example.Skumring",
   "items": [
     {
       "id": "A2B3C4D5-E6F7-4123-8901-23456789ABCD",
