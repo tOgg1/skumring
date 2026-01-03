@@ -81,4 +81,16 @@ struct LibraryItem: Codable, Identifiable, Hashable, Sendable {
         failCount = 0
         healthStatus = .unknown
     }
+    
+    // MARK: - Deduplication
+    
+    /// A normalized key for deduplication purposes.
+    ///
+    /// For YouTube items, this is the video ID. For other sources, it's
+    /// the normalized URL (lowercase scheme and host).
+    ///
+    /// - SeeAlso: `LibraryItemSource.sourceKey`
+    var sourceKey: String {
+        source.sourceKey
+    }
 }

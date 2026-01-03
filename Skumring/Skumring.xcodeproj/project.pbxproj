@@ -38,6 +38,8 @@
 		F8A1B2C32D4E5F6700000060 /* NowPlayingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */; };
 		F8A1B2C32D4E5F6700000062 /* AddItemSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000063 /* AddItemSheet.swift */; };
 		F8A1B2C32D4E5F6700000064 /* PlaylistEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000065 /* PlaylistEditorView.swift */; };
+		F8A1B2C32D4E5F6700000070 /* ImportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000071 /* ImportResult.swift */; };
+		F8A1B2C32D4E5F6700000072 /* ImportExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,8 @@
 		F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBar.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000063 /* AddItemSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemSheet.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000065 /* PlaylistEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistEditorView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000071 /* ImportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportResult.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				F8A1B2C32D4E5F6700000031 /* HealthStatus.swift */,
+				F8A1B2C32D4E5F6700000071 /* ImportResult.swift */,
 				F8A1B2C32D4E5F6700000023 /* LibraryItem.swift */,
 				F8A1B2C32D4E5F6700000025 /* LibraryItemKind.swift */,
 				F8A1B2C32D4E5F6700000027 /* LibraryItemSource.swift */,
@@ -135,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				F8A1B2C32D4E5F670000003D /* AVPlaybackBackend.swift */,
+				F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */,
 				F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */,
 				F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */,
 				F8A1B2C32D4E5F670000003F /* PlaybackController.swift */,
@@ -267,6 +273,8 @@
 				F8A1B2C32D4E5F6700000060 /* NowPlayingBar.swift in Sources */,
 				F8A1B2C32D4E5F6700000062 /* AddItemSheet.swift in Sources */,
 				F8A1B2C32D4E5F6700000064 /* PlaylistEditorView.swift in Sources */,
+				F8A1B2C32D4E5F6700000070 /* ImportResult.swift in Sources */,
+				F8A1B2C32D4E5F6700000072 /* ImportExportService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

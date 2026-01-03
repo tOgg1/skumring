@@ -17,10 +17,18 @@ Skumring/
     │   ├── LibraryItemSource.swift   # URL or YouTube ID
     │   ├── HealthStatus.swift        # unknown, ok, failing
     │   ├── LibraryItem.swift         # Main item struct
+    │   ├── ImportResult.swift        # Import operation result
     │   ├── RepeatMode.swift          # off, one, all
     │   ├── ShuffleMode.swift         # off, on
     │   ├── Playlist.swift            # Playlist struct
     │   └── Pack.swift                # Import/export container
+    ├── Services/             # Business logic services
+    │   ├── ImportExportService.swift # Pack import/export operations
+    │   ├── LibraryStore.swift        # Library data management
+    │   ├── PlaybackController.swift  # Playback coordination
+    │   ├── AVPlaybackBackend.swift   # AVPlayer backend
+    │   ├── PlaybackBackend.swift     # Backend protocol
+    │   └── StreamResolver.swift      # Stream URL resolution
     ├── SkumringApp.swift     # App entry point
     ├── ContentView.swift     # Main view (currently YouTube PoC)
     ├── YouTubePlayer.swift   # YouTube player state model
@@ -65,4 +73,14 @@ Next: Milestone 1 (Playable) — LibraryStore, AVPlayer backend, Stream resolver
 | `LibraryItem` | Single music item (stream, YouTube, audio URL) |
 | `Playlist` | Ordered collection of item IDs with repeat/shuffle |
 | `Pack` | Import/export container with schema version |
+| `ImportResult` | Statistics from import operation (added/updated/skipped) |
 | `HealthStatus` | Item playback health tracking |
+
+## Key Services
+
+| Service | Purpose |
+|---------|---------|
+| `LibraryStore` | Observable store for items and playlists with persistence |
+| `ImportExportService` | Pack import/export with deduplication via `sourceKey` |
+| `PlaybackController` | Coordinates playback across backends |
+| `StreamResolver` | Resolves stream URLs (e.g., playlist files) |
