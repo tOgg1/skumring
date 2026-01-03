@@ -26,6 +26,9 @@ struct NowPlayingBar: View {
     /// Artwork thumbnail size
     private let artworkSize: CGFloat = 56
     
+    /// Controls visibility of the queue popover
+    @State private var showQueuePopover: Bool = false
+    
     var body: some View {
         HStack(spacing: 16) {
             // Left section: Artwork
@@ -285,15 +288,41 @@ struct NowPlayingBar: View {
     
     // MARK: - Right Controls
     
-    /// Volume slider and repeat/shuffle toggles
+    /// Volume slider, queue button, and repeat/shuffle toggles
     private var rightControlsView: some View {
         HStack(spacing: 16) {
             // Volume control
             volumeView
             
+            // Queue button
+            queueButtonView
+            
             // Repeat/Shuffle toggles
             modeTogglesView
         }
+    }
+    
+    // MARK: - Queue Button
+    
+    /// Button to show the queue popover
+    private var queueButtonView: some View {
+        Button {
+            showQueuePopover.toggle()
+        } label: {
+            Image(systemName: "list.bullet")
+                .font(.body)
+                .foregroundStyle(hasUpcomingItems ? Color.accentColor : .secondary)
+        }
+        .buttonStyle(.plain)
+        .help("Show Queue")
+        .popover(isPresented: $showQueuePopover, arrowEdge: .top) {
+            QueueView()
+        }
+    }
+    
+    /// Whether there are items upcoming in the queue
+    private var hasUpcomingItems: Bool {
+        !playbackController.upcomingItems.isEmpty
     }
     
     /// Volume slider with speaker icon

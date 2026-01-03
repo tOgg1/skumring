@@ -35,6 +35,7 @@ struct LibraryView: View {
     
     @Environment(AppModel.self) private var appModel
     @Environment(LibraryStore.self) private var libraryStore
+    @Environment(PlaybackController.self) private var playbackController
     @State private var viewMode: ViewMode = .grid
     @State private var selection: Set<UUID> = []
     @State private var searchText: String = ""
@@ -118,6 +119,8 @@ struct LibraryView: View {
                 selection: $selection,
                 onPlay: playItem,
                 onDelete: requestDeleteConfirmation,
+                onPlayNext: playNextItem,
+                onAddToQueue: addToQueue,
                 onAddToPlaylist: addItemToPlaylist,
                 playlists: libraryStore.playlists
             )
@@ -127,6 +130,8 @@ struct LibraryView: View {
                 selection: $selection,
                 onPlay: playItem,
                 onDelete: requestDeleteConfirmation,
+                onPlayNext: playNextItem,
+                onAddToQueue: addToQueue,
                 onAddToPlaylist: addItemToPlaylist,
                 playlists: libraryStore.playlists
             )
@@ -234,8 +239,23 @@ struct LibraryView: View {
     // MARK: - Actions
     
     private func playItem(_ item: LibraryItem) {
-        // TODO: Integrate with PlaybackController
-        print("Play item: \(item.title)")
+        Task {
+            try? await playbackController.play(item: item)
+        }
+    }
+    
+    /// Adds an item to play next in the queue.
+    private func playNextItem(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.playNext(item)
+        }
+    }
+    
+    /// Adds an item to the end of the queue.
+    private func addToQueue(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.addToQueue(item)
+        }
     }
     
     /// Shows the delete confirmation dialog for an item.
@@ -267,6 +287,7 @@ struct LibraryView: View {
     }
     .environment(AppModel())
     .environment(LibraryStore())
+    .environment(PlaybackController())
 }
 
 #Preview("Streams Filter") {
@@ -275,4 +296,5 @@ struct LibraryView: View {
     }
     .environment(AppModel())
     .environment(LibraryStore())
+    .environment(PlaybackController())
 }

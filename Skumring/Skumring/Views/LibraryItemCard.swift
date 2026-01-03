@@ -16,6 +16,12 @@ struct LibraryItemCard: View {
     /// Called when the user selects Edit from context menu
     var onEdit: (() -> Void)?
     
+    /// Called when the user selects Play Next from context menu
+    var onPlayNext: (() -> Void)?
+    
+    /// Called when the user selects Add to Queue from context menu
+    var onAddToQueue: (() -> Void)?
+    
     /// Called when the user selects a playlist to add the item to
     var onAddToPlaylist: ((Playlist) -> Void)?
     
@@ -48,6 +54,18 @@ struct LibraryItemCard: View {
             onPlay?()
         } label: {
             Label("Play", systemImage: "play.fill")
+        }
+        
+        Button {
+            onPlayNext?()
+        } label: {
+            Label("Play Next", systemImage: "text.line.first.and.arrowtriangle.forward")
+        }
+        
+        Button {
+            onAddToQueue?()
+        } label: {
+            Label("Add to Queue", systemImage: "text.badge.plus")
         }
         
         Divider()

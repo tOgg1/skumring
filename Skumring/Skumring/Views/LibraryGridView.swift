@@ -14,6 +14,12 @@ struct LibraryGridView: View {
     /// Called when the user selects Delete from context menu
     var onDelete: ((LibraryItem) -> Void)?
     
+    /// Called when the user selects Play Next from context menu
+    var onPlayNext: ((LibraryItem) -> Void)?
+    
+    /// Called when the user selects Add to Queue from context menu
+    var onAddToQueue: ((LibraryItem) -> Void)?
+    
     /// Called when the user selects a playlist from the Add to Playlist submenu
     var onAddToPlaylist: ((LibraryItem, Playlist) -> Void)?
     
@@ -35,6 +41,12 @@ struct LibraryGridView: View {
                         },
                         onDelete: {
                             onDelete?(item)
+                        },
+                        onPlayNext: {
+                            onPlayNext?(item)
+                        },
+                        onAddToQueue: {
+                            onAddToQueue?(item)
                         },
                         onAddToPlaylist: { playlist in
                             onAddToPlaylist?(item, playlist)

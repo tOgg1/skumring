@@ -47,6 +47,7 @@
 		F8A1B2C32D4E5F67000000B0 /* BuiltInPackLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000B1 /* BuiltInPackLoader.swift */; };
 		F8A1B2C32D4E5F67000000C0 /* MediaKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000C1 /* MediaKeyService.swift */; };
 		F8A1B2C32D4E5F67000000D0 /* NowPlayingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000D1 /* NowPlayingService.swift */; };
+		F8A1B2C32D4E5F67000000E0 /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000E1 /* QueueView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +94,7 @@
 		F8A1B2C32D4E5F67000000B1 /* BuiltInPackLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuiltInPackLoader.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F67000000C1 /* MediaKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaKeyService.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F67000000D1 /* NowPlayingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingService.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F67000000E1 /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 				F8A1B2C32D4E5F6700000046 /* MainContentView.swift */,
 				F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */,
 				F8A1B2C32D4E5F6700000065 /* PlaylistEditorView.swift */,
+				F8A1B2C32D4E5F67000000E1 /* QueueView.swift */,
 				F8A1B2C32D4E5F6700000043 /* SidebarView.swift */,
 				F8A1B2C32D4E5F6700000081 /* YouTubePlayerContainerView.swift */,
 				F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */,
@@ -311,6 +314,7 @@
 				F8A1B2C32D4E5F67000000B0 /* BuiltInPackLoader.swift in Sources */,
 				F8A1B2C32D4E5F67000000C0 /* MediaKeyService.swift in Sources */,
 				F8A1B2C32D4E5F67000000D0 /* NowPlayingService.swift in Sources */,
+				F8A1B2C32D4E5F67000000E0 /* QueueView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

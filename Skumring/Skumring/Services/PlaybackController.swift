@@ -344,6 +344,179 @@ final class PlaybackController {
         shuffleMode = mode
     }
     
+    // MARK: - Queue Manipulation
+    
+    /// Returns items in the queue that are coming up after the current item.
+    /// Does not include the currently playing item.
+    var upcomingItems: [LibraryItem] {
+        guard let currentIndex = queueIndex, currentIndex < queue.count else {
+            return []
+        }
+        return Array(queue.dropFirst(currentIndex + 1))
+    }
+    
+    /// Inserts an item at the next position in the queue (plays after current item).
+    ///
+    /// If nothing is playing, starts playback with this item.
+    /// If shuffle is on, updates the original queue as well.
+    ///
+    /// - Parameter item: The item to play next
+    func playNext(_ item: LibraryItem) async throws {
+        if queue.isEmpty || queueIndex == nil {
+            // Nothing playing - start with this item
+            try await playQueue(items: [item], startingAt: 0)
+        } else if let currentIndex = queueIndex {
+            // Insert after current item
+            let insertIndex = currentIndex + 1
+            queue.insert(item, at: insertIndex)
+            
+            // If shuffle is on, also add to original queue to maintain consistency
+            if shuffleMode == .on, var original = originalQueue {
+                // Add at a reasonable position in original (e.g., after original current)
+                if let originalCurrentIndex = original.firstIndex(where: { $0.id == queue[currentIndex].id }) {
+                    original.insert(item, at: originalCurrentIndex + 1)
+                } else {
+                    original.append(item)
+                }
+                originalQueue = original
+            }
+        }
+    }
+    
+    /// Appends an item to the end of the queue.
+    ///
+    /// If nothing is playing, starts playback with this item.
+    /// If shuffle is on, updates the original queue as well.
+    ///
+    /// - Parameter item: The item to add to the queue
+    func addToQueue(_ item: LibraryItem) async throws {
+        if queue.isEmpty || queueIndex == nil {
+            // Nothing playing - start with this item
+            try await playQueue(items: [item], startingAt: 0)
+        } else {
+            queue.append(item)
+            
+            // If shuffle is on, also add to original queue
+            if shuffleMode == .on {
+                originalQueue?.append(item)
+            }
+        }
+    }
+    
+    /// Removes an item from the queue at the specified index.
+    ///
+    /// Does not affect the source playlist or library.
+    /// Cannot remove the currently playing item - use `next()` or `stop()` instead.
+    ///
+    /// - Parameter index: The index of the item to remove
+    /// - Returns: True if the item was removed, false if the index was invalid or is the current item
+    @discardableResult
+    func removeFromQueue(at index: Int) -> Bool {
+        guard index >= 0 && index < queue.count else { return false }
+        guard index != queueIndex else { return false } // Can't remove current item
+        
+        let removedItem = queue[index]
+        queue.remove(at: index)
+        
+        // Adjust queueIndex if we removed something before current
+        if let currentIndex = queueIndex, index < currentIndex {
+            queueIndex = currentIndex - 1
+        }
+        
+        // If shuffle is on, also remove from original queue
+        if shuffleMode == .on, var original = originalQueue {
+            if let originalIndex = original.firstIndex(where: { $0.id == removedItem.id }) {
+                original.remove(at: originalIndex)
+                originalQueue = original
+            }
+        }
+        
+        return true
+    }
+    
+    /// Removes an item from the queue by its ID.
+    ///
+    /// - Parameter id: The ID of the item to remove
+    /// - Returns: True if the item was found and removed
+    @discardableResult
+    func removeFromQueue(itemID id: UUID) -> Bool {
+        guard let index = queue.firstIndex(where: { $0.id == id }) else { return false }
+        return removeFromQueue(at: index)
+    }
+    
+    /// Clears all upcoming items from the queue, keeping only the current item.
+    func clearUpcoming() {
+        guard let currentIndex = queueIndex, currentIndex < queue.count else {
+            queue = []
+            originalQueue = nil
+            return
+        }
+        
+        let currentItem = queue[currentIndex]
+        queue = [currentItem]
+        queueIndex = 0
+        
+        // If shuffle is on, also clear original queue but keep current
+        if shuffleMode == .on {
+            originalQueue = [currentItem]
+        }
+    }
+    
+    /// Moves an item in the queue from one position to another.
+    ///
+    /// Used for drag-and-drop reordering in the queue view.
+    /// Cannot move the current item or move items to the current position.
+    ///
+    /// - Parameters:
+    ///   - from: The source index
+    ///   - to: The destination index
+    /// - Returns: True if the move was successful
+    @discardableResult
+    func moveInQueue(from: Int, to: Int) -> Bool {
+        guard from >= 0 && from < queue.count else { return false }
+        guard to >= 0 && to <= queue.count else { return false }
+        guard from != queueIndex else { return false } // Can't move current item
+        
+        let item = queue.remove(at: from)
+        
+        // Adjust destination if needed
+        var adjustedTo = to
+        if to > from {
+            adjustedTo -= 1
+        }
+        
+        // Don't allow moving to current position
+        if adjustedTo == queueIndex {
+            // Put it back and return failure
+            queue.insert(item, at: from)
+            return false
+        }
+        
+        queue.insert(item, at: adjustedTo)
+        
+        // Adjust queueIndex if needed
+        if let currentIndex = queueIndex {
+            if from < currentIndex && adjustedTo >= currentIndex {
+                queueIndex = currentIndex - 1
+            } else if from > currentIndex && adjustedTo <= currentIndex {
+                queueIndex = currentIndex + 1
+            }
+        }
+        
+        return true
+    }
+    
+    /// Jumps to play a specific item in the queue by index.
+    ///
+    /// - Parameter index: The index to jump to
+    func jumpToQueueIndex(_ index: Int) async throws {
+        guard index >= 0 && index < queue.count else {
+            throw PlaybackControllerError.invalidQueueIndex
+        }
+        queueIndex = index
+        try await play(item: queue[index])
+    }
+    
     // MARK: - Queue Navigation
     
     /// Plays the next item in the queue.
