@@ -211,7 +211,9 @@ start_loop() {
     cd "$REPO_ROOT"
     export RALPH_PROMPT_FILE="$prompt"
     printf -- "Ralph loop started at %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$LOG_FILE"
+    local loop_count=0
     while :; do
+      loop_count=$((loop_count + 1))
       if [[ "$cmd" == *"{prompt}"* ]]; then
         bash -lc "${cmd//\{prompt\}/$prompt}" >> "$LOG_FILE" 2>&1
       elif [[ "$prompt_mode" == "env" ]]; then
@@ -219,7 +221,7 @@ start_loop() {
       else
         bash -lc "$cmd" < "$prompt" >> "$LOG_FILE" 2>&1
       fi
-      printf -- "---- loop finished %s ----\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$LOG_FILE"
+      printf -- "---- loop %s finished %s ----\n" "$loop_count" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$LOG_FILE"
       sleep "$sleep_seconds"
     done
   ) &
