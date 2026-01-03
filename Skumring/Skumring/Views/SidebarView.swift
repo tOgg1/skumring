@@ -55,6 +55,36 @@ struct SidebarView: View {
         }
         .listStyle(.sidebar)
         .navigationTitle("Skumring")
+        .safeAreaInset(edge: .bottom) {
+            sidebarFooter
+        }
+    }
+    
+    // MARK: - Sidebar Footer
+    
+    /// Footer view with Add Playlist button
+    private var sidebarFooter: some View {
+        HStack {
+            Button(action: addPlaylist) {
+                Label("New Playlist", systemImage: "plus")
+            }
+            .buttonStyle(.borderless)
+            
+            Spacer()
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .background(.bar)
+    }
+    
+    /// Creates a new playlist with a default name
+    private func addPlaylist() {
+        let playlistNumber = libraryStore.playlists.count + 1
+        let newPlaylist = Playlist(name: "Playlist \(playlistNumber)")
+        libraryStore.addPlaylist(newPlaylist)
+        
+        // Select the newly created playlist
+        appModel.selectedSidebarItem = .playlist(newPlaylist.id)
     }
 }
 
