@@ -51,6 +51,23 @@ final class AVPlaybackBackend: PlaybackBackend {
     /// Cached current time, updated by periodic observer.
     private(set) var observedCurrentTime: TimeInterval?
     
+    // MARK: - Reconnection Properties
+    
+    /// Maximum number of reconnection attempts.
+    private static let maxReconnectAttempts = 3
+    
+    /// Base delay for exponential backoff (in seconds).
+    private static let baseReconnectDelay: TimeInterval = 1.0
+    
+    /// Current reconnection attempt count.
+    private var reconnectAttemptCount = 0
+    
+    /// Whether a reconnection attempt is in progress.
+    private(set) var isReconnecting = false
+    
+    /// Task for managing reconnection attempts.
+    private var reconnectTask: Task<Void, Never>?
+    
     // MARK: - PlaybackBackend Protocol Properties
     
     /// The current playback state.
@@ -161,6 +178,7 @@ final class AVPlaybackBackend: PlaybackBackend {
     
     /// Stops playback and clears the current media.
     func stop() {
+        cancelReconnection()
         stopObservers()
         player?.pause()
         player?.replaceCurrentItem(with: nil)
@@ -218,8 +236,8 @@ final class AVPlaybackBackend: PlaybackBackend {
                 
                 switch status {
                 case .failed:
-                    let errorMessage = player.currentItem?.error?.localizedDescription ?? "Unknown error"
-                    self.state = .error(errorMessage)
+                    // Trigger reconnection on failure instead of immediately setting error state
+                    self.handleStreamFailure(error: player.currentItem?.error)
                 case .readyToPlay:
                     // State will be updated by timeControlStatus observer
                     break
@@ -287,5 +305,114 @@ final class AVPlaybackBackend: PlaybackBackend {
         } else if item.status == .failed {
             throw AVPlaybackError.itemFailedToLoad(item.error)
         }
+    }
+    
+    // MARK: - Reconnection Logic
+    
+    /// Attempts to reconnect to the current stream with exponential backoff.
+    ///
+    /// On stream failure, attempts up to 3 reconnections with delays of 1s, 2s, 4s.
+    /// Updates state to .error after final failure.
+    ///
+    /// - Parameter error: The original error that triggered reconnection
+    func attemptReconnection(after error: Error) {
+        guard let url = currentURL else {
+            state = .error(error.localizedDescription)
+            return
+        }
+        
+        // Cancel any existing reconnection attempt
+        cancelReconnection()
+        
+        reconnectTask = Task { [weak self] in
+            guard let self = self else { return }
+            
+            while self.reconnectAttemptCount < Self.maxReconnectAttempts {
+                self.reconnectAttemptCount += 1
+                self.isReconnecting = true
+                
+                // Calculate delay with exponential backoff: 1s, 2s, 4s
+                let delay = Self.baseReconnectDelay * pow(2.0, Double(self.reconnectAttemptCount - 1))
+                self.state = .reconnecting(attempt: self.reconnectAttemptCount, maxAttempts: Self.maxReconnectAttempts)
+                
+                // Wait before attempting reconnection
+                do {
+                    try await Task.sleep(for: .seconds(delay))
+                } catch {
+                    // Task was cancelled
+                    self.isReconnecting = false
+                    return
+                }
+                
+                // Check if task was cancelled
+                if Task.isCancelled {
+                    self.isReconnecting = false
+                    return
+                }
+                
+                // Attempt to play again
+                do {
+                    try await self.playWithoutReconnect(url: url)
+                    // Success - reset reconnection state
+                    self.reconnectAttemptCount = 0
+                    self.isReconnecting = false
+                    return
+                } catch {
+                    // Continue to next attempt
+                    continue
+                }
+            }
+            
+            // All attempts exhausted
+            self.isReconnecting = false
+            self.reconnectAttemptCount = 0
+            self.state = .error("Connection lost - all reconnection attempts failed")
+        }
+    }
+    
+    /// Internal play method that doesn't trigger reconnection on failure.
+    ///
+    /// Used by the reconnection logic to avoid recursive reconnection attempts.
+    private func playWithoutReconnect(url: URL) async throws {
+        stopObservers()
+        
+        state = .loading
+        currentURL = url
+        
+        let asset = AVURLAsset(url: url)
+        
+        let isPlayable = try await asset.load(.isPlayable)
+        
+        guard isPlayable else {
+            throw AVPlaybackError.assetNotPlayable
+        }
+        
+        let item = AVPlayerItem(asset: asset)
+        
+        if player == nil {
+            player = AVPlayer()
+        }
+        
+        player?.replaceCurrentItem(with: item)
+        setupObservers()
+        player?.play()
+        
+        try await waitForPlaybackReady()
+    }
+    
+    /// Cancels any in-progress reconnection attempt.
+    func cancelReconnection() {
+        reconnectTask?.cancel()
+        reconnectTask = nil
+        isReconnecting = false
+        reconnectAttemptCount = 0
+    }
+    
+    /// Handles a stream failure by attempting reconnection.
+    ///
+    /// Called when the player item status changes to .failed.
+    func handleStreamFailure(error: Error?) {
+        let errorToReport = error ?? NSError(domain: "AVPlaybackBackend", code: -1, userInfo: [NSLocalizedDescriptionKey: "Stream playback failed"])
+        attemptReconnection(after: errorToReport)
     }
 }

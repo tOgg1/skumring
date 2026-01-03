@@ -92,26 +92,70 @@ struct NowPlayingBar: View {
     
     // MARK: - Track Info View
     
-    /// Title and subtitle with truncation
+    /// Title and subtitle with truncation, plus reconnection/error status
     private var trackInfoView: some View {
         VStack(alignment: .leading, spacing: 2) {
-            if let item = playbackController.currentItem {
-                Text(item.title)
-                    .font(.headline)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
+            switch playbackController.state {
+            case .reconnecting(let attempt, let maxAttempts):
+                // Show reconnecting status
+                HStack(spacing: 6) {
+                    ProgressView()
+                        .scaleEffect(0.7)
+                    Text("Reconnecting...")
+                        .font(.headline)
+                        .foregroundStyle(.orange)
+                }
+                Text("Attempt \(attempt) of \(maxAttempts)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
                 
-                if let subtitle = item.subtitle {
-                    Text(subtitle)
+            case .error(let message):
+                // Show error with retry button
+                Text("Connection Lost")
+                    .font(.headline)
+                    .foregroundStyle(.red)
+                
+                if let item = playbackController.currentItem {
+                    Button {
+                        Task {
+                            try? await playbackController.play(item: item)
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.clockwise")
+                            Text("Retry")
+                        }
+                        .font(.subheadline)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                } else {
+                    Text(message)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
-                        .truncationMode(.tail)
                 }
-            } else {
-                Text("Not Playing")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+                
+            default:
+                // Normal playback info
+                if let item = playbackController.currentItem {
+                    Text(item.title)
+                        .font(.headline)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                    
+                    if let subtitle = item.subtitle {
+                        Text(subtitle)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                    }
+                } else {
+                    Text("Not Playing")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .frame(minWidth: 120, maxWidth: 200, alignment: .leading)
@@ -170,7 +214,7 @@ struct NowPlayingBar: View {
         switch playbackController.state {
         case .playing:
             return "pause.fill"
-        case .loading:
+        case .loading, .reconnecting:
             return "circle.dotted"
         default:
             return "play.fill"

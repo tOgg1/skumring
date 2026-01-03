@@ -17,6 +17,9 @@ enum PlaybackState: Equatable, Sendable {
     /// Media is paused
     case paused
     
+    /// Attempting to reconnect after a stream failure
+    case reconnecting(attempt: Int, maxAttempts: Int)
+    
     /// Playback failed with an error message
     case error(String)
 }
