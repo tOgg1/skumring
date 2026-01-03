@@ -12,6 +12,7 @@
 		F8A1B2C32D4E5F6700000005 /* YouTubePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */; };
 		F8A1B2C32D4E5F6700000007 /* YouTubePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000008 /* YouTubePlayer.swift */; };
 		F8A1B2C32D4E5F6700000009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000000A /* Assets.xcassets */; };
+		F8A1B2C32D4E5F67000000A0 /* built-in-pack.json in Resources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000A1 /* built-in-pack.json */; };
 		F8A1B2C32D4E5F6700000020 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000021 /* AppModel.swift */; };
 		F8A1B2C32D4E5F6700000022 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000023 /* LibraryItem.swift */; };
 		F8A1B2C32D4E5F6700000090 /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000091 /* ArtworkCache.swift */; };
@@ -85,6 +86,7 @@
 		F8A1B2C32D4E5F6700000081 /* YouTubePlayerContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubePlayerContainerView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000091 /* ArtworkCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCache.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000093 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F67000000A1 /* built-in-pack.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "built-in-pack.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				F8A1B2C32D4E5F6700000021 /* AppModel.swift */,
 				F8A1B2C32D4E5F6700000004 /* ContentView.swift */,
 				F8A1B2C32D4E5F6700000034 /* Models */,
+				F8A1B2C32D4E5F67000000A2 /* Resources */,
 				F8A1B2C32D4E5F6700000035 /* Services */,
 				F8A1B2C32D4E5F6700000044 /* Views */,
 				F8A1B2C32D4E5F670000000A /* Assets.xcassets */,
@@ -183,6 +186,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F8A1B2C32D4E5F67000000A2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F8A1B2C32D4E5F67000000A1 /* built-in-pack.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -242,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8A1B2C32D4E5F6700000009 /* Assets.xcassets in Resources */,
+				F8A1B2C32D4E5F67000000A0 /* built-in-pack.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-01-03T12:00:00Z",
+  "appIdentifier": "com.skumring.Skumring",
+  "packType": "builtin",
+  "packVersion": "2026.01.03",
+  "items": [
+    {
+      "id": "B1000001-0000-0000-0000-000000000001",
+      "kind": "stream",
+      "title": "SomaFM Groove Salad",
+      "subtitle": "Ambient/Downtempo",
+      "tags": ["ambient", "chill", "focus"],
+      "source": {
+        "url": "https://somafm.com/groovesalad256.pls"
+      },
+      "artworkURL": "https://somafm.com/img3/groovesalad-400.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000002",
+      "kind": "stream",
+      "title": "SomaFM Drone Zone",
+      "subtitle": "Atmospheric Ambient",
+      "tags": ["ambient", "drone", "focus"],
+      "source": {
+        "url": "https://somafm.com/dronezone256.pls"
+      },
+      "artworkURL": "https://somafm.com/img3/dronezone-400.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000003",
+      "kind": "stream",
+      "title": "SomaFM DEF CON Radio",
+      "subtitle": "Dark Electronica",
+      "tags": ["electronic", "dark", "focus"],
+      "source": {
+        "url": "https://somafm.com/defcon256.pls"
+      },
+      "artworkURL": "https://somafm.com/img3/defcon-400.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000004",
+      "kind": "stream",
+      "title": "SomaFM Space Station Soma",
+      "subtitle": "Ambient Space Music",
+      "tags": ["ambient", "space", "focus"],
+      "source": {
+        "url": "https://somafm.com/spacestation256.pls"
+      },
+      "artworkURL": "https://somafm.com/img3/spacestation-400.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000005",
+      "kind": "stream",
+      "title": "SomaFM Deep Space One",
+      "subtitle": "Deep Ambient Electronic",
+      "tags": ["ambient", "electronic", "deep"],
+      "source": {
+        "url": "https://somafm.com/deepspaceone256.pls"
+      },
+      "artworkURL": "https://somafm.com/img3/deepspaceone-400.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000006",
+      "kind": "youtube",
+      "title": "Lofi Girl - Beats to Relax/Study To",
+      "subtitle": "24/7 Lofi Hip Hop",
+      "tags": ["lofi", "hip-hop", "study"],
+      "source": {
+        "youtubeID": "jfKfPfyJRdk"
+      },
+      "artworkURL": "https://i.ytimg.com/vi/jfKfPfyJRdk/maxresdefault.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000007",
+      "kind": "youtube",
+      "title": "Coffee Shop Ambience",
+      "subtitle": "Jazz & Rain Sounds",
+      "tags": ["jazz", "ambient", "rain"],
+      "source": {
+        "youtubeID": "h2zkV-l_TbY"
+      },
+      "artworkURL": "https://i.ytimg.com/vi/h2zkV-l_TbY/maxresdefault.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000008",
+      "kind": "stream",
+      "title": "Radio Paradise - Main Mix",
+      "subtitle": "Eclectic Mix",
+      "tags": ["eclectic", "rock", "indie"],
+      "source": {
+        "url": "https://stream.radioparadise.com/aac-320"
+      },
+      "artworkURL": "https://radioparadise.com/graphics/logos/rp_192.png",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000009",
+      "kind": "stream",
+      "title": "KEXP 90.3 FM Seattle",
+      "subtitle": "Independent Music",
+      "tags": ["indie", "alternative", "eclectic"],
+      "source": {
+        "url": "https://kexp-mp3-128.streamguys1.com/kexp128.mp3"
+      },
+      "artworkURL": "https://www.kexp.org/static/images/kexp-fb-image.jpg",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    },
+    {
+      "id": "B1000001-0000-0000-0000-000000000010",
+      "kind": "stream",
+      "title": "Jazz24",
+      "subtitle": "Commercial-Free Jazz",
+      "tags": ["jazz", "focus", "classic"],
+      "source": {
+        "url": "https://live.wostreaming.net/direct/ppm-jazz24aac-ibc1"
+      },
+      "artworkURL": "https://www.jazz24.org/wp-content/uploads/2020/10/jazz24-logo.png",
+      "addedAt": "2026-01-01T00:00:00Z",
+      "healthStatus": "unknown",
+      "failCount": 0
+    }
+  ],
+  "playlists": [
+    {
+      "id": "B2000001-0000-0000-0000-000000000001",
+      "name": "Deep Focus",
+      "itemIDs": [
+        "B1000001-0000-0000-0000-000000000001",
+        "B1000001-0000-0000-0000-000000000002",
+        "B1000001-0000-0000-0000-000000000004",
+        "B1000001-0000-0000-0000-000000000005"
+      ],
+      "repeatMode": "all",
+      "shuffleMode": "off",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "B2000001-0000-0000-0000-000000000002",
+      "name": "Study Lofi",
+      "itemIDs": [
+        "B1000001-0000-0000-0000-000000000006",
+        "B1000001-0000-0000-0000-000000000007"
+      ],
+      "repeatMode": "all",
+      "shuffleMode": "off",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "B2000001-0000-0000-0000-000000000003",
+      "name": "Jazz & Chill",
+      "itemIDs": [
+        "B1000001-0000-0000-0000-000000000010",
+        "B1000001-0000-0000-0000-000000000007"
+      ],
+      "repeatMode": "all",
+      "shuffleMode": "off",
+      "createdAt": "2026-01-01T00:00:00Z"
+    }
+  ]
+}
