@@ -106,8 +106,6 @@
 				F8A1B2C32D4E5F6700000002 /* SkumringApp.swift */,
 				F8A1B2C32D4E5F6700000021 /* AppModel.swift */,
 				F8A1B2C32D4E5F6700000004 /* ContentView.swift */,
-				F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */,
-				F8A1B2C32D4E5F6700000008 /* YouTubePlayer.swift */,
 				F8A1B2C32D4E5F6700000034 /* Models */,
 				F8A1B2C32D4E5F6700000035 /* Services */,
 				F8A1B2C32D4E5F6700000044 /* Views */,
@@ -145,6 +143,7 @@
 				F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */,
 				F8A1B2C32D4E5F670000003F /* PlaybackController.swift */,
 				F8A1B2C32D4E5F6700000041 /* StreamResolver.swift */,
+				F8A1B2C32D4E5F6700000008 /* YouTubePlayer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -162,6 +161,7 @@
 				F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */,
 				F8A1B2C32D4E5F6700000065 /* PlaylistEditorView.swift */,
 				F8A1B2C32D4E5F6700000043 /* SidebarView.swift */,
+				F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
