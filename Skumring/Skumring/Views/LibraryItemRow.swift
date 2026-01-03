@@ -10,6 +10,18 @@ struct LibraryItemRow: View {
     /// Called when the item is double-clicked to initiate playback
     var onPlay: (() -> Void)?
     
+    /// Called when the user selects Delete from context menu
+    var onDelete: (() -> Void)?
+    
+    /// Called when the user selects Edit from context menu
+    var onEdit: (() -> Void)?
+    
+    /// Called when the user selects a playlist to add the item to
+    var onAddToPlaylist: ((Playlist) -> Void)?
+    
+    /// Available playlists for the "Add to Playlist" submenu
+    var playlists: [Playlist] = []
+    
     private let artworkSize: CGFloat = 44
     
     var body: some View {
@@ -22,6 +34,48 @@ struct LibraryItemRow: View {
         .contentShape(Rectangle())
         .onTapGesture(count: 2) {
             onPlay?()
+        }
+        .contextMenu {
+            contextMenuContent
+        }
+    }
+    
+    // MARK: - Context Menu
+    
+    @ViewBuilder
+    private var contextMenuContent: some View {
+        Button {
+            onPlay?()
+        } label: {
+            Label("Play", systemImage: "play.fill")
+        }
+        
+        Divider()
+        
+        if !playlists.isEmpty {
+            Menu {
+                ForEach(playlists) { playlist in
+                    Button(playlist.name) {
+                        onAddToPlaylist?(playlist)
+                    }
+                }
+            } label: {
+                Label("Add to Playlist", systemImage: "text.badge.plus")
+            }
+        }
+        
+        Button {
+            onEdit?()
+        } label: {
+            Label("Edit...", systemImage: "pencil")
+        }
+        
+        Divider()
+        
+        Button(role: .destructive) {
+            onDelete?()
+        } label: {
+            Label("Delete", systemImage: "trash")
         }
     }
     

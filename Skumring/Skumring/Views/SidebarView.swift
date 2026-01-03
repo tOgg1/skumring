@@ -11,6 +11,15 @@ struct SidebarView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(LibraryStore.self) private var libraryStore
     
+    /// ID of playlist currently being renamed (nil if not in rename mode)
+    @State private var renamingPlaylistID: UUID?
+    
+    /// Text for the rename text field
+    @State private var renameText: String = ""
+    
+    /// ID of playlist to show delete confirmation for
+    @State private var playlistToDelete: UUID?
+    
     var body: some View {
         @Bindable var appModel = appModel
         
@@ -48,8 +57,7 @@ struct SidebarView: View {
             // MARK: - Playlists Section
             Section("Playlists") {
                 ForEach(libraryStore.playlists) { playlist in
-                    Label(playlist.name, systemImage: "music.note.list")
-                        .tag(SidebarItem.playlist(playlist.id))
+                    playlistRow(for: playlist)
                 }
             }
         }
@@ -58,6 +66,133 @@ struct SidebarView: View {
         .safeAreaInset(edge: .bottom) {
             sidebarFooter
         }
+        .alert("Delete Playlist?", isPresented: .init(
+            get: { playlistToDelete != nil },
+            set: { if !$0 { playlistToDelete = nil } }
+        )) {
+            Button("Cancel", role: .cancel) {
+                playlistToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                if let id = playlistToDelete {
+                    deletePlaylist(id: id)
+                }
+            }
+        } message: {
+            if let id = playlistToDelete,
+               let playlist = libraryStore.playlist(withID: id) {
+                Text("Are you sure you want to delete \"\(playlist.name)\"? Items in this playlist will not be removed from your library.")
+            }
+        }
+    }
+    
+    // MARK: - Playlist Row
+    
+    @ViewBuilder
+    private func playlistRow(for playlist: Playlist) -> some View {
+        if renamingPlaylistID == playlist.id {
+            // Inline rename mode
+            TextField("Playlist name", text: $renameText)
+                .textFieldStyle(.plain)
+                .onSubmit {
+                    commitRename(for: playlist.id)
+                }
+                .onExitCommand {
+                    cancelRename()
+                }
+                .onAppear {
+                    renameText = playlist.name
+                }
+        } else {
+            Label(playlist.name, systemImage: "music.note.list")
+                .tag(SidebarItem.playlist(playlist.id))
+                .contextMenu {
+                    playlistContextMenu(for: playlist)
+                }
+        }
+    }
+    
+    // MARK: - Playlist Context Menu
+    
+    @ViewBuilder
+    private func playlistContextMenu(for playlist: Playlist) -> some View {
+        Button {
+            startRename(playlist: playlist)
+        } label: {
+            Label("Rename", systemImage: "pencil")
+        }
+        
+        Button {
+            duplicatePlaylist(playlist)
+        } label: {
+            Label("Duplicate", systemImage: "plus.square.on.square")
+        }
+        
+        Button {
+            exportPlaylist(playlist)
+        } label: {
+            Label("Export...", systemImage: "square.and.arrow.up")
+        }
+        
+        Divider()
+        
+        Button(role: .destructive) {
+            playlistToDelete = playlist.id
+        } label: {
+            Label("Delete", systemImage: "trash")
+        }
+    }
+    
+    // MARK: - Rename Actions
+    
+    private func startRename(playlist: Playlist) {
+        renameText = playlist.name
+        renamingPlaylistID = playlist.id
+    }
+    
+    private func commitRename(for playlistID: UUID) {
+        guard !renameText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            cancelRename()
+            return
+        }
+        
+        if var playlist = libraryStore.playlist(withID: playlistID) {
+            playlist.name = renameText.trimmingCharacters(in: .whitespaces)
+            libraryStore.updatePlaylist(playlist)
+        }
+        renamingPlaylistID = nil
+    }
+    
+    private func cancelRename() {
+        renamingPlaylistID = nil
+        renameText = ""
+    }
+    
+    // MARK: - Playlist Actions
+    
+    private func duplicatePlaylist(_ playlist: Playlist) {
+        let duplicated = Playlist(
+            name: "\(playlist.name) Copy",
+            itemIDs: playlist.itemIDs,
+            repeatMode: playlist.repeatMode,
+            shuffleMode: playlist.shuffleMode
+        )
+        libraryStore.addPlaylist(duplicated)
+    }
+    
+    private func exportPlaylist(_ playlist: Playlist) {
+        // TODO: Implement export functionality
+        // This will be handled by ImportExportService in a future task
+    }
+    
+    private func deletePlaylist(id: UUID) {
+        // If we're deleting the currently selected playlist, navigate away
+        if case .playlist(let selectedID) = appModel.selectedSidebarItem,
+           selectedID == id {
+            appModel.selectedSidebarItem = .allItems
+        }
+        libraryStore.deletePlaylist(id: id)
+        playlistToDelete = nil
     }
     
     // MARK: - Sidebar Footer
