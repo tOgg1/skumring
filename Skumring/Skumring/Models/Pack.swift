@@ -23,6 +23,12 @@ struct Pack: Codable, Sendable {
     /// Playlists included in this pack
     let playlists: [Playlist]
     
+    /// Type of pack for identification purposes (e.g. "builtin" for built-in packs)
+    let packType: String?
+    
+    /// Version string for the pack content (e.g. "2026.01.03")
+    let packVersion: String?
+    
     /// Current schema version constant
     static let currentSchemaVersion = 1
     
@@ -34,13 +40,17 @@ struct Pack: Codable, Sendable {
         items: [LibraryItem],
         playlists: [Playlist],
         exportedAt: Date = Date(),
-        appIdentifier: String = Pack.defaultAppIdentifier
+        appIdentifier: String = Pack.defaultAppIdentifier,
+        packType: String? = nil,
+        packVersion: String? = nil
     ) {
         self.schemaVersion = Pack.currentSchemaVersion
         self.exportedAt = exportedAt
         self.appIdentifier = appIdentifier
         self.items = items
         self.playlists = playlists
+        self.packType = packType
+        self.packVersion = packVersion
     }
     
     /// Creates a pack from existing data with explicit schema version.
@@ -50,13 +60,17 @@ struct Pack: Codable, Sendable {
         exportedAt: Date,
         appIdentifier: String,
         items: [LibraryItem],
-        playlists: [Playlist]
+        playlists: [Playlist],
+        packType: String? = nil,
+        packVersion: String? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.exportedAt = exportedAt
         self.appIdentifier = appIdentifier
         self.items = items
         self.playlists = playlists
+        self.packType = packType
+        self.packVersion = packVersion
     }
     
     /// Whether this pack's schema version is supported.
