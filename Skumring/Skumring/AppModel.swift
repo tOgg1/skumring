@@ -14,6 +14,7 @@ import Observation
 /// ContentView()
 ///     .environment(appModel)
 /// ```
+@MainActor
 @Observable
 final class AppModel {
     

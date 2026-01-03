@@ -7,6 +7,8 @@ import Foundation
 /// used interchangeably by the PlaybackController.
 ///
 /// All conforming types must be observable classes to enable SwiftUI integration.
+/// The protocol is MainActor-isolated since playback state is bound to UI.
+@MainActor
 protocol PlaybackBackend: AnyObject {
     
     // MARK: - State Properties

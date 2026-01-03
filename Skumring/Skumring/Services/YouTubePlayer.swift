@@ -65,6 +65,12 @@ final class YouTubePlayer {
     /// Called when a new video should be loaded
     var onLoadVideo: ((String) -> Void)?
     
+    // MARK: - State Change Callback (set by PlaybackController)
+    
+    /// Called when the player state changes. Used by PlaybackController to handle
+    /// queue advancement when a video ends.
+    var onStateChange: ((YouTubePlayerState) -> Void)?
+    
     /// Volume level from 0.0 to 1.0
     private var _volume: Float = 1.0
     
@@ -170,6 +176,7 @@ final class YouTubePlayer {
     
     func updateState(_ state: YouTubePlayerState) {
         self.playerState = state
+        onStateChange?(state)
     }
     
     func updateReady(_ ready: Bool) {

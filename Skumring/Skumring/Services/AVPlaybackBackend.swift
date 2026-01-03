@@ -29,6 +29,7 @@ enum AVPlaybackError: Error, LocalizedError {
 /// direct audio file URLs (mp3, aac, etc.), and other AVPlayer-compatible media.
 ///
 /// The class is observable to enable SwiftUI integration.
+@MainActor
 @Observable
 final class AVPlaybackBackend: PlaybackBackend {
     
@@ -84,9 +85,9 @@ final class AVPlaybackBackend: PlaybackBackend {
         // Player is created lazily on first play
     }
     
-    deinit {
-        stop()
-    }
+    // Note: No deinit needed - AVPlayer and observers are cleaned up automatically
+    // when this object is deallocated. If explicit cleanup is needed before deallocation,
+    // call stop() from the owning PlaybackController.
     
     // MARK: - PlaybackBackend Protocol Methods
     

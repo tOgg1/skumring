@@ -19,16 +19,29 @@ import Observation
 /// try await controller.play(item: libraryItem)
 /// controller.togglePlayPause()
 /// ```
+@MainActor
 @Observable
 final class PlaybackController {
+    
+    // MARK: - Active Backend Tracking
+    
+    /// Which backend is currently active for playback
+    enum ActiveBackend {
+        case none
+        case av
+        case youtube
+    }
+    
+    /// The currently active playback backend
+    private(set) var activeBackend: ActiveBackend = .none
     
     // MARK: - Backends
     
     /// Backend for streams and direct audio URLs
     let avBackend: AVPlaybackBackend
     
-    // Future: YouTubePlayer backend will be added here
-    // let youtubePlayer: YouTubePlayer
+    /// Backend for YouTube video playback
+    let youtubePlayer: YouTubePlayer
     
     // MARK: - State
     
@@ -37,24 +50,50 @@ final class PlaybackController {
     
     /// The current playback state (unified across backends).
     var state: PlaybackState {
-        // For now, just return the AV backend state
-        // When YouTube is integrated, this will check which backend is active
-        avBackend.state
+        switch activeBackend {
+        case .none:
+            return .stopped
+        case .av:
+            return avBackend.state
+        case .youtube:
+            return youtubePlayer.state
+        }
     }
     
     /// Whether any media is currently playing.
     var isPlaying: Bool {
-        avBackend.isPlaying
+        switch activeBackend {
+        case .none:
+            return false
+        case .av:
+            return avBackend.isPlaying
+        case .youtube:
+            return youtubePlayer.isPlaying
+        }
     }
     
     /// The current playback position in seconds.
     var currentTime: TimeInterval? {
-        avBackend.currentTime
+        switch activeBackend {
+        case .none:
+            return nil
+        case .av:
+            return avBackend.currentTime
+        case .youtube:
+            return youtubePlayer.currentTimeInterval
+        }
     }
     
     /// The total duration in seconds (nil for live streams).
     var duration: TimeInterval? {
-        avBackend.duration
+        switch activeBackend {
+        case .none:
+            return nil
+        case .av:
+            return avBackend.duration
+        case .youtube:
+            return youtubePlayer.durationInterval
+        }
     }
     
     /// The current volume level (0.0 to 1.0).
@@ -78,6 +117,33 @@ final class PlaybackController {
     
     init() {
         self.avBackend = AVPlaybackBackend()
+        self.youtubePlayer = YouTubePlayer()
+        setupYouTubeStateCallback()
+    }
+    
+    /// Configures the YouTube player's state change callback to handle queue advancement
+    private func setupYouTubeStateCallback() {
+        youtubePlayer.onStateChange = { [weak self] (state: YouTubePlayerState) in
+            self?.handleYouTubeStateChange(state)
+        }
+    }
+    
+    // MARK: - YouTube State Observation
+    
+    /// Called when YouTube playback state changes.
+    ///
+    /// When playback ends while in queue mode, it automatically advances to the next item.
+    ///
+    /// - Parameter newState: The new YouTube player state
+    private func handleYouTubeStateChange(_ newState: YouTubePlayerState) {
+        guard activeBackend == .youtube else { return }
+        
+        if newState == .ended && !queue.isEmpty && queueIndex != nil {
+            // Video ended while in queue mode - advance to next
+            Task {
+                try? await next()
+            }
+        }
     }
     
     // MARK: - Playback Control
@@ -85,10 +151,14 @@ final class PlaybackController {
     /// Plays the given library item.
     ///
     /// Routes to the appropriate backend based on the item's kind.
+    /// Stops the previous backend before switching to ensure clean transitions.
     ///
     /// - Parameter item: The item to play
     /// - Throws: If playback cannot be started
     func play(item: LibraryItem) async throws {
+        // Stop the previous backend before switching
+        stopCurrentBackend()
+        
         currentItem = item
         
         switch item.kind {
@@ -97,12 +167,28 @@ final class PlaybackController {
             guard let url = item.source.url else {
                 throw PlaybackControllerError.invalidSource
             }
+            activeBackend = .av
             try await avBackend.play(url: url)
             
         case .youtube:
-            // YouTube playback will be handled by YouTubePlayer
-            // For now, throw an error indicating it's not yet implemented
-            throw PlaybackControllerError.youtubeNotImplemented
+            // Use YouTube backend for YouTube videos
+            guard let videoID = item.source.youtubeID else {
+                throw PlaybackControllerError.invalidSource
+            }
+            activeBackend = .youtube
+            youtubePlayer.play(videoID: videoID)
+        }
+    }
+    
+    /// Stops the currently active backend without clearing controller state.
+    private func stopCurrentBackend() {
+        switch activeBackend {
+        case .none:
+            break
+        case .av:
+            avBackend.stop()
+        case .youtube:
+            youtubePlayer.stop()
         }
     }
     
@@ -134,17 +220,32 @@ final class PlaybackController {
     
     /// Pauses playback.
     func pause() {
-        avBackend.pause()
+        switch activeBackend {
+        case .none:
+            break
+        case .av:
+            avBackend.pause()
+        case .youtube:
+            youtubePlayer.pause()
+        }
     }
     
     /// Resumes playback.
     func resume() {
-        avBackend.resume()
+        switch activeBackend {
+        case .none:
+            break
+        case .av:
+            avBackend.resume()
+        case .youtube:
+            youtubePlayer.resume()
+        }
     }
     
     /// Stops playback and clears the current item.
     func stop() {
-        avBackend.stop()
+        stopCurrentBackend()
+        activeBackend = .none
         currentItem = nil
         queue = []
         queueIndex = nil
@@ -154,7 +255,14 @@ final class PlaybackController {
     ///
     /// - Parameter time: The target time in seconds
     func seek(to time: TimeInterval) {
-        avBackend.seek(to: time)
+        switch activeBackend {
+        case .none:
+            break
+        case .av:
+            avBackend.seek(to: time)
+        case .youtube:
+            youtubePlayer.seek(to: time)
+        }
     }
     
     /// Sets the playback volume.
@@ -162,7 +270,14 @@ final class PlaybackController {
     /// - Parameter newVolume: Volume level from 0.0 to 1.0
     func setVolume(_ newVolume: Float) {
         volume = max(0.0, min(1.0, newVolume))
-        avBackend.setVolume(volume)
+        switch activeBackend {
+        case .none:
+            break
+        case .av:
+            avBackend.setVolume(volume)
+        case .youtube:
+            youtubePlayer.setVolume(volume)
+        }
     }
     
     // MARK: - Queue Navigation
@@ -243,15 +358,12 @@ final class PlaybackController {
 /// Errors that can occur during playback operations.
 enum PlaybackControllerError: Error, LocalizedError {
     case invalidSource
-    case youtubeNotImplemented
     case invalidQueueIndex
     
     var errorDescription: String? {
         switch self {
         case .invalidSource:
             return "The item's source URL could not be resolved"
-        case .youtubeNotImplemented:
-            return "YouTube playback is not yet implemented"
         case .invalidQueueIndex:
             return "Invalid queue index"
         }
