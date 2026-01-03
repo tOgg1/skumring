@@ -13,6 +13,8 @@ struct ContentView: View {
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
     
     var body: some View {
+        @Bindable var appModel = appModel
+        
         VStack(spacing: 0) {
             NavigationSplitView(columnVisibility: $columnVisibility) {
                 SidebarView()
@@ -23,6 +25,9 @@ struct ContentView: View {
             
             // Now playing bar - always visible at bottom
             NowPlayingBar()
+        }
+        .sheet(isPresented: $appModel.showAddItemSheet) {
+            AddItemSheet()
         }
     }
 }

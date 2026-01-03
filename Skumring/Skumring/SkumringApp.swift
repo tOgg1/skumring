@@ -15,5 +15,13 @@ struct SkumringApp: App {
         }
         .windowStyle(.automatic)
         .defaultSize(width: 1000, height: 700)
+        .commands {
+            CommandGroup(after: .newItem) {
+                Button("Add Item...") {
+                    appModel.showAddItemSheet = true
+                }
+                .keyboardShortcut("l", modifiers: .command)
+            }
+        }
     }
 }

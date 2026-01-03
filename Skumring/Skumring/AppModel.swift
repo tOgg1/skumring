@@ -33,6 +33,11 @@ final class AppModel {
     /// Set of item IDs currently selected in the library view (for multi-selection)
     var selectedItemIDs: Set<UUID> = []
     
+    // MARK: - Sheet State
+    
+    /// Controls visibility of the Add Item sheet (triggered by Cmd+L or File > Add Item...)
+    var showAddItemSheet: Bool = false
+    
     // MARK: - Initialization
     
     init() {
