@@ -57,6 +57,9 @@ struct MainContentView: View {
                     description: Text("This playlist no longer exists.")
                 )
             }
+            
+        case .builtInItem(let itemID):
+            BuiltInItemDetailView(itemID: itemID)
         }
     }
     
@@ -121,6 +124,121 @@ struct PlaylistView: View {
             description: Text("\(playlist.itemCount) items")
         )
         .navigationTitle(playlist.name)
+    }
+}
+
+/// View for a built-in pack item (from sidebar selection)
+struct BuiltInItemDetailView: View {
+    let itemID: UUID
+    
+    /// The built-in pack loader to find the item
+    private let builtInPackLoader = BuiltInPackLoader()
+    
+    /// Artwork cache for images
+    private let artworkCache = ArtworkCache()
+    
+    @State private var item: LibraryItem?
+    @State private var loadError: Error?
+    
+    var body: some View {
+        Group {
+            if let item = item {
+                // Show item details with play button
+                VStack(spacing: 16) {
+                    if let artworkURL = item.artworkURL {
+                        CachedAsyncImage(url: artworkURL, cache: artworkCache) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(width: 300, height: 300)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            case .failure:
+                                placeholderView(for: item.kind)
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                        .frame(maxWidth: 300, maxHeight: 300)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } else {
+                        placeholderView(for: item.kind)
+                            .frame(width: 300, height: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    
+                    Text(item.title)
+                        .font(.title)
+                    
+                    if let subtitle = item.subtitle {
+                        Text(subtitle)
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    HStack {
+                        Text("curated")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(.quaternary, in: Capsule())
+                    }
+                    
+                    // TODO: Add play button that triggers PlaybackController
+                }
+                .padding()
+                .navigationTitle(item.title)
+            } else if loadError != nil {
+                ContentUnavailableView(
+                    "Item Not Found",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text("This curated item could not be loaded.")
+                )
+            } else {
+                ProgressView("Loading...")
+            }
+        }
+        .task {
+            await loadItem()
+        }
+    }
+    
+    @ViewBuilder
+    private func placeholderView(for kind: LibraryItemKind) -> some View {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(.quaternary)
+            .overlay {
+                Image(systemName: iconName(for: kind))
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+            }
+    }
+    
+    private func loadItem() async {
+        do {
+            let items = try await builtInPackLoader.loadItemsAsync()
+            item = items.first { $0.id == itemID }
+            if item == nil {
+                loadError = NSError(domain: "BuiltInItemDetailView", code: 404, userInfo: nil)
+            }
+        } catch {
+            loadError = error
+        }
+    }
+    
+    private func iconName(for kind: LibraryItemKind) -> String {
+        switch kind {
+        case .stream:
+            return "antenna.radiowaves.left.and.right"
+        case .youtube:
+            return "play.rectangle"
+        case .audioURL:
+            return "link"
+        }
     }
 }
 

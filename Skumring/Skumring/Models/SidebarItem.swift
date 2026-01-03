@@ -9,8 +9,11 @@ enum SidebarItem: Hashable, Sendable {
     /// Home view with featured content and quick actions
     case home
     
-    /// A built-in pack of curated content
+    /// A built-in pack of curated content (shows all built-in items)
     case builtInPack
+    
+    /// A specific item from the built-in pack
+    case builtInItem(UUID)
     
     /// All items in the library
     case allItems
