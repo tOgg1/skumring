@@ -62,6 +62,7 @@ struct NowPlayingBar: View {
         .padding(.vertical, 8)
         .frame(height: barHeight)
         .background(barBackground)
+        .accessibilityIdentifier("nowPlayingBar")
     }
     
     // MARK: - Bar Background
@@ -207,6 +208,7 @@ struct NowPlayingBar: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.currentItem == nil)
+                .accessibilityIdentifier("nowPlayingBar.previous")
                 
                 // Play/Pause button
                 Button {
@@ -217,6 +219,7 @@ struct NowPlayingBar: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.currentItem == nil)
+                .accessibilityIdentifier("nowPlayingBar.playPause")
                 
                 // Next button
                 Button {
@@ -229,6 +232,7 @@ struct NowPlayingBar: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.currentItem == nil)
+                .accessibilityIdentifier("nowPlayingBar.next")
             }
             
             // Progress bar

@@ -44,6 +44,7 @@ struct AddItemSheet: View {
             sheetFooter
         }
         .frame(width: 400, height: 380)
+        .accessibilityIdentifier("addItemSheet")
     }
     
     // MARK: - Header
@@ -68,6 +69,7 @@ struct AddItemSheet: View {
         Section {
             TextField("URL", text: $urlString, prompt: Text("https://..."))
                 .textFieldStyle(.plain)
+                .accessibilityIdentifier("addItemSheet.url")
                 .onChange(of: urlString) { _, newValue in
                     detectItemType(from: newValue)
                 }
@@ -79,6 +81,7 @@ struct AddItemSheet: View {
                     Text(labelForKind(detectedKind))
                         .foregroundStyle(.secondary)
                         .font(.caption)
+                        .accessibilityIdentifier("addItemSheet.detectedKind")
                     Spacer()
                 }
             }
@@ -93,9 +96,11 @@ struct AddItemSheet: View {
         Section {
             TextField("Title", text: $title, prompt: Text("Item title"))
                 .textFieldStyle(.plain)
+                .accessibilityIdentifier("addItemSheet.title")
             
             TextField("Tags", text: $tagsString, prompt: Text("lofi, chill, focus (optional)"))
                 .textFieldStyle(.plain)
+                .accessibilityIdentifier("addItemSheet.tags")
         } header: {
             Text("Details")
         } footer: {
@@ -117,6 +122,7 @@ struct AddItemSheet: View {
                 dismiss()
             }
             .keyboardShortcut(.cancelAction)
+            .accessibilityIdentifier("addItemSheet.cancel")
             
             Spacer()
             
@@ -125,6 +131,7 @@ struct AddItemSheet: View {
             }
             .keyboardShortcut(.defaultAction)
             .disabled(!canAdd)
+            .accessibilityIdentifier("addItemSheet.add")
         }
         .padding()
         .glassStyleFullBleed()
