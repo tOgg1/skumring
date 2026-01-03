@@ -77,18 +77,6 @@ struct MainContentView: View {
 
 // MARK: - Placeholder Views
 
-/// Placeholder for the home/focus view
-struct HomeView: View {
-    var body: some View {
-        ContentUnavailableView(
-            "Focus Now",
-            systemImage: "house",
-            description: Text("Your personalized home screen will appear here.")
-        )
-        .navigationTitle("Home")
-    }
-}
-
 /// Placeholder for the built-in pack view
 struct BuiltInPackView: View {
     var body: some View {
