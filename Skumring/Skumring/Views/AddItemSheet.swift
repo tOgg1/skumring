@@ -48,6 +48,10 @@ struct AddItemSheet: View {
     
     // MARK: - Header
     
+    /// Sheet header with glass styling.
+    ///
+    /// Uses Liquid Glass for a modern appearance on macOS 26+.
+    /// Falls back to solid styling when Reduce Transparency is enabled.
     private var sheetHeader: some View {
         HStack {
             Text("Add Item")
@@ -55,6 +59,7 @@ struct AddItemSheet: View {
             Spacer()
         }
         .padding()
+        .glassStyleFullBleed()
     }
     
     // MARK: - URL Section
@@ -102,6 +107,10 @@ struct AddItemSheet: View {
     
     // MARK: - Footer
     
+    /// Sheet footer with glass styling and action buttons.
+    ///
+    /// Uses Liquid Glass for a modern appearance on macOS 26+.
+    /// Falls back to solid styling when Reduce Transparency is enabled.
     private var sheetFooter: some View {
         HStack {
             Button("Cancel") {
@@ -118,6 +127,7 @@ struct AddItemSheet: View {
             .disabled(!canAdd)
         }
         .padding()
+        .glassStyleFullBleed()
     }
     
     // MARK: - Validation

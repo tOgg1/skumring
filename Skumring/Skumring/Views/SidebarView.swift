@@ -247,7 +247,11 @@ struct SidebarView: View {
     
     // MARK: - Sidebar Footer
     
-    /// Footer view with Add Playlist button
+    /// Footer view with Add Playlist button.
+    ///
+    /// Uses Liquid Glass styling for a modern, translucent appearance that
+    /// matches the system aesthetic on macOS 26+. The glass effect automatically
+    /// falls back to solid styling when Reduce Transparency is enabled.
     private var sidebarFooter: some View {
         HStack {
             Button(action: addPlaylist) {
@@ -259,7 +263,7 @@ struct SidebarView: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
-        .background(.bar)
+        .glassStyleFullBleed()
     }
     
     /// Creates a new playlist with a default name

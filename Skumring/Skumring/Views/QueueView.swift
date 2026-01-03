@@ -40,6 +40,10 @@ struct QueueView: View {
     
     // MARK: - Header
     
+    /// Header view with glass styling.
+    ///
+    /// Uses Liquid Glass for a modern popover appearance on macOS 26+.
+    /// Falls back to solid styling when Reduce Transparency is enabled.
     private var headerView: some View {
         HStack {
             Text("Up Next")
@@ -58,6 +62,7 @@ struct QueueView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
+        .glassStyleFullBleed()
     }
     
     // MARK: - Empty State
