@@ -30,6 +30,11 @@
 		F8A1B2C32D4E5F6700000040 /* StreamResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000041 /* StreamResolver.swift */; };
 		F8A1B2C32D4E5F6700000042 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000043 /* SidebarView.swift */; };
 		F8A1B2C32D4E5F6700000045 /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000046 /* MainContentView.swift */; };
+		F8A1B2C32D4E5F6700000050 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000051 /* LibraryView.swift */; };
+		F8A1B2C32D4E5F6700000052 /* LibraryItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000053 /* LibraryItemCard.swift */; };
+		F8A1B2C32D4E5F6700000054 /* LibraryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */; };
+		F8A1B2C32D4E5F6700000056 /* LibraryItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */; };
+		F8A1B2C32D4E5F6700000058 /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +64,11 @@
 		F8A1B2C32D4E5F6700000041 /* StreamResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamResolver.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000043 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000046 /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000051 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000053 /* LibraryItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemCard.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGridView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemRow.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +140,11 @@
 		F8A1B2C32D4E5F6700000044 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */,
+				F8A1B2C32D4E5F6700000053 /* LibraryItemCard.swift */,
+				F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */,
+				F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */,
+				F8A1B2C32D4E5F6700000051 /* LibraryView.swift */,
 				F8A1B2C32D4E5F6700000046 /* MainContentView.swift */,
 				F8A1B2C32D4E5F6700000043 /* SidebarView.swift */,
 			);
@@ -235,6 +250,11 @@
 				F8A1B2C32D4E5F6700000040 /* StreamResolver.swift in Sources */,
 				F8A1B2C32D4E5F6700000042 /* SidebarView.swift in Sources */,
 				F8A1B2C32D4E5F6700000045 /* MainContentView.swift in Sources */,
+				F8A1B2C32D4E5F6700000050 /* LibraryView.swift in Sources */,
+				F8A1B2C32D4E5F6700000052 /* LibraryItemCard.swift in Sources */,
+				F8A1B2C32D4E5F6700000054 /* LibraryGridView.swift in Sources */,
+				F8A1B2C32D4E5F6700000056 /* LibraryItemRow.swift in Sources */,
+				F8A1B2C32D4E5F6700000058 /* LibraryListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

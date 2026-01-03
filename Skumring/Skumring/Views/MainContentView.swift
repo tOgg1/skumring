@@ -110,46 +110,6 @@ struct ImportsView: View {
     }
 }
 
-/// Library filter options for displaying subsets of items
-enum LibraryFilter {
-    case all
-    case streams
-    case youtube
-    case audioURLs
-}
-
-/// Placeholder for the filtered library view
-struct LibraryView: View {
-    let filter: LibraryFilter
-    
-    var body: some View {
-        ContentUnavailableView(
-            title,
-            systemImage: systemImage,
-            description: Text("Your \(title.lowercased()) will appear here.")
-        )
-        .navigationTitle(title)
-    }
-    
-    private var title: String {
-        switch filter {
-        case .all: return "All Items"
-        case .streams: return "Streams"
-        case .youtube: return "YouTube"
-        case .audioURLs: return "Audio URLs"
-        }
-    }
-    
-    private var systemImage: String {
-        switch filter {
-        case .all: return "music.note.list"
-        case .streams: return "antenna.radiowaves.left.and.right"
-        case .youtube: return "play.rectangle"
-        case .audioURLs: return "link"
-        }
-    }
-}
-
 /// Placeholder for individual playlist view
 struct PlaylistView: View {
     let playlist: Playlist
