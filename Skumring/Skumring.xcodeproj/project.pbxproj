@@ -14,6 +14,8 @@
 		F8A1B2C32D4E5F6700000009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000000A /* Assets.xcassets */; };
 		F8A1B2C32D4E5F6700000020 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000021 /* AppModel.swift */; };
 		F8A1B2C32D4E5F6700000022 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000023 /* LibraryItem.swift */; };
+		F8A1B2C32D4E5F6700000090 /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000091 /* ArtworkCache.swift */; };
+		F8A1B2C32D4E5F6700000092 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000093 /* CachedAsyncImage.swift */; };
 		F8A1B2C32D4E5F6700000024 /* LibraryItemKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000025 /* LibraryItemKind.swift */; };
 		F8A1B2C32D4E5F6700000026 /* LibraryItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000027 /* LibraryItemSource.swift */; };
 		F8A1B2C32D4E5F6700000028 /* Pack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000029 /* Pack.swift */; };
@@ -81,6 +83,8 @@
 		F8A1B2C32D4E5F6700000071 /* ImportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportResult.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportService.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000081 /* YouTubePlayerContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubePlayerContainerView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000091 /* ArtworkCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCache.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000093 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 		F8A1B2C32D4E5F6700000035 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				F8A1B2C32D4E5F6700000091 /* ArtworkCache.swift */,
 				F8A1B2C32D4E5F670000003D /* AVPlaybackBackend.swift */,
 				F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */,
 				F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */,
@@ -154,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				F8A1B2C32D4E5F6700000063 /* AddItemSheet.swift */,
+				F8A1B2C32D4E5F6700000093 /* CachedAsyncImage.swift */,
 				F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */,
 				F8A1B2C32D4E5F6700000053 /* LibraryItemCard.swift */,
 				F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */,
@@ -279,6 +285,8 @@
 				F8A1B2C32D4E5F6700000070 /* ImportResult.swift in Sources */,
 				F8A1B2C32D4E5F6700000072 /* ImportExportService.swift in Sources */,
 				F8A1B2C32D4E5F6700000080 /* YouTubePlayerContainerView.swift in Sources */,
+				F8A1B2C32D4E5F6700000090 /* ArtworkCache.swift in Sources */,
+				F8A1B2C32D4E5F6700000092 /* CachedAsyncImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
