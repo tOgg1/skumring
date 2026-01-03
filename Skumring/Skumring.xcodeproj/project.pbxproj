@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8A1B2C32D4E5F6700001001 /* LibraryItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */; };
+		F8A1B2C32D4E5F6700001002 /* PlaylistTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */; };
+		F8A1B2C32D4E5F6700001003 /* PackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001013 /* PackTests.swift */; };
+		F8A1B2C32D4E5F6700001004 /* ImportValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001014 /* ImportValidationTests.swift */; };
 		F8A1B2C32D4E5F6700000001 /* SkumringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000002 /* SkumringApp.swift */; };
 		F8A1B2C32D4E5F6700000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000004 /* ContentView.swift */; };
 		F8A1B2C32D4E5F6700000005 /* YouTubePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */; };
@@ -97,10 +101,22 @@
 		F8A1B2C32D4E5F67000000D1 /* NowPlayingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingService.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F67000000E1 /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F67000000F1 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700001000 /* SkumringTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkumringTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemTests.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700001013 /* PackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackTests.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700001014 /* ImportValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportValidationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		F8A1B2C32D4E5F670000000E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8A1B2C32D4E5F6700001020 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -114,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				F8A1B2C32D4E5F6700000010 /* Skumring */,
+				F8A1B2C32D4E5F6700001010 /* SkumringTests */,
 				F8A1B2C32D4E5F6700000011 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -197,8 +214,20 @@
 			isa = PBXGroup;
 			children = (
 				F8A1B2C32D4E5F670000000B /* Skumring.app */,
+				F8A1B2C32D4E5F6700001000 /* SkumringTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F8A1B2C32D4E5F6700001010 /* SkumringTests */ = {
+			isa = PBXGroup;
+			children = (
+				F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */,
+				F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */,
+				F8A1B2C32D4E5F6700001013 /* PackTests.swift */,
+				F8A1B2C32D4E5F6700001014 /* ImportValidationTests.swift */,
+			);
+			path = SkumringTests;
 			sourceTree = "<group>";
 		};
 		F8A1B2C32D4E5F67000000A2 /* Resources */ = {
@@ -229,6 +258,24 @@
 			productReference = F8A1B2C32D4E5F670000000B /* Skumring.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F8A1B2C32D4E5F6700001030 /* SkumringTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8A1B2C32D4E5F6700001031 /* Build configuration list for PBXNativeTarget "SkumringTests" */;
+			buildPhases = (
+				F8A1B2C32D4E5F6700001021 /* Sources */,
+				F8A1B2C32D4E5F6700001020 /* Frameworks */,
+				F8A1B2C32D4E5F6700001022 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8A1B2C32D4E5F6700001041 /* PBXTargetDependency */,
+			);
+			name = SkumringTests;
+			productName = SkumringTests;
+			productReference = F8A1B2C32D4E5F6700001000 /* SkumringTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -241,6 +288,10 @@
 				TargetAttributes = {
 					F8A1B2C32D4E5F6700000012 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					F8A1B2C32D4E5F6700001030 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = F8A1B2C32D4E5F6700000012;
 					};
 				};
 			};
@@ -258,6 +309,7 @@
 			projectRoot = "";
 			targets = (
 				F8A1B2C32D4E5F6700000012 /* Skumring */,
+				F8A1B2C32D4E5F6700001030 /* SkumringTests */,
 			);
 		};
 /* End PBXProject section */
@@ -269,6 +321,13 @@
 			files = (
 				F8A1B2C32D4E5F6700000009 /* Assets.xcassets in Resources */,
 				F8A1B2C32D4E5F67000000A0 /* built-in-pack.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8A1B2C32D4E5F6700001022 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,7 +381,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8A1B2C32D4E5F6700001021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8A1B2C32D4E5F6700001001 /* LibraryItemTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001002 /* PlaylistTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001003 /* PackTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001004 /* ImportValidationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXContainerItemProxy section */
+		F8A1B2C32D4E5F6700001040 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8A1B2C32D4E5F6700000016 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8A1B2C32D4E5F6700000012;
+			remoteInfo = Skumring;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		F8A1B2C32D4E5F6700001041 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F8A1B2C32D4E5F6700000012 /* Skumring */;
+			targetProxy = F8A1B2C32D4E5F6700001040 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F8A1B2C32D4E5F6700000018 /* Debug */ = {
@@ -499,6 +587,42 @@
 			};
 			name = Release;
 		};
+		F8A1B2C32D4E5F6700001050 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.skumring.SkumringTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Skumring.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Skumring";
+			};
+			name = Debug;
+		};
+		F8A1B2C32D4E5F6700001051 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.skumring.SkumringTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Skumring.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Skumring";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -516,6 +640,15 @@
 			buildConfigurations = (
 				F8A1B2C32D4E5F6700000018 /* Debug */,
 				F8A1B2C32D4E5F6700000019 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8A1B2C32D4E5F6700001031 /* Build configuration list for PBXNativeTarget "SkumringTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8A1B2C32D4E5F6700001050 /* Debug */,
+				F8A1B2C32D4E5F6700001051 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
