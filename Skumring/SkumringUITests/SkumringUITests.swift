@@ -6,7 +6,7 @@ import XCTest
 /// - App launch configuration
 /// - Wait/assertion helpers
 /// - Screenshot capture on failure
-final class SkumringUITests: XCTestCase {
+class SkumringUITests: XCTestCase {
     
     var app: XCUIApplication!
     

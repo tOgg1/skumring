@@ -311,6 +311,200 @@ extension View {
     }
 }
 
+// MARK: - Glass Overlay
+
+/// A reusable glass overlay container for popovers, sheets, and overlays.
+///
+/// GlassOverlay provides consistent styling across the app:
+/// - Glass effect background with accessibility fallbacks
+/// - Consistent corner radius (16pt by default for overlays)
+/// - Subtle shadow for depth
+/// - Optional header with glass styling
+///
+/// ## Usage
+/// ```swift
+/// GlassOverlay {
+///     VStack {
+///         // Your content
+///     }
+/// }
+/// ```
+///
+/// With custom header:
+/// ```swift
+/// GlassOverlay(header: "Up Next") {
+///     VStack {
+///         // Your content
+///     }
+/// }
+/// ```
+public struct GlassOverlay<Content: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
+    /// Optional header text displayed at the top of the overlay.
+    let header: String?
+    
+    /// Optional trailing view for the header (e.g., close button).
+    let headerTrailing: AnyView?
+    
+    /// Corner radius for the overlay container.
+    let cornerRadius: CGFloat
+    
+    /// Whether to show a shadow.
+    let showShadow: Bool
+    
+    /// The content to display inside the overlay.
+    @ViewBuilder let content: () -> Content
+    
+    /// Creates a glass overlay container.
+    ///
+    /// - Parameters:
+    ///   - header: Optional header text.
+    ///   - headerTrailing: Optional trailing view for the header.
+    ///   - cornerRadius: Corner radius for the container. Default is 16.
+    ///   - showShadow: Whether to show a shadow. Default is true.
+    ///   - content: The content builder.
+    public init(
+        header: String? = nil,
+        headerTrailing: AnyView? = nil,
+        cornerRadius: CGFloat = 16,
+        showShadow: Bool = true,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self.header = header
+        self.headerTrailing = headerTrailing
+        self.cornerRadius = cornerRadius
+        self.showShadow = showShadow
+        self.content = content
+    }
+    
+    public var body: some View {
+        VStack(spacing: 0) {
+            // Header if present
+            if let header {
+                headerView(title: header)
+                Divider()
+            }
+            
+            // Content
+            content()
+        }
+        .background(overlayBackground)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .shadow(
+            color: showShadow ? shadowColor : .clear,
+            radius: showShadow ? 20 : 0,
+            x: 0,
+            y: showShadow ? 10 : 0
+        )
+    }
+    
+    /// Header view with glass styling.
+    @ViewBuilder
+    private func headerView(title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(.headline)
+            
+            Spacer()
+            
+            if let trailing = headerTrailing {
+                trailing
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .glassStyleFullBleed()
+    }
+    
+    /// Background for the overlay container.
+    @ViewBuilder
+    private var overlayBackground: some View {
+        Rectangle()
+            .fill(.ultraThinMaterial)
+    }
+    
+    /// Shadow color based on color scheme.
+    private var shadowColor: Color {
+        colorScheme == .dark
+            ? Color.black.opacity(0.4)
+            : Color.black.opacity(0.15)
+    }
+}
+
+// MARK: - GlassOverlay Convenience Initializers
+
+extension GlassOverlay {
+    /// Creates a glass overlay with a header and trailing button.
+    ///
+    /// - Parameters:
+    ///   - header: The header title text.
+    ///   - trailingButtonTitle: Title for the trailing button.
+    ///   - trailingAction: Action when the trailing button is tapped.
+    ///   - content: The content builder.
+    public init<TrailingButton: View>(
+        header: String,
+        @ViewBuilder trailingButton: @escaping () -> TrailingButton,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self.header = header
+        self.headerTrailing = AnyView(trailingButton())
+        self.cornerRadius = 16
+        self.showShadow = true
+        self.content = content
+    }
+}
+
+// MARK: - Glass Popover Modifier
+
+/// A view modifier that wraps content in a glass-styled popover.
+///
+/// This modifier provides consistent popover styling with:
+/// - Glass background
+/// - Spring animation for show/hide
+/// - Proper corner radius
+///
+/// ## Usage
+/// ```swift
+/// .glassPopover(isPresented: $showPopover) {
+///     Text("Popover content")
+/// }
+/// ```
+public struct GlassPopoverModifier<PopoverContent: View>: ViewModifier {
+    @Binding var isPresented: Bool
+    let arrowEdge: Edge
+    @ViewBuilder let popoverContent: () -> PopoverContent
+    
+    public func body(content: Content) -> some View {
+        content
+            .popover(isPresented: $isPresented, arrowEdge: arrowEdge) {
+                popoverContent()
+                    .background(.ultraThinMaterial)
+            }
+    }
+}
+
+extension View {
+    /// Presents a glass-styled popover.
+    ///
+    /// - Parameters:
+    ///   - isPresented: Binding to control popover visibility.
+    ///   - arrowEdge: The edge where the popover arrow appears. Default is .top.
+    ///   - content: The popover content builder.
+    /// - Returns: A view with a glass popover attached.
+    public func glassPopover<Content: View>(
+        isPresented: Binding<Bool>,
+        arrowEdge: Edge = .top,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        modifier(GlassPopoverModifier(
+            isPresented: isPresented,
+            arrowEdge: arrowEdge,
+            popoverContent: content
+        ))
+    }
+}
+
 /// Modifier that provides animation respecting Reduce Motion.
 private struct AccessibilityAnimationModifier: ViewModifier {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -387,6 +581,66 @@ private struct AccessibilityAnimationModifier: ViewModifier {
     .background(
         LinearGradient(
             colors: [.blue, .purple],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    )
+}
+
+#Preview("Glass Overlay") {
+    GlassOverlay(header: "Up Next") {
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(0..<5) { i in
+                HStack {
+                    Text("\(i + 1)")
+                        .foregroundStyle(.secondary)
+                        .frame(width: 24)
+                    Text("Track \(i + 1)")
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
+        }
+        .padding(.vertical)
+    }
+    .frame(width: 280)
+    .padding()
+    .background(
+        LinearGradient(
+            colors: [.blue, .purple],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    )
+}
+
+#Preview("Glass Overlay with Button") {
+    GlassOverlay(
+        header: "Up Next",
+        trailingButton: {
+            Button("Clear") {}
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+        }
+    ) {
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(0..<3) { i in
+                HStack {
+                    Text("\(i + 1)")
+                        .foregroundStyle(.secondary)
+                    Text("Track \(i + 1)")
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
+        }
+        .padding(.vertical)
+    }
+    .frame(width: 280)
+    .padding()
+    .background(
+        LinearGradient(
+            colors: [.orange, .red],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )

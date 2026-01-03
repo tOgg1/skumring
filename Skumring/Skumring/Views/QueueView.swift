@@ -11,6 +11,13 @@ import SwiftUI
 /// - Clicked to jump to that position
 /// - Removed via swipe or button
 /// - Reordered via drag-and-drop (except the current item)
+///
+/// ## Liquid Glass
+///
+/// The queue popover uses the `GlassOverlay` component for consistent
+/// glass styling. The header and container have glass effects that
+/// automatically fall back to solid colors when Reduce Transparency
+/// is enabled.
 struct QueueView: View {
     @Environment(PlaybackController.self) private var playbackController
     
@@ -21,12 +28,12 @@ struct QueueView: View {
     private let rowHeight: CGFloat = 56
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Header
-            headerView
-            
-            Divider()
-            
+        GlassOverlay(
+            header: "Up Next",
+            headerTrailing: clearButtonView,
+            cornerRadius: 12,
+            showShadow: true
+        ) {
             // Content
             if playbackController.currentItem == nil && playbackController.queue.isEmpty {
                 emptyStateView
@@ -38,31 +45,19 @@ struct QueueView: View {
         .frame(minHeight: 200, maxHeight: 500)
     }
     
-    // MARK: - Header
-    
-    /// Header view with glass styling.
-    ///
-    /// Uses Liquid Glass for a modern popover appearance on macOS 26+.
-    /// Falls back to solid styling when Reduce Transparency is enabled.
-    private var headerView: some View {
-        HStack {
-            Text("Up Next")
-                .font(.headline)
-            
-            Spacer()
-            
-            if !playbackController.upcomingItems.isEmpty {
-                Button("Clear") {
-                    playbackController.clearUpcoming()
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
-                .font(.subheadline)
-            }
+    /// Clear button for the header, shown when there are upcoming items.
+    private var clearButtonView: AnyView? {
+        guard !playbackController.upcomingItems.isEmpty else {
+            return nil
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .glassStyleFullBleed()
+        return AnyView(
+            Button("Clear") {
+                playbackController.clearUpcoming()
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+            .font(.subheadline)
+        )
     }
     
     // MARK: - Empty State
