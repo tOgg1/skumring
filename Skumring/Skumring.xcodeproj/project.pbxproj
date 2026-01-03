@@ -12,6 +12,17 @@
 		F8A1B2C32D4E5F6700000005 /* YouTubePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */; };
 		F8A1B2C32D4E5F6700000007 /* YouTubePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000008 /* YouTubePlayer.swift */; };
 		F8A1B2C32D4E5F6700000009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000000A /* Assets.xcassets */; };
+		F8A1B2C32D4E5F6700000020 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000021 /* AppModel.swift */; };
+		F8A1B2C32D4E5F6700000022 /* LibraryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000023 /* LibraryItem.swift */; };
+		F8A1B2C32D4E5F6700000024 /* LibraryItemKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000025 /* LibraryItemKind.swift */; };
+		F8A1B2C32D4E5F6700000026 /* LibraryItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000027 /* LibraryItemSource.swift */; };
+		F8A1B2C32D4E5F6700000028 /* Pack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000029 /* Pack.swift */; };
+		F8A1B2C32D4E5F670000002A /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000002B /* Playlist.swift */; };
+		F8A1B2C32D4E5F670000002C /* RepeatMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000002D /* RepeatMode.swift */; };
+		F8A1B2C32D4E5F670000002E /* ShuffleMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000002F /* ShuffleMode.swift */; };
+		F8A1B2C32D4E5F6700000030 /* HealthStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000031 /* HealthStatus.swift */; };
+		F8A1B2C32D4E5F6700000032 /* LibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */; };
+		F8A1B2C32D4E5F6700000036 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000037 /* SidebarItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +34,17 @@
 		F8A1B2C32D4E5F670000000B /* Skumring.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Skumring.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A1B2C32D4E5F670000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F670000000D /* Skumring.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Skumring.entitlements; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000021 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000023 /* LibraryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItem.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000025 /* LibraryItemKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemKind.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000027 /* LibraryItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemSource.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000029 /* Pack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pack.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F670000002B /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F670000002D /* RepeatMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatMode.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F670000002F /* ShuffleMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleMode.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000031 /* HealthStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthStatus.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryStore.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000037 /* SidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,14 +70,41 @@
 			isa = PBXGroup;
 			children = (
 				F8A1B2C32D4E5F6700000002 /* SkumringApp.swift */,
+				F8A1B2C32D4E5F6700000021 /* AppModel.swift */,
 				F8A1B2C32D4E5F6700000004 /* ContentView.swift */,
 				F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */,
 				F8A1B2C32D4E5F6700000008 /* YouTubePlayer.swift */,
+				F8A1B2C32D4E5F6700000034 /* Models */,
+				F8A1B2C32D4E5F6700000035 /* Services */,
 				F8A1B2C32D4E5F670000000A /* Assets.xcassets */,
 				F8A1B2C32D4E5F670000000C /* Info.plist */,
 				F8A1B2C32D4E5F670000000D /* Skumring.entitlements */,
 			);
 			path = Skumring;
+			sourceTree = "<group>";
+		};
+		F8A1B2C32D4E5F6700000034 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F8A1B2C32D4E5F6700000031 /* HealthStatus.swift */,
+				F8A1B2C32D4E5F6700000023 /* LibraryItem.swift */,
+				F8A1B2C32D4E5F6700000025 /* LibraryItemKind.swift */,
+				F8A1B2C32D4E5F6700000027 /* LibraryItemSource.swift */,
+				F8A1B2C32D4E5F6700000029 /* Pack.swift */,
+				F8A1B2C32D4E5F670000002B /* Playlist.swift */,
+				F8A1B2C32D4E5F670000002D /* RepeatMode.swift */,
+				F8A1B2C32D4E5F670000002F /* ShuffleMode.swift */,
+				F8A1B2C32D4E5F6700000037 /* SidebarItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F8A1B2C32D4E5F6700000035 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		F8A1B2C32D4E5F6700000011 /* Products */ = {
@@ -136,9 +185,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8A1B2C32D4E5F6700000001 /* SkumringApp.swift in Sources */,
+				F8A1B2C32D4E5F6700000020 /* AppModel.swift in Sources */,
 				F8A1B2C32D4E5F6700000003 /* ContentView.swift in Sources */,
 				F8A1B2C32D4E5F6700000005 /* YouTubePlayerView.swift in Sources */,
 				F8A1B2C32D4E5F6700000007 /* YouTubePlayer.swift in Sources */,
+				F8A1B2C32D4E5F6700000022 /* LibraryItem.swift in Sources */,
+				F8A1B2C32D4E5F6700000024 /* LibraryItemKind.swift in Sources */,
+				F8A1B2C32D4E5F6700000026 /* LibraryItemSource.swift in Sources */,
+				F8A1B2C32D4E5F6700000028 /* Pack.swift in Sources */,
+				F8A1B2C32D4E5F670000002A /* Playlist.swift in Sources */,
+				F8A1B2C32D4E5F670000002C /* RepeatMode.swift in Sources */,
+				F8A1B2C32D4E5F670000002E /* ShuffleMode.swift in Sources */,
+				F8A1B2C32D4E5F6700000030 /* HealthStatus.swift in Sources */,
+				F8A1B2C32D4E5F6700000032 /* LibraryStore.swift in Sources */,
+				F8A1B2C32D4E5F6700000036 /* SidebarItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,6 +3,9 @@ import SwiftUI
 /// Main content view for Milestone 0: YouTube WKWebView PoC
 /// This validates that YouTube IFrame API works in WKWebView on macOS Tahoe 26
 struct ContentView: View {
+    /// Access to the app-wide state model
+    @Environment(AppModel.self) private var appModel
+    
     // Test video: Big Buck Bunny (public domain, always embeddable)
     @State private var player = YouTubePlayer(
         videoID: "aqz-KE-bpKQ",

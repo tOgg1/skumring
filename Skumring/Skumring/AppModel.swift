@@ -17,9 +17,26 @@ import Observation
 @Observable
 final class AppModel {
     
+    // MARK: - Subsystems
+    
+    /// Manages all library items and playlists
+    let libraryStore: LibraryStore
+    
+    // TODO: Add playbackController when PlaybackController is implemented
+    // let playbackController: PlaybackController
+    
+    // MARK: - Navigation State
+    
+    /// Currently selected item in the sidebar, if any
+    var selectedSidebarItem: SidebarItem?
+    
+    /// Set of item IDs currently selected in the library view (for multi-selection)
+    var selectedItemIDs: Set<UUID> = []
+    
     // MARK: - Initialization
     
     init() {
-        // Future: Initialize LibraryStore, PlaybackController here
+        self.libraryStore = LibraryStore()
+        // Future: Initialize PlaybackController here
     }
 }
