@@ -38,6 +38,9 @@ struct LibraryView: View {
     @State private var selection: Set<UUID> = []
     @State private var searchText: String = ""
     
+    /// ID of item to show delete confirmation for
+    @State private var itemToDelete: UUID?
+    
     var body: some View {
         Group {
             if filteredItems.isEmpty {
@@ -51,6 +54,24 @@ struct LibraryView: View {
         .toolbar {
             ToolbarItemGroup {
                 viewModeToggle
+            }
+        }
+        .alert("Delete Item?", isPresented: .init(
+            get: { itemToDelete != nil },
+            set: { if !$0 { itemToDelete = nil } }
+        )) {
+            Button("Cancel", role: .cancel) {
+                itemToDelete = nil
+            }
+            Button("Delete", role: .destructive) {
+                if let id = itemToDelete {
+                    deleteItem(id: id)
+                }
+            }
+        } message: {
+            if let id = itemToDelete,
+               let item = libraryStore.item(withID: id) {
+                Text("Are you sure you want to delete \"\(item.title)\"? This cannot be undone.")
             }
         }
     }
@@ -94,13 +115,15 @@ struct LibraryView: View {
             LibraryGridView(
                 items: filteredItems,
                 selection: $selection,
-                onPlay: playItem
+                onPlay: playItem,
+                onDelete: requestDeleteConfirmation
             )
         case .list:
             LibraryListView(
                 items: filteredItems,
                 selection: $selection,
-                onPlay: playItem
+                onPlay: playItem,
+                onDelete: requestDeleteConfirmation
             )
         }
     }
@@ -182,6 +205,19 @@ struct LibraryView: View {
     private func playItem(_ item: LibraryItem) {
         // TODO: Integrate with PlaybackController
         print("Play item: \(item.title)")
+    }
+    
+    /// Shows the delete confirmation dialog for an item.
+    private func requestDeleteConfirmation(_ item: LibraryItem) {
+        itemToDelete = item.id
+    }
+    
+    /// Deletes an item from the library after confirmation.
+    private func deleteItem(id: UUID) {
+        libraryStore.deleteItem(id: id)
+        itemToDelete = nil
+        // Clear selection if the deleted item was selected
+        selection.remove(id)
     }
 }
 

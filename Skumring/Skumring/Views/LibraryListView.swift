@@ -11,11 +11,16 @@ struct LibraryListView: View {
     /// Called when an item is double-clicked to initiate playback
     var onPlay: ((LibraryItem) -> Void)?
     
+    /// Called when the user selects Delete from context menu
+    var onDelete: ((LibraryItem) -> Void)?
+    
     var body: some View {
         List(items, selection: $selection) { item in
-            LibraryItemRow(item: item) {
+            LibraryItemRow(item: item, onPlay: {
                 onPlay?(item)
-            }
+            }, onDelete: {
+                onDelete?(item)
+            })
             .tag(item.id)
         }
         .listStyle(.inset)
