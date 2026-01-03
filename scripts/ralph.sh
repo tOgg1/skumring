@@ -6,14 +6,16 @@ STATE_ROOT=${TMPDIR:-/tmp}
 STATE_DIR="$STATE_ROOT/ralph-$(printf "%s" "$REPO_ROOT" | shasum -a 256 | awk '{print $1}')"
 PID_FILE="$STATE_DIR/ralph.pid"
 LOG_FILE="$STATE_DIR/ralph.log"
+STOP_FILE="$STATE_DIR/ralph.stop"
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/ralph.sh <start|stop|status|tail> [options]
+Usage: scripts/ralph.sh <start|stop|kill|status|tail> [options]
 
 Commands:
   start        Start the Ralph loop in the background
-  stop         Stop the Ralph loop
+  stop         Gracefully stop after current loop finishes
+  kill         Force stop immediately
   status       Show whether the loop is running
   tail         Tail the loop log
 
@@ -206,6 +208,7 @@ start_loop() {
   fi
 
   mkdir -p "$STATE_DIR"
+  rm -f "$STOP_FILE"
 
   (
     cd "$REPO_ROOT"
@@ -213,6 +216,11 @@ start_loop() {
     printf -- "Ralph loop started at %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$LOG_FILE"
     local loop_count=0
     while :; do
+      if [[ -f "$STOP_FILE" ]]; then
+        printf -- "Ralph loop stopped gracefully at %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$LOG_FILE"
+        rm -f "$STOP_FILE" "$PID_FILE"
+        exit 0
+      fi
       loop_count=$((loop_count + 1))
       if [[ "$cmd" == *"{prompt}"* ]]; then
         bash -lc "${cmd//\{prompt\}/$prompt}" >> "$LOG_FILE" 2>&1
@@ -244,15 +252,34 @@ stop_loop() {
     exit 0
   fi
 
+  touch "$STOP_FILE"
+  echo "Ralph loop will stop after current iteration (pid $pid). Use 'kill' to force stop."
+}
+
+kill_loop() {
+  if [[ ! -f "$PID_FILE" ]]; then
+    echo "Ralph loop not running (no pid file)."
+    exit 0
+  fi
+
+  local pid
+  pid=$(cat "$PID_FILE")
+  if ! kill -0 "$pid" 2>/dev/null; then
+    echo "Ralph loop not running (stale pid $pid)."
+    rm -f "$PID_FILE" "$STOP_FILE"
+    exit 0
+  fi
+
   kill "$pid"
   sleep 0.2
   if kill -0 "$pid" 2>/dev/null; then
-    echo "Ralph loop still running (pid $pid)."
-    exit 1
+    echo "Ralph loop still running (pid $pid), sending SIGKILL."
+    kill -9 "$pid" 2>/dev/null || true
+    sleep 0.2
   fi
 
-  rm -f "$PID_FILE"
-  echo "Ralph loop stopped."
+  rm -f "$PID_FILE" "$STOP_FILE"
+  echo "Ralph loop killed."
 }
 
 status_loop() {
@@ -278,6 +305,9 @@ case "${1:-}" in
     ;;
   stop)
     stop_loop
+    ;;
+  kill)
+    kill_loop
     ;;
   status)
     status_loop
