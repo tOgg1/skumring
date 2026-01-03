@@ -47,6 +47,12 @@ enum StreamResolver {
     /// Maximum recursion depth for nested playlists.
     private static let maxRecursionDepth = 3
     
+    /// Custom URLSessionConfiguration for testing. When set, this configuration is used
+    /// instead of the default. This allows tests to inject mock URLProtocol classes.
+    /// Note: nonisolated(unsafe) is acceptable here as this is only modified in test setup
+    /// before any concurrent access occurs.
+    nonisolated(unsafe) static var testSessionConfiguration: URLSessionConfiguration?
+    
     /// Resolves a URL to its underlying stream URL.
     ///
     /// If the URL points to a playlist file (.m3u, .m3u8, .pls), this method
@@ -92,7 +98,12 @@ enum StreamResolver {
     
     /// Fetches content from a URL with timeout.
     private static func fetchContent(from url: URL) async throws -> String {
-        let config = URLSessionConfiguration.default
+        let config: URLSessionConfiguration
+        if let testConfig = testSessionConfiguration {
+            config = testConfig
+        } else {
+            config = URLSessionConfiguration.default
+        }
         config.timeoutIntervalForRequest = defaultTimeout
         config.timeoutIntervalForResource = defaultTimeout
         

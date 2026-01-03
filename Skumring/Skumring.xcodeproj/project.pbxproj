@@ -11,6 +11,7 @@
 		F8A1B2C32D4E5F6700001002 /* PlaylistTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */; };
 		F8A1B2C32D4E5F6700001003 /* PackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001013 /* PackTests.swift */; };
 		F8A1B2C32D4E5F6700001004 /* ImportValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001014 /* ImportValidationTests.swift */; };
+		F8A1B2C32D4E5F6700001005 /* StreamResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700001015 /* StreamResolverTests.swift */; };
 		F8A1B2C32D4E5F6700000001 /* SkumringApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000002 /* SkumringApp.swift */; };
 		F8A1B2C32D4E5F6700000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000004 /* ContentView.swift */; };
 		F8A1B2C32D4E5F6700000005 /* YouTubePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */; };
@@ -106,6 +107,7 @@
 		F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001013 /* PackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackTests.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001014 /* ImportValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportValidationTests.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700001015 /* StreamResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamResolverTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,10 +224,11 @@
 		F8A1B2C32D4E5F6700001010 /* SkumringTests */ = {
 			isa = PBXGroup;
 			children = (
-				F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */,
-				F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */,
-				F8A1B2C32D4E5F6700001013 /* PackTests.swift */,
 				F8A1B2C32D4E5F6700001014 /* ImportValidationTests.swift */,
+				F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */,
+				F8A1B2C32D4E5F6700001013 /* PackTests.swift */,
+				F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */,
+				F8A1B2C32D4E5F6700001015 /* StreamResolverTests.swift */,
 			);
 			path = SkumringTests;
 			sourceTree = "<group>";
@@ -385,10 +388,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8A1B2C32D4E5F6700001001 /* LibraryItemTests.swift in Sources */,
-				F8A1B2C32D4E5F6700001002 /* PlaylistTests.swift in Sources */,
-				F8A1B2C32D4E5F6700001003 /* PackTests.swift in Sources */,
 				F8A1B2C32D4E5F6700001004 /* ImportValidationTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001001 /* LibraryItemTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001003 /* PackTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001002 /* PlaylistTests.swift in Sources */,
+				F8A1B2C32D4E5F6700001005 /* StreamResolverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
