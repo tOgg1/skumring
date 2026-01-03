@@ -45,6 +45,7 @@
 		F8A1B2C32D4E5F6700000072 /* ImportExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */; };
 		F8A1B2C32D4E5F6700000080 /* YouTubePlayerContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000081 /* YouTubePlayerContainerView.swift */; };
 		F8A1B2C32D4E5F67000000B0 /* BuiltInPackLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000B1 /* BuiltInPackLoader.swift */; };
+		F8A1B2C32D4E5F67000000C0 /* MediaKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F67000000C1 /* MediaKeyService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +90,7 @@
 		F8A1B2C32D4E5F6700000093 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F67000000A1 /* built-in-pack.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "built-in-pack.json"; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F67000000B1 /* BuiltInPackLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuiltInPackLoader.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F67000000C1 /* MediaKeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaKeyService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 				F8A1B2C32D4E5F67000000B1 /* BuiltInPackLoader.swift */,
 				F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */,
 				F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */,
+				F8A1B2C32D4E5F67000000C1 /* MediaKeyService.swift */,
 				F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */,
 				F8A1B2C32D4E5F670000003F /* PlaybackController.swift */,
 				F8A1B2C32D4E5F6700000041 /* StreamResolver.swift */,
@@ -303,6 +306,7 @@
 				F8A1B2C32D4E5F6700000090 /* ArtworkCache.swift in Sources */,
 				F8A1B2C32D4E5F6700000092 /* CachedAsyncImage.swift in Sources */,
 				F8A1B2C32D4E5F67000000B0 /* BuiltInPackLoader.swift in Sources */,
+				F8A1B2C32D4E5F67000000C0 /* MediaKeyService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

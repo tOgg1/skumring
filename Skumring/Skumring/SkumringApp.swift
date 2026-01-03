@@ -10,6 +10,9 @@ struct SkumringApp: App {
     @State private var importResult: ImportResult?
     @State private var showImportAlert = false
     
+    /// Service for handling media key events
+    @State private var mediaKeyService: MediaKeyService?
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -29,6 +32,9 @@ struct SkumringApp: App {
                         appModel.showImportPicker = false
                         importFromFile()
                     }
+                }
+                .onAppear {
+                    setupMediaKeyService()
                 }
         }
         .windowStyle(.automatic)
@@ -53,6 +59,15 @@ struct SkumringApp: App {
                 .keyboardShortcut("e", modifiers: .command)
             }
         }
+    }
+    
+    // MARK: - Media Key Service
+    
+    /// Sets up the media key service to handle remote commands
+    private func setupMediaKeyService() {
+        guard mediaKeyService == nil else { return }
+        mediaKeyService = MediaKeyService(playbackController: appModel.playbackController)
+        mediaKeyService?.enable()
     }
     
     // MARK: - File Operations
