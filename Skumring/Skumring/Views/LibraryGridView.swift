@@ -14,6 +14,12 @@ struct LibraryGridView: View {
     /// Called when the user selects Delete from context menu
     var onDelete: ((LibraryItem) -> Void)?
     
+    /// Called when the user selects a playlist from the Add to Playlist submenu
+    var onAddToPlaylist: ((LibraryItem, Playlist) -> Void)?
+    
+    /// Available playlists for the Add to Playlist submenu
+    var playlists: [Playlist] = []
+    
     private let columns = [
         GridItem(.adaptive(minimum: 180, maximum: 220), spacing: 16)
     ]
@@ -22,11 +28,19 @@ struct LibraryGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(items) { item in
-                    LibraryItemCard(item: item, onPlay: {
-                        onPlay?(item)
-                    }, onDelete: {
-                        onDelete?(item)
-                    })
+                    LibraryItemCard(
+                        item: item,
+                        onPlay: {
+                            onPlay?(item)
+                        },
+                        onDelete: {
+                            onDelete?(item)
+                        },
+                        onAddToPlaylist: { playlist in
+                            onAddToPlaylist?(item, playlist)
+                        },
+                        playlists: playlists
+                    )
                     .padding(4)
                     .background(
                         RoundedRectangle(cornerRadius: 8)

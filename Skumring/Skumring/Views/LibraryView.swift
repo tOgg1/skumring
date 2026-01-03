@@ -116,14 +116,18 @@ struct LibraryView: View {
                 items: filteredItems,
                 selection: $selection,
                 onPlay: playItem,
-                onDelete: requestDeleteConfirmation
+                onDelete: requestDeleteConfirmation,
+                onAddToPlaylist: addItemToPlaylist,
+                playlists: libraryStore.playlists
             )
         case .list:
             LibraryListView(
                 items: filteredItems,
                 selection: $selection,
                 onPlay: playItem,
-                onDelete: requestDeleteConfirmation
+                onDelete: requestDeleteConfirmation,
+                onAddToPlaylist: addItemToPlaylist,
+                playlists: libraryStore.playlists
             )
         }
     }
@@ -218,6 +222,15 @@ struct LibraryView: View {
         itemToDelete = nil
         // Clear selection if the deleted item was selected
         selection.remove(id)
+    }
+    
+    /// Adds an item to a playlist.
+    private func addItemToPlaylist(_ item: LibraryItem, _ playlist: Playlist) {
+        guard var updatedPlaylist = libraryStore.playlist(withID: playlist.id) else {
+            return
+        }
+        updatedPlaylist.addItem(item.id)
+        libraryStore.updatePlaylist(updatedPlaylist)
     }
 }
 

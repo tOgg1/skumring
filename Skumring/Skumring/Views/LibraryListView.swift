@@ -14,13 +14,27 @@ struct LibraryListView: View {
     /// Called when the user selects Delete from context menu
     var onDelete: ((LibraryItem) -> Void)?
     
+    /// Called when the user selects a playlist from the Add to Playlist submenu
+    var onAddToPlaylist: ((LibraryItem, Playlist) -> Void)?
+    
+    /// Available playlists for the Add to Playlist submenu
+    var playlists: [Playlist] = []
+    
     var body: some View {
         List(items, selection: $selection) { item in
-            LibraryItemRow(item: item, onPlay: {
-                onPlay?(item)
-            }, onDelete: {
-                onDelete?(item)
-            })
+            LibraryItemRow(
+                item: item,
+                onPlay: {
+                    onPlay?(item)
+                },
+                onDelete: {
+                    onDelete?(item)
+                },
+                onAddToPlaylist: { playlist in
+                    onAddToPlaylist?(item, playlist)
+                },
+                playlists: playlists
+            )
             .tag(item.id)
         }
         .listStyle(.inset)
