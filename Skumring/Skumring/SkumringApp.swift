@@ -58,6 +58,28 @@ struct SkumringApp: App {
                 }
                 .keyboardShortcut("e", modifiers: .command)
             }
+            
+            // MARK: - Playback Commands
+            CommandGroup(after: .toolbar) {
+                Button("Play/Pause") {
+                    appModel.playbackController.togglePlayPause()
+                }
+                .keyboardShortcut(.space, modifiers: [])
+                
+                Button("Next Track") {
+                    Task {
+                        try? await appModel.playbackController.next()
+                    }
+                }
+                .keyboardShortcut(.rightArrow, modifiers: .command)
+                
+                Button("Previous Track") {
+                    Task {
+                        try? await appModel.playbackController.previous()
+                    }
+                }
+                .keyboardShortcut(.leftArrow, modifiers: .command)
+            }
         }
     }
     
