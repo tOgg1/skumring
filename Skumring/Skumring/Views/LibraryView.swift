@@ -33,6 +33,7 @@ enum ViewMode: String, CaseIterable {
 struct LibraryView: View {
     let filter: LibraryFilter
     
+    @Environment(AppModel.self) private var appModel
     @Environment(LibraryStore.self) private var libraryStore
     @State private var viewMode: ViewMode = .grid
     @State private var selection: Set<UUID> = []
@@ -153,9 +154,25 @@ struct LibraryView: View {
         } description: {
             Text(emptyDescription)
         } actions: {
-            if !searchText.isEmpty {
-                Button("Clear Search") {
-                    searchText = ""
+            VStack(spacing: 12) {
+                if !searchText.isEmpty {
+                    Button("Clear Search") {
+                        searchText = ""
+                    }
+                }
+                
+                // Add Item CTA - shown in all filter empty states when not searching
+                if searchText.isEmpty {
+                    Button {
+                        appModel.showAddItemSheet = true
+                    } label: {
+                        Label("Add Item", systemImage: "plus")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Text("or press \(Text("Cmd+L").fontWeight(.medium))")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
@@ -238,6 +255,7 @@ struct LibraryView: View {
     NavigationStack {
         LibraryView(filter: .all)
     }
+    .environment(AppModel())
     .environment(LibraryStore())
 }
 
@@ -245,5 +263,6 @@ struct LibraryView: View {
     NavigationStack {
         LibraryView(filter: .streams)
     }
+    .environment(AppModel())
     .environment(LibraryStore())
 }
