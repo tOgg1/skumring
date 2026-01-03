@@ -21,11 +21,15 @@ import SwiftUI
 /// ## Liquid Glass
 ///
 /// On macOS 26+, the bar uses Apple's Liquid Glass effect for a modern,
-/// translucent appearance. On older systems, it falls back to `.ultraThinMaterial`.
-/// The bar also respects accessibility settings (Reduce Transparency).
+/// translucent appearance. The bar respects accessibility settings:
+/// - **Reduce Transparency**: Shows solid background
+/// - **Increase Contrast**: Adds visible border
+/// - **Reduce Motion**: Simplifies animations (handled by system)
+///
+/// The glass effect is provided by the centralized `GlassEffect` system
+/// which handles all accessibility fallbacks automatically.
 struct NowPlayingBar: View {
     @Environment(PlaybackController.self) private var playbackController
-    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     
     /// Standard height for the now playing bar
     private let barHeight: CGFloat = 72
@@ -62,20 +66,15 @@ struct NowPlayingBar: View {
     
     // MARK: - Bar Background
     
-    /// Background view that uses Liquid Glass on macOS 26+ with accessibility fallback.
-    @ViewBuilder
+    /// Background view using the centralized glass effect system.
+    ///
+    /// Uses `glassStyleFullBleed` for a bar that spans the full width.
+    /// Accessibility fallbacks (Reduce Transparency, Increase Contrast) are
+    /// handled automatically by the `GlassEffectModifier`.
     private var barBackground: some View {
-        if reduceTransparency {
-            // Accessibility: solid background when Reduce Transparency is enabled
-            Color(nsColor: .windowBackgroundColor)
-        } else {
-            // Liquid Glass effect (macOS 26+)
-            // The glassEffect modifier creates a translucent, frosted glass appearance
-            // that morphs with the content behind it.
-            Rectangle()
-                .fill(.clear)
-                .glassEffect()
-        }
+        // Use full-bleed glass style (no corner radius) for bar elements
+        Rectangle()
+            .glassStyleFullBleed()
     }
     
     // MARK: - Artwork View
