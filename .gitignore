@@ -1,4 +1,15 @@
 # bv (beads viewer) local config and caches
 .bv/
 
+# API keys
 .gemini_api_key
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+DerivedData/
+*.xcscmblueprint
