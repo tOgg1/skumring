@@ -13,6 +13,8 @@
 - Runbooks:
   - `runbooks/dev.md`
   - `runbooks/test.md`
+  - `runbooks/ralph.md`
+  - `runbooks/image_generation.md`
   - `runbooks/release.md` (if relevant)
 - Decisions (ADR-like): `decisions/`
 - Workflows:
