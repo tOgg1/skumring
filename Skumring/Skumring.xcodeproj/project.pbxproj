@@ -23,6 +23,10 @@
 		F8A1B2C32D4E5F6700000030 /* HealthStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000031 /* HealthStatus.swift */; };
 		F8A1B2C32D4E5F6700000032 /* LibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */; };
 		F8A1B2C32D4E5F6700000036 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000037 /* SidebarItem.swift */; };
+		F8A1B2C32D4E5F6700000038 /* PlaybackState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000039 /* PlaybackState.swift */; };
+		F8A1B2C32D4E5F670000003A /* PlaybackBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */; };
+		F8A1B2C32D4E5F670000003C /* AVPlaybackBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000003D /* AVPlaybackBackend.swift */; };
+		F8A1B2C32D4E5F670000003E /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F670000003F /* PlaybackController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +49,10 @@
 		F8A1B2C32D4E5F6700000031 /* HealthStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthStatus.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryStore.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000037 /* SidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItem.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000039 /* PlaybackState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackState.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackBackend.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F670000003D /* AVPlaybackBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlaybackBackend.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F670000003F /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +99,7 @@
 				F8A1B2C32D4E5F6700000025 /* LibraryItemKind.swift */,
 				F8A1B2C32D4E5F6700000027 /* LibraryItemSource.swift */,
 				F8A1B2C32D4E5F6700000029 /* Pack.swift */,
+				F8A1B2C32D4E5F6700000039 /* PlaybackState.swift */,
 				F8A1B2C32D4E5F670000002B /* Playlist.swift */,
 				F8A1B2C32D4E5F670000002D /* RepeatMode.swift */,
 				F8A1B2C32D4E5F670000002F /* ShuffleMode.swift */,
@@ -102,7 +111,10 @@
 		F8A1B2C32D4E5F6700000035 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				F8A1B2C32D4E5F670000003D /* AVPlaybackBackend.swift */,
 				F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */,
+				F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */,
+				F8A1B2C32D4E5F670000003F /* PlaybackController.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -199,6 +211,10 @@
 				F8A1B2C32D4E5F6700000030 /* HealthStatus.swift in Sources */,
 				F8A1B2C32D4E5F6700000032 /* LibraryStore.swift in Sources */,
 				F8A1B2C32D4E5F6700000036 /* SidebarItem.swift in Sources */,
+				F8A1B2C32D4E5F6700000038 /* PlaybackState.swift in Sources */,
+				F8A1B2C32D4E5F670000003A /* PlaybackBackend.swift in Sources */,
+				F8A1B2C32D4E5F670000003C /* AVPlaybackBackend.swift in Sources */,
+				F8A1B2C32D4E5F670000003E /* PlaybackController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,8 +22,8 @@ final class AppModel {
     /// Manages all library items and playlists
     let libraryStore: LibraryStore
     
-    // TODO: Add playbackController when PlaybackController is implemented
-    // let playbackController: PlaybackController
+    /// Controls playback across all backends
+    let playbackController: PlaybackController
     
     // MARK: - Navigation State
     
@@ -37,6 +37,6 @@ final class AppModel {
     
     init() {
         self.libraryStore = LibraryStore()
-        // Future: Initialize PlaybackController here
+        self.playbackController = PlaybackController()
     }
 }
