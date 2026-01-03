@@ -68,6 +68,12 @@ final class PlaybackController {
     /// Index of the current item in the queue, or nil if not in queue mode.
     private(set) var queueIndex: Int?
     
+    /// The current repeat mode for queue playback.
+    var repeatMode: RepeatMode = .off
+    
+    /// The current shuffle mode for queue playback.
+    var shuffleMode: ShuffleMode = .off
+    
     // MARK: - Initialization
     
     init() {
@@ -163,28 +169,72 @@ final class PlaybackController {
     
     /// Plays the next item in the queue.
     ///
-    /// If at the end of the queue, this is a no-op (unless repeat is enabled).
+    /// Behavior depends on repeat mode:
+    /// - `.off`: Stop if at end of queue
+    /// - `.one`: Replay current item
+    /// - `.all`: Wrap to first item when at end
     func next() async throws {
-        guard let currentIndex = queueIndex,
-              currentIndex + 1 < queue.count else {
-            return
-        }
+        guard !queue.isEmpty, let currentIndex = queueIndex else { return }
         
-        queueIndex = currentIndex + 1
-        try await play(item: queue[currentIndex + 1])
+        switch repeatMode {
+        case .one:
+            // Repeat current item - seek to beginning
+            seek(to: 0)
+            resume()
+            
+        case .all:
+            // Wrap around to start if at end
+            let nextIndex = (currentIndex + 1) % queue.count
+            queueIndex = nextIndex
+            try await play(item: queue[nextIndex])
+            
+        case .off:
+            // Move to next or stop if at end
+            if currentIndex + 1 < queue.count {
+                queueIndex = currentIndex + 1
+                try await play(item: queue[currentIndex + 1])
+            } else {
+                stop()
+            }
+        }
     }
     
     /// Plays the previous item in the queue.
     ///
-    /// If at the start of the queue, this is a no-op.
+    /// If current playback time is > 3 seconds, seeks to beginning of current item.
+    /// Otherwise moves to previous item.
+    /// At the start of queue with repeat all, wraps to last item.
     func previous() async throws {
-        guard let currentIndex = queueIndex,
-              currentIndex > 0 else {
+        guard !queue.isEmpty, let currentIndex = queueIndex else { return }
+        
+        // If we're more than 3 seconds in, restart current track
+        if let time = currentTime, time > 3 {
+            seek(to: 0)
             return
         }
         
-        queueIndex = currentIndex - 1
-        try await play(item: queue[currentIndex - 1])
+        switch repeatMode {
+        case .one:
+            // Always restart current item
+            seek(to: 0)
+            resume()
+            
+        case .all:
+            // Wrap around to end if at start
+            let prevIndex = currentIndex > 0 ? currentIndex - 1 : queue.count - 1
+            queueIndex = prevIndex
+            try await play(item: queue[prevIndex])
+            
+        case .off:
+            // Move to previous or stay at start
+            if currentIndex > 0 {
+                queueIndex = currentIndex - 1
+                try await play(item: queue[currentIndex - 1])
+            } else {
+                // At start, just restart current item
+                seek(to: 0)
+            }
+        }
     }
 }
 

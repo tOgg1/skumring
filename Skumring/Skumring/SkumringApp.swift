@@ -9,8 +9,11 @@ struct SkumringApp: App {
         WindowGroup {
             ContentView()
                 .environment(appModel)
+                .environment(appModel.libraryStore)
+                .environment(appModel.playbackController)
+                .frame(minWidth: 600, minHeight: 400)
         }
         .windowStyle(.automatic)
-        .defaultSize(width: 800, height: 600)
+        .defaultSize(width: 1000, height: 700)
     }
 }

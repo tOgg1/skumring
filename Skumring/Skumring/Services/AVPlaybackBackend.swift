@@ -44,6 +44,12 @@ final class AVPlaybackBackend: PlaybackBackend {
     private var statusObserver: NSKeyValueObservation?
     private var timeControlObserver: NSKeyValueObservation?
     
+    /// Token for the periodic time observer.
+    private var timeObserverToken: Any?
+    
+    /// Cached current time, updated by periodic observer.
+    private(set) var observedCurrentTime: TimeInterval?
+    
     // MARK: - PlaybackBackend Protocol Properties
     
     /// The current playback state.
@@ -223,14 +229,30 @@ final class AVPlaybackBackend: PlaybackBackend {
                 }
             }
         }
+        
+        // Add periodic time observer to update current time every 0.5 seconds
+        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            guard let self = self else { return }
+            if time.isValid && !time.isIndefinite {
+                self.observedCurrentTime = CMTimeGetSeconds(time)
+            }
+        }
     }
     
-    /// Removes KVO observers.
+    /// Removes KVO observers and time observer.
     private func stopObservers() {
         statusObserver?.invalidate()
         statusObserver = nil
         timeControlObserver?.invalidate()
         timeControlObserver = nil
+        
+        // Remove periodic time observer
+        if let token = timeObserverToken {
+            player?.removeTimeObserver(token)
+            timeObserverToken = nil
+        }
+        observedCurrentTime = nil
     }
     
     /// Waits for the player item to become ready to play.
