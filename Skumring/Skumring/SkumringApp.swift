@@ -24,6 +24,12 @@ struct SkumringApp: App {
                         Text(result.summary)
                     }
                 }
+                .onChange(of: appModel.showImportPicker) { _, newValue in
+                    if newValue {
+                        appModel.showImportPicker = false
+                        importFromFile()
+                    }
+                }
         }
         .windowStyle(.automatic)
         .defaultSize(width: 1000, height: 700)

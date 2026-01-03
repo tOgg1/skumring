@@ -39,6 +39,9 @@ final class AppModel {
     /// Controls visibility of the Add Item sheet (triggered by Cmd+L or File > Add Item...)
     var showAddItemSheet: Bool = false
     
+    /// Controls triggering the import file picker (triggered by File > Import... or empty state CTA)
+    var showImportPicker: Bool = false
+    
     // MARK: - Initialization
     
     init() {

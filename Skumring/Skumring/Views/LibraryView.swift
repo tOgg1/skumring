@@ -173,6 +173,16 @@ struct LibraryView: View {
                     Text("or press \(Text("Cmd+L").fontWeight(.medium))")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                    
+                    // Import Pack CTA - shown only in All Items empty state
+                    if filter == .all {
+                        Button {
+                            appModel.showImportPicker = true
+                        } label: {
+                            Label("Import Pack", systemImage: "square.and.arrow.down")
+                        }
+                        .buttonStyle(.bordered)
+                    }
                 }
             }
         }
