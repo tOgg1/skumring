@@ -3,7 +3,7 @@
 ## Goal
 Based on your knowledge of the project, commit all changed files now in a series of logically connected groupings with super detailed commit messages for each and then push. Take your time to do it right. Don't edit the code at all. Don't commit obviously ephemeral files.
 
-Make sure you review ALL beads (tasks) that have been recently completed, or are in progress, and try to isolate very small atomic commits that encapsulate at most one full task. Dont be afraid to stage single chunks inside files.
+Always commit as atomically as possible. Review ALL beads (tasks) that have been recently completed, or are in progress, and isolate very small commits that encapsulate at most one full task. Don't be afraid to stage single chunks inside files.
 
 
 ## Safe rules
@@ -14,5 +14,5 @@ Make sure you review ALL beads (tasks) that have been recently completed, or are
 
 ## Suggested grouping
 - 1 commit per coherent change (feature, refactor, test fix, docs)
+- If you solved multiple tasks, commit each task separately
 - Keep beads updates with the relevant code changes
-
