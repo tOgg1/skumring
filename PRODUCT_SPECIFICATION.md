@@ -2,8 +2,8 @@
 
 **One‑line:** A beautiful macOS focus-music player that mixes curated **internet radio streams**, **open audio URLs**, and **YouTube embeds**, with playlists, looping, and shareable JSON “packs”.
 
-**Doc version:** v1.0
-**Date:** 2026‑01‑02
+**Doc version:** v1.1
+**Date:** 2026‑01‑03
 **Primary platform:** macOS
 **UI direction:** “Liquid Glass” overlay navigation + controls (not glass everywhere) ([Apple Developer][1])
 
@@ -95,8 +95,8 @@ People want background focus music (lofi / jazz / ambient) that:
 
 ### Distribution
 
-* **Option A:** Mac App Store (recommended if you want mainstream installs)
-* **Option B:** Direct distribution (easier iteration; still notarize)
+* **v1:** Local testing only (Xcode run / archive)
+* **Post-v1:** Direct distribution via GitHub Releases + Sparkle auto-updates (requires code signing + notarization)
 
 ---
 
@@ -107,9 +107,9 @@ People want background focus music (lofi / jazz / ambient) that:
 * **Home**
 
   * “Focus Now” shortcuts (top playlists + recently played)
-* **Built‑in Pack**
+* **Built-in Pack**
 
-  * Curated stations + curated YouTube embeds
+  * Curated stations + curated YouTube embeds (see Section 7a)
 * **Library**
 
   * All Items
@@ -140,7 +140,41 @@ People want background focus music (lofi / jazz / ambient) that:
 * title/author/source
 * repeat/shuffle toggles
 * volume
-* “queue” popover
+* "queue" popover
+
+---
+
+## 7a) Built-in Pack
+
+### Purpose
+
+The Built-in Pack provides a curated set of focus music sources out-of-the-box, so users can start listening immediately without adding their own content.
+
+### Source
+
+* **Remote URL:** `https://skumring.app/packs/builtin-v1.json` (or similar CDN URL)
+* **Fallback:** Bundled `builtin-pack.json` in app resources (used if network unavailable on first launch)
+* **Refresh:** App checks for updates to the remote pack on launch (max once per 24 hours); updates are merged silently
+
+### Behavior
+
+* Built-in Pack items appear in a dedicated sidebar section
+* Users **cannot delete** built-in items (but can hide the entire Built-in Pack section in preferences)
+* Users **can add** built-in items to their own playlists (creates a reference, not a copy)
+* Built-in items are visually distinguished (e.g., subtle "curated" badge)
+
+### Schema
+
+Same as the import/export JSON schema (Section 14), with an additional top-level field:
+
+```json
+{
+  "schemaVersion": 1,
+  "packType": "builtin",
+  "packVersion": "2026.01.03",
+  ...
+}
+```
 
 ---
 
@@ -148,15 +182,18 @@ People want background focus music (lofi / jazz / ambient) that:
 
 ### Library item types (v1)
 
-1. **Stream**
+1. **Stream** (infinite/live sources)
 
    * URL can be direct stream or playlist file (`.m3u`, `.pls`)
+   * Examples: internet radio, 24/7 lofi streams
+   * Auto-detected by: `.m3u`/`.pls` extension, or `Content-Type: audio/x-mpegurl`, or lack of `Content-Length` header
 2. **YouTube**
 
    * video ID (and optionally playlist ID later)
-3. **Remote Audio URL**
+3. **Audio URL** (finite files)
 
-   * direct audio file or HLS audio URL
+   * direct audio file (mp3/aac/m4a) or HLS audio URL
+   * Auto-detected by: audio file extension, or `Content-Type: audio/*` with `Content-Length` header
 
 ### Canonical model (Swift)
 
@@ -294,22 +331,16 @@ People want background focus music (lofi / jazz / ambient) that:
   * Cmd+E: Export
   * Cmd+I: Import
 
-**P1.2 Menu bar mini-player**
-
-* Optional status bar item showing:
-
-  * current title
-  * play/pause
-  * next/prev
-
 ---
 
-### P2 — Nice-to-haves
+### P2 — Nice-to-haves (post-v1)
 
-* Smart playlists by tags (“LoFi”, “Jazz”, “No Beats”)
-* Stream “health check” (periodic ping)
+* **Menu bar mini-player** (status bar item with title + controls)
+* Smart playlists by tags ("LoFi", "Jazz", "No Beats")
+* Stream "health check" (periodic ping)
 * Remote pack URLs (subscribe to curated packs)
 * Focus timer / Pomodoro integration
+* **Auto-updates via Sparkle** (GitHub Releases appcast)
 
 ---
 
@@ -356,13 +387,13 @@ Avoid:
 
 ### Policy requirements (design implications)
 
-* Do **not** implement a “background player” for YouTube that plays while the player is not displayed. ([Google for Developers][2])
-  **Spec rule:** if the YouTube player surface is not visible (window minimized / not on the Now Playing screen), pause YouTube playback and show a hint.
+* YouTube API policies prohibit promoting features that play content from a **background player that is not displayed**. ([Google for Developers][2])
+* **Skumring approach:** The YouTube player is always rendered (visible in the Now Playing area when a YouTube item is active). However, playback is **not** paused when the user navigates away or minimizes — we simply ensure the player surface exists and is accessible. This is compliant: we don't hide the player or extract audio-only.
 
 ### Product UX rule for YouTube items
 
-* “Audio-first” presentation is allowed, but **player must remain visible** (even as a compact panel).
-* The artwork/ambient image can decorate around it, but must not remove/fully hide the player.
+* "Audio-first" presentation is allowed — the player can be compact (>= 200×200).
+* The artwork/ambient image can decorate around it, but must not fully obscure the player controls.
 
 ---
 
@@ -385,6 +416,32 @@ Support playlist indirections:
 
   * attempt reconnect up to N times (e.g., 3) with exponential backoff
   * then show an error + retry button
+
+### Item and playlist health status
+
+Each library item tracks a `healthStatus`:
+
+* **`unknown`** — never tested (default for new items)
+* **`ok`** — last playback or probe succeeded
+* **`failing`** — last N attempts failed (N=3)
+
+Health is updated:
+
+* On successful playback start → `ok`
+* On playback failure → increment fail counter; after 3 consecutive failures → `failing`
+* Manual "Retry" resets fail counter and re-probes
+
+**Playlist health** is derived:
+
+* **Healthy:** all items `ok` or `unknown`
+* **Degraded:** 1+ items `failing`, but at least one `ok`
+* **Broken:** all items `failing`
+
+**UI indicators:**
+
+* Items: small badge (warning icon for `failing`)
+* Playlists: subtle indicator in sidebar (e.g., orange dot for degraded, red for broken)
+* Playlist detail view: list of failing items with "Retry All" action
 
 ---
 
@@ -409,6 +466,15 @@ Store everything in:
 * Audio binaries
 * YouTube content files
 * User credentials (v1 has no accounts)
+
+### Artwork cache
+
+* **Location:** `Application Support/<bundle id>/artwork/`
+* **Format:** Downloaded images converted to JPEG (quality 0.8) for consistency
+* **Size limit:** 100 MB total cache size
+* **Eviction:** LRU (least recently used) when limit exceeded
+* **Stale handling:** If artwork URL returns 404/error, keep cached version; mark as "stale" but don't delete
+* **Filename:** SHA256 hash of the original URL + `.jpg`
 
 ---
 
@@ -470,20 +536,23 @@ Store everything in:
 ### Import validation rules
 
 * `schemaVersion` must be recognized
-* Item kinds must be known (`stream`, `youtube`, `remoteAudio`)
+* Item kinds must be known (`stream`, `youtube`, `audioURL`)
 * URLs must be http(s) (reject `file://` to avoid abuse)
 * If item has neither url nor youtubeID → reject item
 
-### Dedupe rules (recommended)
+### Dedupe rules
 
 Compute `sourceKey`:
 
-* stream/remoteAudio: normalized URL (lowercase scheme+host, trimmed, remove tracking params optionally)
+* stream/audioURL: normalized URL (lowercase scheme+host, trimmed, remove tracking params optionally)
 * YouTube: `youtubeID`
 
-Merge behavior:
+Merge behavior (automatic, no user prompt):
 
-* If same `sourceKey` exists: update missing metadata (tags/artwork/title) but don’t duplicate unless user selects “Duplicate”.
+* If same `sourceKey` exists in library:
+  * **Update** title, subtitle, tags, artworkURL from the imported item (imported values win)
+  * Preserve the existing item's `id` and `addedAt`
+  * Do not create a duplicate
 
 ---
 
@@ -602,41 +671,71 @@ Merge behavior:
 
 ## 19) Risks and mitigations
 
-1. **Streams go offline**
+1. **YouTube in WKWebView may have issues** (HIGHEST PRIORITY)
 
-   * Mitigation: show “last verified”, retry, allow user to edit URL
-2. **YouTube restrictions / playback failures**
+   * Risk: IFrame API JS bridge may be unreliable, or Apple may block certain behaviors
+   * Mitigation: Milestone 0 PoC validates this before full build; if blocked, consider AVKit-based alternatives or dropping YouTube support
+2. **Streams go offline**
 
-   * Mitigation: clear error UI, “Open on YouTube”, don’t depend on YouTube for core value
-3. **Overdoing Liquid Glass**
+   * Mitigation: show health status, retry, allow user to edit URL
+3. **YouTube restrictions / playback failures**
+
+   * Mitigation: clear error UI, "Open on YouTube", don't depend on YouTube for core value
+4. **Overdoing Liquid Glass**
 
    * Mitigation: strict rule: glass only for overlays + containers
+5. **Built-in Pack URL becomes unavailable**
+
+   * Mitigation: bundled fallback always works; app gracefully handles fetch failures
 
 ---
 
 ## 20) MVP build plan (what to implement first)
 
+### Milestone 0 (YouTube PoC) — BLOCKER
+
+**Goal:** Validate that YouTube IFrame API works reliably in WKWebView on macOS Tahoe 26.
+
+**Deliverables:**
+
+1. Minimal Xcode project with a single WKWebView
+2. Load YouTube IFrame API embed for a known video ID
+3. Verify: play, pause, seek, and `onStateChange` events work via JS bridge
+4. Verify: looping works with `loop=1&playlist=VIDEO_ID`
+5. Document any quirks or blockers
+
+**Exit criteria:** YouTube embed plays and responds to JS commands reliably, OR we document a workaround/alternative.
+
+---
+
 ### Milestone 1 (Playable)
 
 * LibraryStore + persistence
-* AVPlayer backend
-* Add Stream + Audio URL
+* AVPlayer backend (streams + audio URLs)
+* Stream resolver (`.m3u` / `.pls`)
+* Add item flow (paste URL → auto-detect type)
 * Basic UI: sidebar, list, now playing bar
+* Item health tracking (ok/failing states)
 
 ### Milestone 2 (Playlists + JSON)
 
-* playlist editing
-* repeat/shuffle
-* export/import JSON
+* Playlist CRUD + drag reorder
+* Repeat modes (off/one/all) + shuffle
+* Export/import JSON with auto-merge dedupe
+* Playlist health indicators
 
 ### Milestone 3 (YouTube)
 
-* WKWebView embed backend
-* policy-compliant UI (visible player)
-* YouTube items in playlists
+* WKWebView embed backend (based on Milestone 0 PoC)
+* YouTube items in library + playlists
+* Compact player UI (>= 200x200, always visible when playing)
+* Error handling + "Open on YouTube" fallback
 
-### Milestone 4 (Liquid Glass polish)
+### Milestone 4 (Built-in Pack + Polish)
 
-* apply glass to Now Playing + overlays
-* GlassEffectContainer usage for grouped glass controls ([Apple Developer][5])
+* Remote Built-in Pack fetch + fallback bundle
+* Artwork cache (100MB LRU)
+* Liquid Glass on Now Playing bar + overlays
+* Media key support (`MPRemoteCommandCenter`)
+* Keyboard shortcuts
 
