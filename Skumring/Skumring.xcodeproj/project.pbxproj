@@ -36,6 +36,7 @@
 		F8A1B2C32D4E5F6700000056 /* LibraryItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */; };
 		F8A1B2C32D4E5F6700000058 /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */; };
 		F8A1B2C32D4E5F6700000060 /* NowPlayingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */; };
+		F8A1B2C32D4E5F6700000062 /* AddItemSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000063 /* AddItemSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemRow.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBar.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000063 /* AddItemSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 		F8A1B2C32D4E5F6700000044 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8A1B2C32D4E5F6700000063 /* AddItemSheet.swift */,
 				F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */,
 				F8A1B2C32D4E5F6700000053 /* LibraryItemCard.swift */,
 				F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */,
@@ -259,6 +262,7 @@
 				F8A1B2C32D4E5F6700000056 /* LibraryItemRow.swift in Sources */,
 				F8A1B2C32D4E5F6700000058 /* LibraryListView.swift in Sources */,
 				F8A1B2C32D4E5F6700000060 /* NowPlayingBar.swift in Sources */,
+				F8A1B2C32D4E5F6700000062 /* AddItemSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
