@@ -35,6 +35,7 @@
 		F8A1B2C32D4E5F6700000054 /* LibraryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */; };
 		F8A1B2C32D4E5F6700000056 /* LibraryItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */; };
 		F8A1B2C32D4E5F6700000058 /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */; };
+		F8A1B2C32D4E5F6700000060 /* NowPlayingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		F8A1B2C32D4E5F6700000055 /* LibraryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryGridView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000057 /* LibraryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemRow.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 				F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */,
 				F8A1B2C32D4E5F6700000051 /* LibraryView.swift */,
 				F8A1B2C32D4E5F6700000046 /* MainContentView.swift */,
+				F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */,
 				F8A1B2C32D4E5F6700000043 /* SidebarView.swift */,
 			);
 			path = Views;
@@ -255,6 +258,7 @@
 				F8A1B2C32D4E5F6700000054 /* LibraryGridView.swift in Sources */,
 				F8A1B2C32D4E5F6700000056 /* LibraryItemRow.swift in Sources */,
 				F8A1B2C32D4E5F6700000058 /* LibraryListView.swift in Sources */,
+				F8A1B2C32D4E5F6700000060 /* NowPlayingBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
