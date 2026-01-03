@@ -101,8 +101,12 @@ final class PlaybackController {
     
     // MARK: - Queue
     
-    /// Items in the current playback queue.
+    /// Items in the current playback queue (may be shuffled).
     private(set) var queue: [LibraryItem] = []
+    
+    /// The original unshuffled queue order, stored when shuffle is enabled.
+    /// When shuffle is off, this is nil.
+    private var originalQueue: [LibraryItem]?
     
     /// Index of the current item in the queue, or nil if not in queue mode.
     private(set) var queueIndex: Int?
@@ -111,7 +115,7 @@ final class PlaybackController {
     var repeatMode: RepeatMode = .off
     
     /// The current shuffle mode for queue playback.
-    var shuffleMode: ShuffleMode = .off
+    private(set) var shuffleMode: ShuffleMode = .off
     
     // MARK: - Initialization
     
@@ -248,7 +252,9 @@ final class PlaybackController {
         activeBackend = .none
         currentItem = nil
         queue = []
+        originalQueue = nil
         queueIndex = nil
+        shuffleMode = .off
     }
     
     /// Seeks to the specified time.
@@ -278,6 +284,64 @@ final class PlaybackController {
         case .youtube:
             youtubePlayer.setVolume(volume)
         }
+    }
+    
+    // MARK: - Shuffle Mode
+    
+    /// Sets the shuffle mode, reorganizing the queue as needed.
+    ///
+    /// When turning shuffle on:
+    /// - Stores the original queue order
+    /// - Shuffles the queue but keeps the current item at the front
+    ///
+    /// When turning shuffle off:
+    /// - Restores the original queue order
+    /// - Finds the current item's position in the original order
+    ///
+    /// - Parameter mode: The new shuffle mode
+    func setShuffleMode(_ mode: ShuffleMode) {
+        guard mode != shuffleMode else { return }
+        guard !queue.isEmpty else {
+            shuffleMode = mode
+            return
+        }
+        
+        switch mode {
+        case .on:
+            // Save the original order before shuffling
+            originalQueue = queue
+            
+            // Create shuffled queue with current item at front
+            if let currentIndex = queueIndex, currentIndex < queue.count {
+                let currentItem = queue[currentIndex]
+                var remainingItems = queue
+                remainingItems.remove(at: currentIndex)
+                remainingItems.shuffle()
+                queue = [currentItem] + remainingItems
+                queueIndex = 0
+            } else {
+                queue.shuffle()
+            }
+            
+        case .off:
+            // Restore original order
+            if let original = originalQueue {
+                // Find where the current item is in the original queue
+                if let currentIndex = queueIndex, currentIndex < queue.count {
+                    let currentItem = queue[currentIndex]
+                    queue = original
+                    // Find the current item's position in the original queue
+                    if let newIndex = queue.firstIndex(where: { $0.id == currentItem.id }) {
+                        queueIndex = newIndex
+                    }
+                } else {
+                    queue = original
+                }
+                originalQueue = nil
+            }
+        }
+        
+        shuffleMode = mode
     }
     
     // MARK: - Queue Navigation

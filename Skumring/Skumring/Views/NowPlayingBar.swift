@@ -357,7 +357,8 @@ struct NowPlayingBar: View {
     
     /// Toggles shuffle mode
     private func toggleShuffle() {
-        playbackController.shuffleMode = playbackController.shuffleMode == .off ? .on : .off
+        let newMode: ShuffleMode = playbackController.shuffleMode == .off ? .on : .off
+        playbackController.setShuffleMode(newMode)
     }
 }
 
