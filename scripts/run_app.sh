@@ -8,21 +8,27 @@ CONFIGURATION="Debug"
 STATE_ROOT=${TMPDIR:-/tmp}
 DERIVED_DATA="$STATE_ROOT/skumring-derived-data-$(printf "%s" "$REPO_ROOT" | shasum -a 256 | awk '{print $1}')"
 OPEN_APP=true
+BUILD_APP=false
 
 usage() {
   cat <<'USAGE'
 Usage: scripts/run_app.sh [options]
 
 Options:
+  --build               Build before running (default: use existing build)
   --configuration NAME   Build configuration (Debug or Release)
   --derived-data PATH    DerivedData output directory
-  --no-open              Build only; do not open the .app
+  --no-open              Do not open the .app
   -h, --help             Show this help
 USAGE
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --build)
+      BUILD_APP=true
+      shift
+      ;;
     --configuration)
       CONFIGURATION=$2
       shift 2
@@ -52,20 +58,30 @@ if [[ ! -d "$PROJECT_PATH" ]]; then
   exit 1
 fi
 
-xcodebuild \
-  -project "$PROJECT_PATH" \
-  -scheme "$SCHEME" \
-  -configuration "$CONFIGURATION" \
-  -derivedDataPath "$DERIVED_DATA" \
-  build
-
 APP_PATH="$DERIVED_DATA/Build/Products/$CONFIGURATION/Skumring.app"
+if [[ "$BUILD_APP" == "true" ]]; then
+  xcodebuild \
+    -project "$PROJECT_PATH" \
+    -scheme "$SCHEME" \
+    -configuration "$CONFIGURATION" \
+    -derivedDataPath "$DERIVED_DATA" \
+    build
+fi
+
 if [[ ! -d "$APP_PATH" ]]; then
-  echo "App not found at $APP_PATH" >&2
+  if [[ "$BUILD_APP" == "true" ]]; then
+    echo "App not found at $APP_PATH" >&2
+  else
+    echo "App not found at $APP_PATH. Run with --build to compile." >&2
+  fi
   exit 1
 fi
 
-echo "Built: $APP_PATH"
+if [[ "$BUILD_APP" == "true" ]]; then
+  echo "Built: $APP_PATH"
+else
+  echo "Using existing build: $APP_PATH"
+fi
 
 if [[ "$OPEN_APP" == "true" ]]; then
   if command -v open >/dev/null 2>&1; then
