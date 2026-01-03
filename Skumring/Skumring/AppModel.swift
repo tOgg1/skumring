@@ -26,6 +26,12 @@ final class AppModel {
     /// Controls playback across all backends
     let playbackController: PlaybackController
     
+    /// Cache for artwork images
+    let artworkCache: ArtworkCache
+    
+    /// Updates system Now Playing info with current playback
+    private(set) var nowPlayingService: NowPlayingService?
+    
     // MARK: - Navigation State
     
     /// Currently selected item in the sidebar, if any
@@ -47,5 +53,12 @@ final class AppModel {
     init() {
         self.libraryStore = LibraryStore()
         self.playbackController = PlaybackController()
+        self.artworkCache = ArtworkCache()
+        
+        // Initialize Now Playing service after other properties are set
+        self.nowPlayingService = NowPlayingService(
+            playbackController: playbackController,
+            artworkCache: artworkCache
+        )
     }
 }
