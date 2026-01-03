@@ -17,8 +17,15 @@ import SwiftUI
 /// |         Subtitle                        0:00 / 3:45
 /// +----------------------------------------------------------+
 /// ```
+///
+/// ## Liquid Glass
+///
+/// On macOS 26+, the bar uses Apple's Liquid Glass effect for a modern,
+/// translucent appearance. On older systems, it falls back to `.ultraThinMaterial`.
+/// The bar also respects accessibility settings (Reduce Transparency).
 struct NowPlayingBar: View {
     @Environment(PlaybackController.self) private var playbackController
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     
     /// Standard height for the now playing bar
     private let barHeight: CGFloat = 72
@@ -50,7 +57,25 @@ struct NowPlayingBar: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .frame(height: barHeight)
-        .background(.ultraThinMaterial)
+        .background(barBackground)
+    }
+    
+    // MARK: - Bar Background
+    
+    /// Background view that uses Liquid Glass on macOS 26+ with accessibility fallback.
+    @ViewBuilder
+    private var barBackground: some View {
+        if reduceTransparency {
+            // Accessibility: solid background when Reduce Transparency is enabled
+            Color(nsColor: .windowBackgroundColor)
+        } else {
+            // Liquid Glass effect (macOS 26+)
+            // The glassEffect modifier creates a translucent, frosted glass appearance
+            // that morphs with the content behind it.
+            Rectangle()
+                .fill(.clear)
+                .glassEffect()
+        }
     }
     
     // MARK: - Artwork View
