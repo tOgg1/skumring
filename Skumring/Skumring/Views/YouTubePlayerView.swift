@@ -89,6 +89,19 @@ struct YouTubePlayerView: NSViewRepresentable {
                 let vol = Double(volume) / 100.0
                 self?.executeJS("var v = document.querySelector('video'); if(v) v.volume = \(vol)")
             }
+            player.onLoadVideo = { [weak self] (videoID: String) in
+                self?.loadVideo(videoID: videoID)
+            }
+        }
+        
+        private func loadVideo(videoID: String) {
+            guard !videoID.isEmpty else { return }
+            currentVideoID = videoID
+            let urlString = "https://www.youtube.com/watch?v=\(videoID)"
+            if let url = URL(string: urlString) {
+                let request = URLRequest(url: url)
+                webView?.load(request)
+            }
         }
         
         private func executeJS(_ script: String) {
@@ -111,7 +124,7 @@ struct YouTubePlayerView: NSViewRepresentable {
         
         @MainActor
         private func injectCleanPlayerUI() {
-            // Hide everything except the video player
+            // Hide everything except the video player and center it with 16:9 aspect ratio
             let cssScript = """
             (function() {
                 var style = document.createElement('style');
@@ -137,36 +150,14 @@ struct YouTubePlayerView: NSViewRepresentable {
                     /* Hide chips/filters */
                     #chip-bar, ytd-feed-filter-chip-bar-renderer { display: none !important; }
                     
-                    /* Make player full width */
-                    #primary, #primary-inner, ytd-watch-flexy { 
-                        max-width: 100% !important; 
-                        padding: 0 !important;
-                        margin: 0 !important;
-                    }
-                    
-                    /* Expand player container */
-                    #player-container, #player-container-inner, #player {
-                        width: 100vw !important;
-                        max-width: 100vw !important;
-                    }
-                    
-                    /* Video player itself */
-                    #movie_player, .html5-video-container, video {
-                        width: 100% !important;
-                        height: 100vh !important;
-                        max-height: 100vh !important;
-                    }
-                    
-                    /* Remove page margins */
-                    ytd-app, #content, ytd-page-manager {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                    
-                    /* Hide scrollbar */
+                    /* Base body/html setup - black background, no scroll */
                     body, html {
                         overflow: hidden !important;
                         background: #000 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
                     }
                     
                     /* Hide any popups/modals */
@@ -174,14 +165,95 @@ struct YouTubePlayerView: NSViewRepresentable {
                     
                     /* Hide end screen recommendations */
                     .ytp-ce-element, .ytp-endscreen-content { display: none !important; }
+                    
+                    /* Make the whole page a flex container to center the player */
+                    ytd-app, #content, ytd-page-manager {
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        background: #000 !important;
+                    }
+                    
+                    /* Hide ytd-watch-flexy but show its player container */
+                    ytd-watch-flexy {
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        max-width: 100% !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        background: #000 !important;
+                    }
+                    
+                    /* Hide the inner columns layout */
+                    #columns, #primary, #primary-inner {
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        max-width: 100% !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                    
+                    /* Player container - centered, 16:9 aspect ratio */
+                    #player-container, #player-container-inner, #player {
+                        position: relative !important;
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        max-width: 100% !important;
+                        max-height: 100% !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+                    
+                    /* The movie player - fill the container, centered */
+                    #movie_player {
+                        position: absolute !important;
+                        top: 50% !important;
+                        left: 50% !important;
+                        transform: translate(-50%, -50%) !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        max-width: 100% !important;
+                        max-height: 100% !important;
+                    }
+                    
+                    /* Video container - centered with 16:9 maintained by browser */
+                    .html5-video-container {
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                    
+                    /* Video element - object-fit contain keeps 16:9 and centers */
+                    video {
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: contain !important;
+                        object-position: center center !important;
+                    }
+                    
+                    /* Force remove theater mode leftover sizing */
+                    .ytp-large-width-mode .html5-video-container,
+                    .ytp-large-width-mode video {
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
                 `;
                 document.head.appendChild(style);
-                
-                // Try to enter theater mode for better sizing
-                setTimeout(function() {
-                    var theaterBtn = document.querySelector('.ytp-size-button');
-                    if (theaterBtn) theaterBtn.click();
-                }, 2000);
             })();
             """
             
