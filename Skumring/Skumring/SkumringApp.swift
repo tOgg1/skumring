@@ -79,8 +79,32 @@ struct SkumringApp: App {
                     }
                 }
                 .keyboardShortcut(.leftArrow, modifiers: .command)
+                
+                Divider()
+                
+                Button(appModel.isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen") {
+                    // Only toggle if currently playing YouTube content
+                    if appModel.playbackController.currentItem?.kind == .youtube {
+                        appModel.isFullscreen.toggle()
+                    }
+                }
+                .keyboardShortcut("f", modifiers: [])
+                .disabled(appModel.playbackController.currentItem?.kind != .youtube)
             }
         }
+        
+        // MARK: - Fullscreen Window
+        
+        // Fullscreen window for YouTube player
+        Window("Fullscreen Player", id: "fullscreen-player") {
+            FullscreenPlayerView()
+                .environment(appModel)
+                .environment(appModel.libraryStore)
+                .environment(appModel.playbackController)
+        }
+        .windowStyle(.plain)
+        .defaultPosition(.center)
+        .windowResizability(.contentSize)
     }
     
     // MARK: - Media Key Service

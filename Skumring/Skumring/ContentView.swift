@@ -15,6 +15,8 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(PlaybackController.self) private var playbackController
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
     
     /// Controls the visibility of the sidebar column
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
@@ -50,6 +52,14 @@ struct ContentView: View {
             // (when going from nil to a value)
             if oldValue == nil && newValue != nil {
                 appModel.selectedSidebarItem = .nowPlaying
+            }
+        }
+        .onChange(of: appModel.isFullscreen) { _, isFullscreen in
+            // Handle fullscreen window state changes
+            if isFullscreen {
+                openWindow(id: "fullscreen-player")
+            } else {
+                dismissWindow(id: "fullscreen-player")
             }
         }
     }

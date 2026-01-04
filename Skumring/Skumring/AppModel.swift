@@ -48,6 +48,11 @@ final class AppModel {
     /// Controls triggering the import file picker (triggered by File > Import... or empty state CTA)
     var showImportPicker: Bool = false
     
+    // MARK: - Fullscreen State
+    
+    /// Controls fullscreen mode for the YouTube player (triggered by F key or fullscreen button)
+    var isFullscreen: Bool = false
+    
     // MARK: - Initialization
     
     init() {

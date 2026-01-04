@@ -68,7 +68,11 @@ struct NowPlayingView: View {
                     player: playbackController.youtubePlayer,
                     title: nil, // We show title in the track info area instead
                     onClose: nil, // No close button - use stop instead
-                    showTitleBar: false
+                    onToggleFullscreen: {
+                        appModel.isFullscreen.toggle()
+                    },
+                    isFullscreen: appModel.isFullscreen,
+                    showTitleBar: true
                 )
                 .frame(maxWidth: .infinity)
                 .frame(height: height)
