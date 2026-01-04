@@ -184,7 +184,9 @@ final class NowPlayingService {
         }
         
         // Create MPMediaItemArtwork using the helper function to avoid actor isolation issues
-        let artwork = Self.createArtwork(from: image)
+        guard let artwork = Self.createArtwork(from: image) else {
+            return
+        }
         
         // Store for reuse
         currentArtwork = artwork
@@ -195,22 +197,30 @@ final class NowPlayingService {
     
     /// Creates an MPMediaItemArtwork from an NSImage.
     ///
-    /// This is a nonisolated static function to avoid actor isolation issues.
     /// The requestHandler closure passed to MPMediaItemArtwork is called by MediaPlayer
-    /// on an arbitrary background queue. By creating the artwork in a nonisolated context,
-    /// we avoid the Swift concurrency runtime checking for main actor isolation when
-    /// the closure is invoked.
+    /// on an arbitrary background queue (e.g., `*/accessQueue`). We must ensure thread safety
+    /// by extracting the CGImage representation here (on the main thread where NSImage
+    /// operations are safe), then return a fresh NSImage created from that CGImage in the
+    /// closure. This avoids actor isolation violations and thread-safety issues with NSImage.
     ///
     /// - Parameter image: The source image
-    /// - Returns: An MPMediaItemArtwork configured to return the image
-    private nonisolated static func createArtwork(from image: NSImage) -> MPMediaItemArtwork {
-        // Capture image size before the closure to avoid any potential issues
+    /// - Returns: An MPMediaItemArtwork configured to return the image, or nil if conversion fails
+    private nonisolated static func createArtwork(from image: NSImage) -> MPMediaItemArtwork? {
+        // Get a CGImage representation - this is thread-safe once created
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return nil
+        }
+        
+        // Capture the size
         let imageSize = image.size
         
-        // NSImage is thread-safe for reading once created, so this is safe
-        // even though NSImage is not Sendable
-        return MPMediaItemArtwork(boundsSize: imageSize) { _ in
-            return image
+        // Create the artwork with a closure that creates a fresh NSImage from the CGImage.
+        // CGImage is thread-safe and can be used from any thread, so this is safe even when
+        // MediaPlayer calls this closure on a background queue.
+        return MPMediaItemArtwork(boundsSize: imageSize) { requestedSize in
+            // Create a new NSImage from the CGImage for the requested size
+            let newImage = NSImage(cgImage: cgImage, size: requestedSize)
+            return newImage
         }
     }
 }
