@@ -104,17 +104,246 @@ struct ImportsView: View {
     }
 }
 
-/// Placeholder for individual playlist view
+/// View for displaying playlist contents with playable items.
+///
+/// Shows playlist items in a list with:
+/// - Playlist name and item count header
+/// - Play All button
+/// - List of items with thumbnails and titles
+/// - Visual indication of currently playing item
+/// - Context menu for each item (Play, Play Next, Add to Queue)
 struct PlaylistView: View {
     let playlist: Playlist
     
+    @Environment(LibraryStore.self) private var libraryStore
+    @Environment(PlaybackController.self) private var playbackController
+    
+    /// Artwork cache for item thumbnails
+    private let artworkCache = ArtworkCache()
+    
     var body: some View {
-        ContentUnavailableView(
-            playlist.name,
-            systemImage: "music.note.list",
-            description: Text("\(playlist.itemCount) items")
-        )
+        Group {
+            if items.isEmpty {
+                emptyStateView
+            } else {
+                contentView
+            }
+        }
         .navigationTitle(playlist.name)
+    }
+    
+    // MARK: - Computed Properties
+    
+    /// Resolved items from the playlist's item IDs
+    private var items: [LibraryItem] {
+        libraryStore.items(forPlaylist: playlist.id)
+    }
+    
+    // MARK: - Content View
+    
+    private var contentView: some View {
+        VStack(spacing: 0) {
+            // Header with playlist info and Play All button
+            playlistHeader
+            
+            Divider()
+            
+            // List of items
+            List {
+                ForEach(items) { item in
+                    PlaylistContentRow(
+                        item: item,
+                        isPlaying: playbackController.currentItem?.id == item.id,
+                        artworkCache: artworkCache,
+                        onPlay: { playItem(item) },
+                        onPlayNext: { playNextItem(item) },
+                        onAddToQueue: { addToQueue(item) }
+                    )
+                }
+            }
+            .listStyle(.inset)
+        }
+    }
+    
+    // MARK: - Header
+    
+    private var playlistHeader: some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(playlist.name)
+                    .font(.title2.bold())
+                
+                Text("\(playlist.itemCount) items")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+            
+            // Play All button
+            Button {
+                playAll()
+            } label: {
+                Label("Play All", systemImage: "play.fill")
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(items.isEmpty)
+        }
+        .padding()
+    }
+    
+    // MARK: - Empty State
+    
+    private var emptyStateView: some View {
+        ContentUnavailableView {
+            Label("Empty Playlist", systemImage: "music.note.list")
+        } description: {
+            Text("Add items from your library to this playlist.")
+        }
+    }
+    
+    // MARK: - Actions
+    
+    private func playItem(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.play(item: item)
+        }
+    }
+    
+    private func playNextItem(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.playNext(item)
+        }
+    }
+    
+    private func addToQueue(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.addToQueue(item)
+        }
+    }
+    
+    private func playAll() {
+        guard !items.isEmpty else { return }
+        Task {
+            try? await playbackController.playQueue(items: items, startingAt: 0)
+        }
+    }
+}
+
+// MARK: - Playlist Content Row
+
+/// A row displaying a library item within the playlist content view.
+///
+/// Shows item thumbnail, title, subtitle, type indicator, and currently playing indicator.
+private struct PlaylistContentRow: View {
+    let item: LibraryItem
+    let isPlaying: Bool
+    let artworkCache: ArtworkCache
+    let onPlay: () -> Void
+    let onPlayNext: () -> Void
+    let onAddToQueue: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Thumbnail
+            thumbnailView
+                .frame(width: 44, height: 44)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+            
+            // Title and subtitle
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 6) {
+                    Text(item.title)
+                        .font(.body)
+                        .lineLimit(1)
+                    
+                    // Playing indicator
+                    if isPlaying {
+                        Image(systemName: "speaker.wave.2.fill")
+                            .font(.caption)
+                            .foregroundStyle(Color.accentColor)
+                    }
+                }
+                
+                if let subtitle = item.subtitle {
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+            }
+            
+            Spacer()
+            
+            // Item type indicator
+            Image(systemName: iconForKind(item.kind))
+                .foregroundStyle(.secondary)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture(count: 2) {
+            onPlay()
+        }
+        .contextMenu {
+            Button {
+                onPlay()
+            } label: {
+                Label("Play", systemImage: "play.fill")
+            }
+            
+            Button {
+                onPlayNext()
+            } label: {
+                Label("Play Next", systemImage: "text.line.first.and.arrowtriangle.forward")
+            }
+            
+            Button {
+                onAddToQueue()
+            } label: {
+                Label("Add to Queue", systemImage: "text.badge.plus")
+            }
+        }
+    }
+    
+    // MARK: - Thumbnail
+    
+    @ViewBuilder
+    private var thumbnailView: some View {
+        if let artworkURL = item.artworkURL {
+            CachedAsyncImage(url: artworkURL, cache: artworkCache) { phase in
+                switch phase {
+                case .empty:
+                    placeholderView
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                case .failure:
+                    placeholderView
+                @unknown default:
+                    placeholderView
+                }
+            }
+        } else {
+            placeholderView
+        }
+    }
+    
+    private var placeholderView: some View {
+        RoundedRectangle(cornerRadius: 6)
+            .fill(.quaternary)
+            .overlay {
+                Image(systemName: iconForKind(item.kind))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+    }
+    
+    private func iconForKind(_ kind: LibraryItemKind) -> String {
+        switch kind {
+        case .stream: return "antenna.radiowaves.left.and.right"
+        case .youtube: return "play.rectangle"
+        case .audioURL: return "link"
+        }
     }
 }
 
