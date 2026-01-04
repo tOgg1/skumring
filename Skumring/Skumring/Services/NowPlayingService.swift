@@ -183,15 +183,34 @@ final class NowPlayingService {
             return
         }
         
-        // Create MPMediaItemArtwork
-        let artwork = MPMediaItemArtwork(boundsSize: image.size) { _ in
-            return image
-        }
+        // Create MPMediaItemArtwork using the helper function to avoid actor isolation issues
+        let artwork = Self.createArtwork(from: image)
         
         // Store for reuse
         currentArtwork = artwork
         
         // Update with artwork included
         updateNowPlayingInfo()
+    }
+    
+    /// Creates an MPMediaItemArtwork from an NSImage.
+    ///
+    /// This is a nonisolated static function to avoid actor isolation issues.
+    /// The requestHandler closure passed to MPMediaItemArtwork is called by MediaPlayer
+    /// on an arbitrary background queue. By creating the artwork in a nonisolated context,
+    /// we avoid the Swift concurrency runtime checking for main actor isolation when
+    /// the closure is invoked.
+    ///
+    /// - Parameter image: The source image
+    /// - Returns: An MPMediaItemArtwork configured to return the image
+    private nonisolated static func createArtwork(from image: NSImage) -> MPMediaItemArtwork {
+        // Capture image size before the closure to avoid any potential issues
+        let imageSize = image.size
+        
+        // NSImage is thread-safe for reading once created, so this is safe
+        // even though NSImage is not Sendable
+        return MPMediaItemArtwork(boundsSize: imageSize) { _ in
+            return image
+        }
     }
 }

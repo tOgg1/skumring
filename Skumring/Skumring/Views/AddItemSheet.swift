@@ -159,7 +159,8 @@ struct AddItemSheet: View {
     ///
     /// Sets `detectedKind` and `detectedYouTubeID` based on URL patterns.
     private func detectItemType(from urlString: String) {
-        let trimmed = urlString.trimmingCharacters(in: .whitespaces).lowercased()
+        let trimmed = urlString.trimmingCharacters(in: .whitespaces)
+        let lowercased = trimmed.lowercased()
         
         // Reset detection
         detectedKind = nil
@@ -167,29 +168,29 @@ struct AddItemSheet: View {
         
         guard !trimmed.isEmpty else { return }
         
-        // YouTube detection
+        // YouTube detection - use original trimmed string to preserve case-sensitive video ID
         if let youtubeID = extractYouTubeID(from: trimmed) {
             detectedKind = .youtube
             detectedYouTubeID = youtubeID
             return
         }
         
-        // Stream detection (playlist files)
+        // Stream detection (playlist files) - use lowercased for extension matching
         let streamExtensions = [".m3u", ".m3u8", ".pls"]
-        if streamExtensions.contains(where: { trimmed.contains($0) }) {
+        if streamExtensions.contains(where: { lowercased.contains($0) }) {
             detectedKind = .stream
             return
         }
         
-        // Audio URL detection
+        // Audio URL detection - use lowercased for extension matching
         let audioExtensions = [".mp3", ".aac", ".m4a", ".wav", ".flac", ".ogg"]
-        if audioExtensions.contains(where: { trimmed.hasSuffix($0) }) {
+        if audioExtensions.contains(where: { lowercased.hasSuffix($0) }) {
             detectedKind = .audioURL
             return
         }
         
         // Default to stream for other URLs that look valid
-        if trimmed.hasPrefix("http://") || trimmed.hasPrefix("https://") {
+        if lowercased.hasPrefix("http://") || lowercased.hasPrefix("https://") {
             detectedKind = .stream
         }
     }
@@ -200,27 +201,29 @@ struct AddItemSheet: View {
     /// - youtube.com/watch?v=VIDEO_ID
     /// - youtu.be/VIDEO_ID
     /// - youtube.com/embed/VIDEO_ID
+    ///
+    /// Note: YouTube video IDs are case-sensitive, so this function preserves
+    /// the original case from the URL.
     private func extractYouTubeID(from urlString: String) -> String? {
-        // Check if it's a YouTube URL
+        // Check if it's a YouTube URL (case-insensitive check for domain)
+        let lowercased = urlString.lowercased()
         let youtubePatterns = ["youtube.com", "youtu.be"]
-        guard youtubePatterns.contains(where: { urlString.contains($0) }) else {
+        guard youtubePatterns.contains(where: { lowercased.contains($0) }) else {
             return nil
         }
         
-        // youtu.be/VIDEO_ID format
-        if urlString.contains("youtu.be/") {
-            if let range = urlString.range(of: "youtu.be/") {
-                let afterSlash = urlString[range.upperBound...]
-                let videoID = afterSlash.prefix(while: { $0 != "?" && $0 != "&" && $0 != "/" })
-                if !videoID.isEmpty {
-                    return String(videoID)
-                }
+        // youtu.be/VIDEO_ID format (case-insensitive search, case-preserving extraction)
+        if let range = urlString.range(of: "youtu.be/", options: .caseInsensitive) {
+            let afterSlash = urlString[range.upperBound...]
+            let videoID = afterSlash.prefix(while: { $0 != "?" && $0 != "&" && $0 != "/" })
+            if !videoID.isEmpty {
+                return String(videoID)
             }
         }
         
-        // youtube.com/watch?v=VIDEO_ID format
-        if urlString.contains("watch") {
-            if let range = urlString.range(of: "v=") {
+        // youtube.com/watch?v=VIDEO_ID format (case-insensitive search, case-preserving extraction)
+        if lowercased.contains("watch") {
+            if let range = urlString.range(of: "v=", options: .caseInsensitive) {
                 let afterV = urlString[range.upperBound...]
                 let videoID = afterV.prefix(while: { $0 != "&" && $0 != "/" })
                 if !videoID.isEmpty {
@@ -229,14 +232,12 @@ struct AddItemSheet: View {
             }
         }
         
-        // youtube.com/embed/VIDEO_ID format
-        if urlString.contains("/embed/") {
-            if let range = urlString.range(of: "/embed/") {
-                let afterEmbed = urlString[range.upperBound...]
-                let videoID = afterEmbed.prefix(while: { $0 != "?" && $0 != "&" && $0 != "/" })
-                if !videoID.isEmpty {
-                    return String(videoID)
-                }
+        // youtube.com/embed/VIDEO_ID format (case-insensitive search, case-preserving extraction)
+        if let range = urlString.range(of: "/embed/", options: .caseInsensitive) {
+            let afterEmbed = urlString[range.upperBound...]
+            let videoID = afterEmbed.prefix(while: { $0 != "?" && $0 != "&" && $0 != "/" })
+            if !videoID.isEmpty {
+                return String(videoID)
             }
         }
         
