@@ -74,7 +74,7 @@ struct NowPlayingBar: View {
     /// handled automatically by the `GlassEffectModifier`.
     private var barBackground: some View {
         // Use full-bleed glass style (no corner radius) for bar elements
-        Rectangle()
+        Color.clear
             .glassStyleFullBleed()
     }
     
