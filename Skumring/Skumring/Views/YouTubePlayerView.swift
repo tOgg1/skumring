@@ -5,9 +5,17 @@ import WebKit
 struct YouTubePlayerView: NSViewRepresentable {
     let player: YouTubePlayer
     
+    /// Shared persistent data store for YouTube authentication
+    /// Uses the default data store which persists cookies and session data to disk
+    private static let persistentDataStore: WKWebsiteDataStore = .default()
+    
     func makeNSView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.mediaTypesRequiringUserActionForPlayback = []
+        
+        // Use persistent data store to preserve YouTube sign-in across app launches
+        // This allows YouTube Premium subscribers to stay logged in and get ad-free playback
+        configuration.websiteDataStore = Self.persistentDataStore
         
         // Enable JavaScript
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
