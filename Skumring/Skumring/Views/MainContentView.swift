@@ -128,6 +128,8 @@ struct BuiltInItemDetailView: View {
     /// Artwork cache for images
     private let artworkCache = ArtworkCache()
     
+    @Environment(PlaybackController.self) private var playbackController
+    
     @State private var item: LibraryItem?
     @State private var loadError: Error?
     
@@ -179,9 +181,52 @@ struct BuiltInItemDetailView: View {
                             .background(.quaternary, in: Capsule())
                     }
                     
-                    // TODO: Add play button that triggers PlaybackController
+                    // Play button
+                    Button {
+                        Task {
+                            try? await playbackController.play(item: item)
+                        }
+                    } label: {
+                        Label("Play", systemImage: "play.fill")
+                            .font(.headline)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                 }
                 .padding()
+                .contentShape(Rectangle())
+                .onTapGesture(count: 2) {
+                    Task {
+                        try? await playbackController.play(item: item)
+                    }
+                }
+                .contextMenu {
+                    Button {
+                        Task {
+                            try? await playbackController.play(item: item)
+                        }
+                    } label: {
+                        Label("Play", systemImage: "play.fill")
+                    }
+                    
+                    Button {
+                        Task {
+                            try? await playbackController.playNext(item)
+                        }
+                    } label: {
+                        Label("Play Next", systemImage: "text.line.first.and.arrowtriangle.forward")
+                    }
+                    
+                    Button {
+                        Task {
+                            try? await playbackController.addToQueue(item)
+                        }
+                    } label: {
+                        Label("Add to Queue", systemImage: "text.badge.plus")
+                    }
+                }
                 .navigationTitle(item.title)
             } else if loadError != nil {
                 ContentUnavailableView(
@@ -237,4 +282,5 @@ struct BuiltInItemDetailView: View {
     MainContentView()
         .environment(AppModel())
         .environment(LibraryStore())
+        .environment(PlaybackController())
 }
