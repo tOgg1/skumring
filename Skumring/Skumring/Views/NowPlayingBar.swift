@@ -169,6 +169,7 @@ struct NowPlayingBar: View {
                 if let item = playbackController.currentItem {
                     Text(item.title)
                         .font(.headline)
+                        .foregroundStyle(.primary)
                         .lineLimit(1)
                         .truncationMode(.tail)
                     
@@ -205,6 +206,7 @@ struct NowPlayingBar: View {
                 } label: {
                     Image(systemName: "backward.fill")
                         .font(.title3)
+                        .foregroundStyle(.primary)
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.currentItem == nil)
@@ -216,6 +218,7 @@ struct NowPlayingBar: View {
                 } label: {
                     Image(systemName: playPauseIcon)
                         .font(.title)
+                        .foregroundStyle(.primary)
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.currentItem == nil)
@@ -229,6 +232,7 @@ struct NowPlayingBar: View {
                 } label: {
                     Image(systemName: "forward.fill")
                         .font(.title3)
+                        .foregroundStyle(.primary)
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.currentItem == nil)
