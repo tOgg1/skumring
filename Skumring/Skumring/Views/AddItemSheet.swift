@@ -23,6 +23,7 @@ struct AddItemSheet: View {
     @State private var tagsString: String = ""
     @State private var detectedKind: LibraryItemKind?
     @State private var detectedYouTubeID: String?
+    @State private var isFetchingTitle: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -94,9 +95,17 @@ struct AddItemSheet: View {
     
     private var detailsSection: some View {
         Section {
-            TextField("Title", text: $title, prompt: Text("Item title"))
-                .textFieldStyle(.plain)
-                .accessibilityIdentifier("addItemSheet.title")
+            HStack {
+                TextField("Title", text: $title, prompt: Text("Item title"))
+                    .textFieldStyle(.plain)
+                    .accessibilityIdentifier("addItemSheet.title")
+                
+                if isFetchingTitle {
+                    ProgressView()
+                        .controlSize(.small)
+                        .accessibilityIdentifier("addItemSheet.titleLoading")
+                }
+            }
             
             TextField("Tags", text: $tagsString, prompt: Text("lofi, chill, focus (optional)"))
                 .textFieldStyle(.plain)
@@ -172,6 +181,12 @@ struct AddItemSheet: View {
         if let youtubeID = extractYouTubeID(from: trimmed) {
             detectedKind = .youtube
             detectedYouTubeID = youtubeID
+            // Auto-fetch title if the title field is empty or was previously auto-filled
+            if title.trimmingCharacters(in: .whitespaces).isEmpty {
+                Task {
+                    await fetchYouTubeTitle(videoID: youtubeID)
+                }
+            }
             return
         }
         
@@ -242,6 +257,41 @@ struct AddItemSheet: View {
         }
         
         return nil
+    }
+    
+    // MARK: - YouTube Title Fetching
+    
+    /// Fetches the video title from YouTube using the oEmbed API.
+    ///
+    /// The oEmbed API is public and doesn't require authentication.
+    /// Falls back silently if the fetch fails, leaving the title field empty.
+    @MainActor
+    private func fetchYouTubeTitle(videoID: String) async {
+        isFetchingTitle = true
+        defer { isFetchingTitle = false }
+        
+        let oEmbedURLString = "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=\(videoID)&format=json"
+        guard let oEmbedURL = URL(string: oEmbedURLString) else { return }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: oEmbedURL)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                return
+            }
+            
+            // Parse the JSON response
+            if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let fetchedTitle = json["title"] as? String {
+                // Only set if title is still empty (user hasn't typed anything)
+                if title.trimmingCharacters(in: .whitespaces).isEmpty {
+                    title = fetchedTitle
+                }
+            }
+        } catch {
+            // Silently fail - user can still enter title manually
+        }
     }
     
     // MARK: - Kind Helpers
