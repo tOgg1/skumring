@@ -5,8 +5,13 @@ import SwiftUI
 /// Uses a two-column navigation layout:
 /// - Sidebar: SidebarView with navigation destinations
 /// - Detail: MainContentView that displays content based on selection
-/// - YouTube player: Appears above NowPlayingBar when playing YouTube content
 /// - Bottom: NowPlayingBar for playback controls (always visible)
+///
+/// ## Now Playing Navigation
+///
+/// When playback starts, the view automatically navigates to the Now Playing view
+/// to provide an immersive playback experience. Users can navigate away and return
+/// via the sidebar or by clicking the NowPlayingBar.
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(PlaybackController.self) private var playbackController
@@ -14,13 +19,8 @@ struct ContentView: View {
     /// Controls the visibility of the sidebar column
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
     
-    /// YouTube player instance (temporary until integrated into PlaybackController)
-    @State private var youtubePlayer = YouTubePlayer()
-    
-    /// Whether the YouTube player container is visible
-    private var showYouTubePlayer: Bool {
-        playbackController.currentItem?.kind == .youtube
-    }
+    /// Tracks the previous currentItem to detect when playback starts
+    @State private var previousCurrentItem: LibraryItem?
     
     var body: some View {
         @Bindable var appModel = appModel
@@ -33,28 +33,24 @@ struct ContentView: View {
             }
             .navigationSplitViewStyle(.balanced)
             
-            // YouTube player container - shown when playing YouTube content
-            if showYouTubePlayer {
-                YouTubePlayerContainerView(
-                    player: youtubePlayer,
-                    title: playbackController.currentItem?.title,
-                    onClose: {
-                        playbackController.stop()
-                    }
-                )
-                .frame(height: 360)
-                .transition(.asymmetric(
-                    insertion: .move(edge: .bottom).combined(with: .opacity),
-                    removal: .move(edge: .bottom).combined(with: .opacity)
-                ))
-            }
-            
             // Now playing bar - always visible at bottom
+            // Clicking on it navigates to Now Playing view
             NowPlayingBar()
+                .onTapGesture {
+                    if playbackController.currentItem != nil {
+                        appModel.selectedSidebarItem = .nowPlaying
+                    }
+                }
         }
-        .animation(.easeInOut(duration: 0.3), value: showYouTubePlayer)
         .sheet(isPresented: $appModel.showAddItemSheet) {
             AddItemSheet()
+        }
+        .onChange(of: playbackController.currentItem?.id) { oldValue, newValue in
+            // Auto-navigate to Now Playing when playback starts
+            // (when going from nil to a value)
+            if oldValue == nil && newValue != nil {
+                appModel.selectedSidebarItem = .nowPlaying
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct SidebarView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(LibraryStore.self) private var libraryStore
+    @Environment(PlaybackController.self) private var playbackController
     
     /// ID of playlist currently being renamed (nil if not in rename mode)
     @State private var renamingPlaylistID: UUID?
@@ -34,6 +35,9 @@ struct SidebarView: View {
             Section("Home") {
                 Label("Focus Now", systemImage: "house")
                     .tag(SidebarItem.home)
+                
+                // Now Playing item - highlighted when playing
+                nowPlayingRow
             }
             
             // MARK: - Built-in Pack Section
@@ -97,6 +101,36 @@ struct SidebarView: View {
                 Text("Are you sure you want to delete \"\(playlist.name)\"? Items in this playlist will not be removed from your library.")
             }
         }
+    }
+    
+    // MARK: - Now Playing Row
+    
+    /// Row showing "Now Playing" in the sidebar, highlighted when something is playing
+    @ViewBuilder
+    private var nowPlayingRow: some View {
+        // Access PlaybackController from environment
+        // Note: We need to add this to the environment reader
+        Label {
+            HStack(spacing: 4) {
+                Text("Now Playing")
+                
+                // Playing indicator when active
+                if hasActivePlayback {
+                    Circle()
+                        .fill(Color.accentColor)
+                        .frame(width: 6, height: 6)
+                }
+            }
+        } icon: {
+            Image(systemName: hasActivePlayback ? "speaker.wave.2.fill" : "play.circle")
+                .foregroundStyle(hasActivePlayback ? Color.accentColor : .primary)
+        }
+        .tag(SidebarItem.nowPlaying)
+    }
+    
+    /// Whether there is active playback
+    private var hasActivePlayback: Bool {
+        playbackController.currentItem != nil
     }
     
     // MARK: - Built-in Item Row
@@ -294,4 +328,5 @@ struct SidebarView: View {
     SidebarView()
         .environment(AppModel())
         .environment(LibraryStore())
+        .environment(PlaybackController())
 }

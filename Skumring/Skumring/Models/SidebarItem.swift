@@ -9,6 +9,9 @@ enum SidebarItem: Hashable, Sendable {
     /// Home view with featured content and quick actions
     case home
     
+    /// Now Playing view - shows current playback with video/artwork and queue
+    case nowPlaying
+    
     /// A built-in pack of curated content (shows all built-in items)
     case builtInPack
     

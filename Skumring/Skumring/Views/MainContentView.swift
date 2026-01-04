@@ -28,6 +28,9 @@ struct MainContentView: View {
         case .home:
             HomeView()
             
+        case .nowPlaying:
+            NowPlayingView()
+            
         case .builtInPack:
             BuiltInPackView()
             
