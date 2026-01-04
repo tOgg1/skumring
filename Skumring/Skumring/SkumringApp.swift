@@ -13,6 +13,9 @@ struct SkumringApp: App {
     /// Service for handling media key events
     @State private var mediaKeyService: MediaKeyService?
     
+    /// Service for managing the menu bar status item and mini-player
+    @State private var menuBarService: MenuBarService?
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -35,6 +38,7 @@ struct SkumringApp: App {
                 }
                 .onAppear {
                     setupMediaKeyService()
+                    setupMenuBarService()
                 }
         }
         .windowStyle(.automatic)
@@ -114,6 +118,18 @@ struct SkumringApp: App {
         guard mediaKeyService == nil else { return }
         mediaKeyService = MediaKeyService(playbackController: appModel.playbackController)
         mediaKeyService?.enable()
+    }
+    
+    // MARK: - Menu Bar Service
+    
+    /// Sets up the menu bar service for the mini-player popover
+    private func setupMenuBarService() {
+        guard menuBarService == nil else { return }
+        menuBarService = MenuBarService(
+            playbackController: appModel.playbackController,
+            libraryStore: appModel.libraryStore
+        )
+        menuBarService?.enable()
     }
     
     // MARK: - File Operations

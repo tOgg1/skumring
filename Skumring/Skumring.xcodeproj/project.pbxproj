@@ -58,6 +58,8 @@
 		F8A1B2C32D4E5F6700000100 /* GlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000101 /* GlassEffect.swift */; };
 		F8A1B2C32D4E5F6700000110 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000111 /* NowPlayingView.swift */; };
 		F8A1B2C32D4E5F6700000120 /* FullscreenPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000121 /* FullscreenPlayerView.swift */; };
+		F8A1B2C32D4E5F6700000130 /* MenuBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */; };
+		F8A1B2C32D4E5F6700000140 /* MiniPlayerPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +111,8 @@
 		F8A1B2C32D4E5F6700000101 /* GlassEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassEffect.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000111 /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000121 /* FullscreenPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenPlayerView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarService.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerPopoverView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001000 /* SkumringTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkumringTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemTests.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				F8A1B2C32D4E5F6700000073 /* ImportExportService.swift */,
 				F8A1B2C32D4E5F6700000033 /* LibraryStore.swift */,
 				F8A1B2C32D4E5F67000000C1 /* MediaKeyService.swift */,
+				F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */,
 				F8A1B2C32D4E5F67000000D1 /* NowPlayingService.swift */,
 				F8A1B2C32D4E5F670000003B /* PlaybackBackend.swift */,
 				F8A1B2C32D4E5F670000003F /* PlaybackController.swift */,
@@ -212,6 +217,7 @@
 				F8A1B2C32D4E5F6700000059 /* LibraryListView.swift */,
 				F8A1B2C32D4E5F6700000051 /* LibraryView.swift */,
 				F8A1B2C32D4E5F6700000046 /* MainContentView.swift */,
+				F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */,
 				F8A1B2C32D4E5F6700000061 /* NowPlayingBar.swift */,
 				F8A1B2C32D4E5F6700000111 /* NowPlayingView.swift */,
 				F8A1B2C32D4E5F6700000065 /* PlaylistEditorView.swift */,
@@ -396,6 +402,8 @@
 				F8A1B2C32D4E5F6700000100 /* GlassEffect.swift in Sources */,
 				F8A1B2C32D4E5F6700000110 /* NowPlayingView.swift in Sources */,
 				F8A1B2C32D4E5F6700000120 /* FullscreenPlayerView.swift in Sources */,
+				F8A1B2C32D4E5F6700000130 /* MenuBarService.swift in Sources */,
+				F8A1B2C32D4E5F6700000140 /* MiniPlayerPopoverView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
