@@ -164,8 +164,8 @@ struct YouTubePlayerView: NSViewRepresentable {
                         background: #000 !important;
                         margin: 0 !important;
                         padding: 0 !important;
-                        width: 100vw !important;
-                        height: 100vh !important;
+                        width: 100% !important;
+                        height: 100% !important;
                     }
                     
                     /* Hide any popups/modals */
@@ -174,74 +174,64 @@ struct YouTubePlayerView: NSViewRepresentable {
                     /* Hide end screen recommendations */
                     .ytp-ce-element, .ytp-endscreen-content { display: none !important; }
                     
-                    /* Make the whole page a flex container to center the player */
-                    ytd-app, #content, ytd-page-manager {
-                        display: flex !important;
-                        justify-content: center !important;
-                        align-items: center !important;
-                        width: 100vw !important;
-                        height: 100vh !important;
-                        margin: 0 !important;
-                        padding: 0 !important;
-                        background: #000 !important;
-                    }
-                    
-                    /* Hide ytd-watch-flexy but show its player container */
-                    ytd-watch-flexy {
-                        display: flex !important;
-                        justify-content: center !important;
-                        align-items: center !important;
+                    /* Anchor main layout wrappers to the viewport */
+                    ytd-app, #content, ytd-page-manager, #page-manager, ytd-watch-flexy {
+                        display: block !important;
+                        position: fixed !important;
+                        inset: 0 !important;
                         width: 100% !important;
                         height: 100% !important;
                         max-width: 100% !important;
-                        padding: 0 !important;
+                        max-height: 100% !important;
                         margin: 0 !important;
+                        padding: 0 !important;
                         background: #000 !important;
+                        transform: none !important;
                     }
                     
-                    /* Hide the inner columns layout */
+                    /* Stretch the inner columns layout */
                     #columns, #primary, #primary-inner {
-                        display: flex !important;
-                        justify-content: center !important;
-                        align-items: center !important;
+                        display: block !important;
                         width: 100% !important;
                         height: 100% !important;
                         max-width: 100% !important;
+                        max-height: 100% !important;
                         padding: 0 !important;
                         margin: 0 !important;
+                        transform: none !important;
                     }
                     
-                    /* Player container - centered, 16:9 aspect ratio */
+                    /* Player container - fill viewport */
                     #player-container, #player-container-inner, #player {
-                        position: relative !important;
-                        display: flex !important;
-                        justify-content: center !important;
-                        align-items: center !important;
+                        position: fixed !important;
+                        inset: 0 !important;
+                        display: block !important;
                         width: 100% !important;
                         height: 100% !important;
                         max-width: 100% !important;
                         max-height: 100% !important;
                         padding: 0 !important;
                         margin: 0 !important;
+                        overflow: hidden !important;
+                        transform: none !important;
                     }
                     
-                    /* The movie player - fill the container, centered */
+                    /* The movie player - fill the viewport */
                     #movie_player {
-                        position: absolute !important;
-                        top: 50% !important;
-                        left: 50% !important;
-                        transform: translate(-50%, -50%) !important;
+                        position: fixed !important;
+                        inset: 0 !important;
+                        transform: none !important;
                         width: 100% !important;
                         height: 100% !important;
                         max-width: 100% !important;
                         max-height: 100% !important;
                     }
                     
-                    /* Video container - centered with 16:9 maintained by browser */
+                    /* Video container - fill player area */
                     .html5-video-container {
-                        display: flex !important;
-                        justify-content: center !important;
-                        align-items: center !important;
+                        position: fixed !important;
+                        inset: 0 !important;
+                        display: block !important;
                         width: 100% !important;
                         height: 100% !important;
                     }
