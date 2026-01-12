@@ -60,6 +60,7 @@
 		F8A1B2C32D4E5F6700000120 /* FullscreenPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000121 /* FullscreenPlayerView.swift */; };
 		F8A1B2C32D4E5F6700000130 /* MenuBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */; };
 		F8A1B2C32D4E5F6700000140 /* MiniPlayerPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */; };
+		F8A1B2C32D4E5F6700000150 /* BrandColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000151 /* BrandColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +114,7 @@
 		F8A1B2C32D4E5F6700000121 /* FullscreenPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenPlayerView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarService.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerPopoverView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000151 /* BrandColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandColors.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001000 /* SkumringTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkumringTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemTests.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			children = (
 				F8A1B2C32D4E5F6700000002 /* SkumringApp.swift */,
 				F8A1B2C32D4E5F6700000021 /* AppModel.swift */,
+				F8A1B2C32D4E5F6700000151 /* BrandColors.swift */,
 				F8A1B2C32D4E5F6700000004 /* ContentView.swift */,
 				F8A1B2C32D4E5F6700000034 /* Models */,
 				F8A1B2C32D4E5F67000000A2 /* Resources */,
@@ -404,6 +407,7 @@
 				F8A1B2C32D4E5F6700000120 /* FullscreenPlayerView.swift in Sources */,
 				F8A1B2C32D4E5F6700000130 /* MenuBarService.swift in Sources */,
 				F8A1B2C32D4E5F6700000140 /* MiniPlayerPopoverView.swift in Sources */,
+				F8A1B2C32D4E5F6700000150 /* BrandColors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

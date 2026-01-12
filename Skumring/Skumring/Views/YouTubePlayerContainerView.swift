@@ -26,12 +26,6 @@ struct YouTubePlayerContainerView: View {
     /// Callback invoked when the close button is pressed
     var onClose: (() -> Void)?
     
-    /// Callback invoked when the fullscreen button is pressed
-    var onToggleFullscreen: (() -> Void)?
-    
-    /// Whether the player is currently in fullscreen mode
-    var isFullscreen: Bool = false
-    
     /// Whether to show the title bar overlay
     var showTitleBar: Bool = true
     
@@ -85,17 +79,6 @@ struct YouTubePlayerContainerView: View {
             }
             
             Spacer()
-            
-            // Fullscreen toggle button
-            if let onToggleFullscreen = onToggleFullscreen {
-                Button(action: onToggleFullscreen) {
-                    Image(systemName: isFullscreen ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right")
-                        .font(.title2)
-                        .foregroundStyle(.white.opacity(0.8))
-                }
-                .buttonStyle(.plain)
-                .help(isFullscreen ? "Exit Fullscreen (Esc)" : "Enter Fullscreen (F)")
-            }
             
             // Close button
             if let onClose = onClose {

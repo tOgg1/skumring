@@ -77,6 +77,14 @@ struct SidebarView: View {
         }
         .listStyle(.sidebar)
         .navigationTitle("Skumring")
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Image("Logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 28, height: 28)
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             sidebarFooter
         }

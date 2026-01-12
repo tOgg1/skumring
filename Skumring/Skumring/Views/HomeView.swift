@@ -122,6 +122,7 @@ struct HomeView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "play.circle.fill")
                         .font(.title)
+                        .foregroundStyle(Color.brandTerracotta)
                     
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Focus Now")
@@ -137,10 +138,10 @@ struct HomeView: View {
                         .foregroundStyle(.secondary)
                 }
                 .padding(16)
-                .background(.tint.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
+                .background(Color.brandCoralLight, in: RoundedRectangle(cornerRadius: 16))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(.tint.opacity(0.3), lineWidth: 1)
+                        .strokeBorder(Color.brandCoral.opacity(0.5), lineWidth: 1)
                 )
             }
             .buttonStyle(.plain)
@@ -152,15 +153,26 @@ struct HomeView: View {
     
     private var firstLaunchSection: some View {
         VStack(alignment: .leading, spacing: 24) {
-            // Welcome message
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Welcome to Skumring")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+            // Welcome message with logo
+            HStack(spacing: 16) {
+                Image("Logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 64, height: 64)
+                    .shadow(color: Color.brandTerracotta.opacity(0.3), radius: 8, y: 4)
                 
-                Text("Your personal focus music player. Get started with our curated stations or add your own.")
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Welcome to Skumring")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    Text("Your personal focus music player")
+                        .foregroundStyle(.secondary)
+                }
             }
+            
+            Text("Get started with our curated stations or add your own.")
+                .foregroundStyle(.secondary)
             
             // Built-in pack highlight
             if !builtInItems.isEmpty {

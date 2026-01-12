@@ -15,8 +15,6 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(PlaybackController.self) private var playbackController
-    @Environment(\.openWindow) private var openWindow
-    @Environment(\.dismissWindow) private var dismissWindow
     
     /// Controls the visibility of the sidebar column
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
@@ -27,15 +25,14 @@ struct ContentView: View {
     var body: some View {
         @Bindable var appModel = appModel
         
-        VStack(spacing: 0) {
-            NavigationSplitView(columnVisibility: $columnVisibility) {
-                SidebarView()
-            } detail: {
-                MainContentView()
-            }
-            .navigationSplitViewStyle(.balanced)
-            
-            // Now playing bar - always visible at bottom
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            SidebarView()
+        } detail: {
+            MainContentView()
+        }
+        .navigationSplitViewStyle(.balanced)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            // Now playing bar - floats over content with glass effect
             // Clicking on it navigates to Now Playing view
             NowPlayingBar()
                 .onTapGesture {
@@ -52,14 +49,6 @@ struct ContentView: View {
             // (when going from nil to a value)
             if oldValue == nil && newValue != nil {
                 appModel.selectedSidebarItem = .nowPlaying
-            }
-        }
-        .onChange(of: appModel.isFullscreen) { _, isFullscreen in
-            // Handle fullscreen window state changes
-            if isFullscreen {
-                openWindow(id: "fullscreen-player")
-            } else {
-                dismissWindow(id: "fullscreen-player")
             }
         }
     }

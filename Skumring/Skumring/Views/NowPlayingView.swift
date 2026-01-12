@@ -34,8 +34,8 @@ struct NowPlayingView: View {
                     // Media player area
                     mediaPlayerArea(geometry: geometry)
                     
-                    // Track info and controls
-                    trackInfoAndControls
+                    // Track info (controls are in the bottom bar)
+                    trackInfoSection
                     
                     // Queue section
                     queueSection
@@ -68,11 +68,7 @@ struct NowPlayingView: View {
                     player: playbackController.youtubePlayer,
                     title: nil, // We show title in the track info area instead
                     onClose: nil, // No close button - use stop instead
-                    onToggleFullscreen: {
-                        appModel.isFullscreen.toggle()
-                    },
-                    isFullscreen: appModel.isFullscreen,
-                    showTitleBar: true
+                    showTitleBar: false // Hide title bar - info shown below
                 )
                 .frame(maxWidth: .infinity)
                 .frame(height: height)
@@ -165,27 +161,35 @@ struct NowPlayingView: View {
         }
     }
     
-    // MARK: - Track Info and Controls
+    // MARK: - Track Info
     
-    /// Track information and playback controls
-    private var trackInfoAndControls: some View {
-        VStack(spacing: 16) {
-            // Track info
-            VStack(spacing: 4) {
-                if let item = playbackController.currentItem {
-                    Text(item.title)
-                        .font(.title2.bold())
-                        .lineLimit(2)
-                        .multilineTextAlignment(.center)
-                    
-                    if let subtitle = item.subtitle {
-                        Text(subtitle)
-                            .font(.title3)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+    /// Track information display (controls are in the bottom NowPlayingBar)
+    private var trackInfoSection: some View {
+        VStack(spacing: 8) {
+            if let item = playbackController.currentItem {
+                Text(item.title)
+                    .font(.title2.bold())
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                
+                if let subtitle = item.subtitle {
+                    Text(subtitle)
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+                
+                // Source badge with LIVE indicator for streams
+                HStack(spacing: 8) {
+                    if item.kind == .stream {
+                        Text("LIVE")
+                            .font(.caption.bold())
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background(.red, in: Capsule())
                     }
                     
-                    // Source badge
                     HStack(spacing: 4) {
                         Image(systemName: iconForCurrentItem)
                             .font(.caption)
@@ -193,165 +197,12 @@ struct NowPlayingView: View {
                             .font(.caption)
                     }
                     .foregroundStyle(.tertiary)
-                    .padding(.top, 4)
                 }
-            }
-            .padding(.horizontal)
-            
-            // Progress bar
-            progressView
-                .padding(.horizontal, 32)
-            
-            // Transport controls
-            transportControls
-            
-            // Volume control
-            volumeControl
-                .padding(.horizontal, 32)
-        }
-        .padding(.vertical, 24)
-        .glassStyleFullBleed()
-    }
-    
-    // MARK: - Progress View
-    
-    /// Progress bar with time display or LIVE badge
-    private var progressView: some View {
-        VStack(spacing: 8) {
-            if let duration = playbackController.duration, duration > 0 {
-                // Finite duration - show progress bar
-                let currentTime = playbackController.currentTime ?? 0
-                let progress = duration > 0 ? currentTime / duration : 0
-                
-                // Draggable progress bar
-                Slider(
-                    value: Binding(
-                        get: { progress },
-                        set: { newValue in
-                            playbackController.seek(to: duration * newValue)
-                        }
-                    ),
-                    in: 0...1
-                )
-                .tint(.accentColor)
-                
-                HStack {
-                    Text(formatTime(currentTime))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .monospacedDigit()
-                    
-                    Spacer()
-                    
-                    Text(formatTime(duration))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .monospacedDigit()
-                }
-            } else if playbackController.currentItem != nil {
-                // Live stream - show LIVE badge
-                HStack {
-                    Spacer()
-                    Text("LIVE")
-                        .font(.caption.bold())
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 4)
-                        .background(.red, in: Capsule())
-                    Spacer()
-                }
+                .padding(.top, 4)
             }
         }
-    }
-    
-    /// Formats seconds as M:SS or H:MM:SS
-    private func formatTime(_ seconds: TimeInterval) -> String {
-        let totalSeconds = Int(seconds)
-        let hours = totalSeconds / 3600
-        let minutes = (totalSeconds % 3600) / 60
-        let secs = totalSeconds % 60
-        
-        if hours > 0 {
-            return String(format: "%d:%02d:%02d", hours, minutes, secs)
-        } else {
-            return String(format: "%d:%02d", minutes, secs)
-        }
-    }
-    
-    // MARK: - Transport Controls
-    
-    /// Previous, play/pause, next buttons
-    private var transportControls: some View {
-        HStack(spacing: 40) {
-            // Previous button
-            Button {
-                Task {
-                    try? await playbackController.previous()
-                }
-            } label: {
-                Image(systemName: "backward.fill")
-                    .font(.title)
-            }
-            .buttonStyle(.plain)
-            .disabled(playbackController.currentItem == nil)
-            
-            // Play/Pause button
-            Button {
-                playbackController.togglePlayPause()
-            } label: {
-                Image(systemName: playPauseIcon)
-                    .font(.system(size: 50))
-            }
-            .buttonStyle(.plain)
-            .disabled(playbackController.currentItem == nil)
-            
-            // Next button
-            Button {
-                Task {
-                    try? await playbackController.next()
-                }
-            } label: {
-                Image(systemName: "forward.fill")
-                    .font(.title)
-            }
-            .buttonStyle(.plain)
-            .disabled(playbackController.currentItem == nil)
-        }
-    }
-    
-    /// Icon for play/pause button based on current state
-    private var playPauseIcon: String {
-        switch playbackController.state {
-        case .playing:
-            return "pause.circle.fill"
-        case .loading, .reconnecting:
-            return "circle.dotted"
-        default:
-            return "play.circle.fill"
-        }
-    }
-    
-    // MARK: - Volume Control
-    
-    /// Volume slider with speaker icons
-    private var volumeControl: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "speaker.fill")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            
-            Slider(
-                value: Binding(
-                    get: { Double(playbackController.volume) },
-                    set: { playbackController.setVolume(Float($0)) }
-                ),
-                in: 0...1
-            )
-            
-            Image(systemName: "speaker.wave.3.fill")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
+        .padding(.horizontal)
+        .padding(.vertical, 16)
     }
     
     // MARK: - Queue Section

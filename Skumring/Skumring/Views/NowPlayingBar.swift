@@ -58,24 +58,40 @@ struct NowPlayingBar: View {
             // Right section: Volume and toggles
             rightControlsView
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
         .frame(height: barHeight)
         .background(barBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal, 12)
+        .padding(.bottom, 8)
         .accessibilityIdentifier("nowPlayingBar")
     }
     
     // MARK: - Bar Background
     
-    /// Background view using the centralized glass effect system.
+    /// Background view with subtle branded gradient and glass effect.
     ///
-    /// Uses `glassStyleFullBleed` for a bar that spans the full width.
-    /// Accessibility fallbacks (Reduce Transparency, Increase Contrast) are
-    /// handled automatically by the `GlassEffectModifier`.
+    /// Uses a gradient from brand teal to brand terracotta at very low opacity
+    /// to give a warm, branded feel while maintaining the glass aesthetic.
+    @Environment(\.colorScheme) private var colorScheme
+    
     private var barBackground: some View {
-        // Use full-bleed glass style (no corner radius) for bar elements
-        Color.clear
-            .glassStyleFullBleed()
+        ZStack {
+            // Glass effect base
+            Rectangle()
+                .fill(.ultraThinMaterial)
+            
+            // Subtle branded gradient overlay
+            LinearGradient(
+                colors: [
+                    Color.brandTeal.opacity(colorScheme == .dark ? 0.15 : 0.08),
+                    Color.brandTerracotta.opacity(colorScheme == .dark ? 0.1 : 0.05)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        }
     }
     
     // MARK: - Artwork View

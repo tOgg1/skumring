@@ -1,0 +1,482 @@
+
+-------------------------------------
+Translated Report (Full Report Below)
+-------------------------------------
+Process:             Skumring [94570]
+Path:                /private/var/folders/*/Skumring.app/Contents/MacOS/Skumring
+Identifier:          app.skumring.Skumring
+Version:             0.1.0 (1)
+Code Type:           X86-64 (Translated)
+Role:                Foreground
+Parent Process:      launchd [1]
+Coalition:           app.skumring.Skumring [50760]
+User ID:             501
+
+Date/Time:           2026-01-03 20:53:10.8047 +0100
+Launch Time:         2026-01-03 20:53:00.0663 +0100
+Hardware Model:      Mac16,6
+OS Version:          macOS 26.1 (25B78)
+Release Type:        User
+
+Crash Reporter Key:  8B3BF1CB-6835-BD17-8F55-B60677264030
+Incident Identifier: 30E1CA7F-C98E-427B-BB35-1D298C49B43C
+
+Sleep/Wake UUID:       FFC22D9A-B7DE-4FAE-969E-53AEEA48B781
+
+Time Awake Since Boot: 340000 seconds
+Time Since Wake:       11036 seconds
+
+System Integrity Protection: enabled
+
+Triggered by Thread: 2, Dispatch Queue: */accessQueue
+
+Exception Type:    EXC_BAD_INSTRUCTION (SIGILL)
+Exception Codes:   0x0000000000000001, 0x0000000000000000
+
+Termination Reason:  Namespace SIGNAL, Code 4, Illegal instruction: 4
+Terminating Process: exc handler [94570]
+
+
+Thread 0::  Dispatch queue: com.apple.main-thread
+0   ???                           	    0x7ff89a64eb80 ???
+1   libsystem_kernel.dylib        	    0x7ff80e716b4e mach_msg2_trap + 10
+2   libsystem_kernel.dylib        	    0x7ff80e724f4c mach_msg2_internal + 83
+3   libsystem_kernel.dylib        	    0x7ff80e71dba3 mach_msg_overwrite + 574
+4   libsystem_kernel.dylib        	    0x7ff80e716e47 mach_msg + 19
+5   CoreFoundation                	    0x7ff80e7f9321 __CFRunLoopServiceMachPort + 145
+6   CoreFoundation                	    0x7ff80e7f7e16 __CFRunLoopRun + 1354
+7   CoreFoundation                	    0x7ff80e8a96ee _CFRunLoopRunSpecificWithOptions + 496
+8   HIToolbox                     	    0x7ff81b58946f RunCurrentEventLoopInMode + 287
+9   HIToolbox                     	    0x7ff81b58c54b ReceiveNextEventCommon + 606
+10  HIToolbox                     	    0x7ff81b714367 _BlockUntilNextEventMatchingListInMode + 37
+11  AppKit                        	    0x7ff812aa2ddc _DPSBlockUntilNextEventMatchingListInMode + 172
+12  AppKit                        	    0x7ff8125a8659 _DPSNextEvent + 800
+13  AppKit                        	    0x7ff81314c1fa -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:] + 1268
+14  AppKit                        	    0x7ff81314bccd -[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:] + 67
+15  AppKit                        	    0x7ff81259fcfb -[NSApplication run] + 472
+16  AppKit                        	    0x7ff81258b3eb NSApplicationMain + 800
+17  SwiftUI                       	    0x7ff9210f955b 0x7ff92102c000 + 841051
+18  SwiftUI                       	    0x7ff9213cc4f1 0x7ff92102c000 + 3802353
+19  SwiftUI                       	    0x7ff9215ee2bb 0x7ff92102c000 + 6038203
+20  Skumring.debug.dylib          	       0x10b97c35e static SkumringApp.$main() + 30
+21  Skumring.debug.dylib          	       0x10b97c659 __debug_main_executable_dylib_entry_point + 9
+22  dyld                          	       0x203031781 start + 3457
+
+Thread 1:: com.apple.rosetta.exceptionserver
+
+Thread 2 Crashed::  Dispatch queue: */accessQueue
+0   libdispatch.dylib             	    0x7ff80e5a216f _dispatch_assert_queue_fail + 102
+1   libdispatch.dylib             	    0x7ff80e5cefdb dispatch_assert_queue$V2.cold.1 + 109
+2   libdispatch.dylib             	    0x7ff80e5a2107 dispatch_assert_queue + 55
+3   libswift_Concurrency.dylib    	    0x7ffd275ab8c3 _swift_task_checkIsolatedSwift + 19
+4   libswift_Concurrency.dylib    	    0x7ffd275f2b37 swift_task_isCurrentExecutorWithFlagsImpl(swift::SerialExecutorRef, swift::swift_task_is_current_executor_flag) + 407
+5   Skumring.debug.dylib          	       0x10bacf683 closure #1 in NowPlayingService.loadArtwork(url:) + 115
+6   Skumring.debug.dylib          	       0x10bacfb4c thunk for @escaping @callee_guaranteed (@unowned CGSize) -> (@owned NSImage) + 60
+7   MediaPlayer                   	    0x7ff91b18a8e8 -[MPMediaItemArtwork jpegDataWithSize:] + 20
+8   MediaPlayer                   	    0x7ff91b2d8dc1 ___MPToMRNowPlayingInfoDictionary_block_invoke + 338
+9   libswiftCore.dylib            	    0x7ff822999efd specialized _SwiftDeferredNSDictionary.enumerateKeysAndObjects(options:using:) + 701
+10  libswiftCore.dylib            	    0x7ff82276bf85 @objc _SwiftDeferredNSDictionary.enumerateKeysAndObjects(options:using:) + 37
+11  MediaPlayer                   	    0x7ff91b2d8b15 _MPToMRNowPlayingInfoDictionary + 189
+12  MediaPlayer                   	    0x7ff91b2d889a -[MPNowPlayingInfoCenter(NowPlayingInfo) _onQueue_pushNowPlayingInfoAndRetry:] + 267
+13  libdispatch.dylib             	    0x7ff80e59f6b9 _dispatch_call_block_and_release + 12
+14  libdispatch.dylib             	    0x7ff80e5b5bee _dispatch_client_callout + 6
+15  libdispatch.dylib             	    0x7ff80e5a645b _dispatch_lane_serial_drain + 779
+16  libdispatch.dylib             	    0x7ff80e5a6ea9 _dispatch_lane_invoke + 382
+17  libdispatch.dylib             	    0x7ff80e5afd42 _dispatch_root_queue_drain_deferred_wlh + 275
+18  libdispatch.dylib             	    0x7ff80e5af705 _dispatch_workloop_worker_thread + 871
+19  libsystem_pthread.dylib       	    0x7ff80e756869 _pthread_wqthread + 298
+20  libsystem_pthread.dylib       	    0x7ff80e755843 start_wqthread + 15
+
+Thread 3:
+
+Thread 4:: com.apple.NSEventThread
+0   ???                           	    0x7ff89a64eb80 ???
+1   libsystem_kernel.dylib        	    0x7ff80e716b4e mach_msg2_trap + 10
+2   libsystem_kernel.dylib        	    0x7ff80e724f4c mach_msg2_internal + 83
+3   libsystem_kernel.dylib        	    0x7ff80e71dba3 mach_msg_overwrite + 574
+4   libsystem_kernel.dylib        	    0x7ff80e716e47 mach_msg + 19
+5   CoreFoundation                	    0x7ff80e7f9321 __CFRunLoopServiceMachPort + 145
+6   CoreFoundation                	    0x7ff80e7f7e16 __CFRunLoopRun + 1354
+7   CoreFoundation                	    0x7ff80e8a96ee _CFRunLoopRunSpecificWithOptions + 496
+8   AppKit                        	    0x7ff81264e2e1 _NSEventThread + 158
+9   libsystem_pthread.dylib       	    0x7ff80e759e4d _pthread_start + 115
+10  libsystem_pthread.dylib       	    0x7ff80e755857 thread_start + 15
+
+Thread 5:
+
+Thread 6:
+
+
+Thread 2 crashed with X86 Thread State (64-bit):
+  rax: 0xe80f494122b10040  rbx: 0x0000600002150680  rcx: 0x00000000c1039816  rdx: 0x0000000000000000
+  rdi: 0x0000000000000080  rsi: 0x0000000000000800  rbp: 0x000000030a02f330  rsp: 0x000000030a02f320
+   r8: 0x00000000c123a011   r9: 0x000000000000007f  r10: 0x00000000c1200000  r11: 0x0000000000000016
+  r12: 0x00007ff80e30e1c0  r13: 0x0000600000f61640  r14: 0x0000000000000008  r15: 0x0000600000f6c9e0
+  rip: 0x00007ff80e5a216f  rfl: 0x0000000000000206
+ tmp0: 0x00007ff80e5a216f tmp1: 0x0000000000000226 tmp2: 0x00007ff89a9e56d0
+
+
+Binary Images:
+       0x20302b000 -        0x2030c8fff dyld (*) <2378f215-945e-342f-aecb-fee14f38b7b0> /usr/lib/dyld
+    0x7ff7ffc26000 -     0x7ff7ffc55fff runtime (*) <8cf3c8e3-0df7-3e4e-80e8-6b2222cee790> /usr/libexec/rosetta/runtime
+       0x10ae88000 -        0x10aeeffff libRosettaRuntime (*) <88a8aedf-2038-335d-96b4-cd3949374c9d> /Library/Apple/*/libRosettaRuntime
+       0x102e62000 -        0x102e65fff app.skumring.Skumring (0.1.0) <e534b1ce-481b-36c3-ad06-ead98049c51d> /private/var/folders/*/Skumring.app/Contents/MacOS/Skumring
+       0x10b972000 -        0x10bb51fff Skumring.debug.dylib (*) <4480e219-7f51-375a-9a4b-72c70dd627f1> /private/var/folders/*/Skumring.app/Contents/MacOS/Skumring.debug.dylib
+       0x110232000 -        0x11023efff libobjc-trampolines.dylib (*) <156c3766-fff1-3737-9fa6-b7331ae7d6b4> /usr/lib/libobjc-trampolines.dylib
+       0x11ba0d000 -        0x11c393fff com.apple.AGXMetalG16X (341.11) <66f7295c-a010-31c4-9634-6b8eaa04aa8e> /System/Library/Extensions/AGXMetalG16X.bundle/Contents/MacOS/AGXMetalG16X
+               0x0 - 0xffffffffffffffff ??? (*) <00000000-0000-0000-0000-000000000000> ???
+    0x7ff80e716000 -     0x7ff80e753917 libsystem_kernel.dylib (*) <ce814508-262b-322e-8a46-4536cd339217> /usr/lib/system/libsystem_kernel.dylib
+    0x7ff80e79a000 -     0x7ff80ec53beb com.apple.CoreFoundation (6.9) <4e67f1e0-4d3b-3d32-beed-643144cb6e39> /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
+    0x7ff81b4e3000 -     0x7ff81b7c027d com.apple.HIToolbox (2.1.1) <3f45e7bf-1948-3eb6-b980-ed8f7287c1c7> /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/HIToolbox
+    0x7ff812587000 -     0x7ff813d7f108 com.apple.AppKit (6.9) <e4bb63fb-a308-38ff-b444-ba4dfd8d5f88> /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit
+    0x7ff92102c000 -     0x7ff92228ccde com.apple.SwiftUI (7.1.13.1.401) <847140f6-855c-3ab5-b403-2329a8b48d9e> /System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI
+    0x7ff80e59e000 -     0x7ff80e5e5921 libdispatch.dylib (*) <739ba346-03d1-3971-8a37-8dd406758d54> /usr/lib/system/libdispatch.dylib
+    0x7ffd275a7000 -     0x7ffd27613ce7 libswift_Concurrency.dylib (*) <c3d0c86a-e9f8-36bd-9640-7ab45c2ec9a9> /usr/lib/swift/libswift_Concurrency.dylib
+    0x7ff91b0bd000 -     0x7ff91b3b1e61 com.apple.MediaPlayer (1.0) <a5289a20-74c2-3f02-90a9-dccb06f581ba> /System/Library/Frameworks/MediaPlayer.framework/Versions/A/MediaPlayer
+    0x7ff8225e3000 -     0x7ff822ad6823 libswiftCore.dylib (*) <f32c7f44-0a28-33db-9170-542de764f9d7> /usr/lib/swift/libswiftCore.dylib
+    0x7ff80e754000 -     0x7ff80e760027 libsystem_pthread.dylib (*) <0bbbf390-18b3-3d55-b170-13d66408e098> /usr/lib/system/libsystem_pthread.dylib
+    0x7ff80e308000 -     0x7ff80e34cf13 libobjc.A.dylib (*) <b4b6e8fe-1bd5-3787-b8e2-33d9b54601dd> /usr/lib/libobjc.A.dylib
+
+External Modification Summary:
+  Calls made by other processes targeting this process:
+    task_for_pid: 0
+    thread_create: 0
+    thread_set_state: 0
+  Calls made by this process:
+    task_for_pid: 0
+    thread_create: 0
+    thread_set_state: 0
+  Calls made by all processes on this machine:
+    task_for_pid: 122
+    thread_create: 0
+    thread_set_state: 48
+
+VM Region Summary:
+ReadOnly portion of Libraries: Total=1.3G resident=0K(0%) swapped_out_or_unallocated=1.3G(100%)
+Writable regions: Total=2.8G written=2516K(0%) resident=2516K(0%) swapped_out=0K(0%) unallocated=2.8G(100%)
+
+                                VIRTUAL   REGION
+REGION TYPE                        SIZE    COUNT (non-coalesced)
+===========                     =======  =======
+Accelerate framework               128K        1
+Activity Tracing                   256K        1
+AttributeGraph Data               1024K        1
+ColorSync                           12K        2
+CoreAnimation                      664K      142
+CoreGraphics                        16K        3
+CoreUI image data                  224K        4
+Foundation                          16K        1
+Kernel Alloc Once                    8K        1
+MALLOC                             2.6G      111
+MALLOC guard page                  384K       24
+Rosetta Arena                     4096K        2
+Rosetta Generic                   3256K      811
+Rosetta IndirectBranch            2048K        1
+Rosetta JIT                      128.0M        1
+Rosetta Return Stack               120K       12
+Rosetta Thread Context             120K       12
+SQLite page cache                  384K        3
+STACK GUARD                         12K        3
+Stack                             10.6M        6
+Stack Guard                       56.0M        3
+VM_ALLOCATE                       3196K       17
+VM_ALLOCATE (reserved)               4K        1         reserved VM address space (unallocated)
+__CTF                               824        1
+__DATA                            37.0M      979
+__DATA_CONST                     117.7M     1024
+__DATA_DIRTY                      8407K      868
+__FONT_DATA                        2352        1
+__INFO_FILTER                         8        1
+__LINKEDIT                       158.8M       12
+__LLVM_COV                          44K        1
+__OBJC_RO                         64.2M        1
+__OBJC_RW                         2563K        2
+__TEXT                             1.2G     1043
+__TPRO_CONST                         4K        1
+mapped file                      302.4M       56
+page table in kernel              2516K        1
+shared memory                     2360K       16
+===========                     =======  =======
+TOTAL                              4.7G     5170
+TOTAL, minus reserved VM space     4.7G     5170
+
+
+-----------
+Full Report
+-----------
+
+{"app_name":"Skumring","timestamp":"2026-01-03 20:53:13.00 +0100","app_version":"0.1.0","slice_uuid":"e534b1ce-481b-36c3-ad06-ead98049c51d","build_version":"1","platform":1,"bundleID":"app.skumring.Skumring","share_with_app_devs":0,"is_first_party":0,"bug_type":"309","os_version":"macOS 26.1 (25B78)","roots_installed":0,"name":"Skumring","incident_id":"30E1CA7F-C98E-427B-BB35-1D298C49B43C"}
+{
+  "uptime" : 340000,
+  "procRole" : "Foreground",
+  "version" : 2,
+  "userID" : 501,
+  "deployVersion" : 210,
+  "modelCode" : "Mac16,6",
+  "coalitionID" : 50760,
+  "osVersion" : {
+    "train" : "macOS 26.1",
+    "build" : "25B78",
+    "releaseType" : "User"
+  },
+  "captureTime" : "2026-01-03 20:53:10.8047 +0100",
+  "codeSigningMonitor" : 2,
+  "incident" : "30E1CA7F-C98E-427B-BB35-1D298C49B43C",
+  "pid" : 94570,
+  "translated" : true,
+  "cpuType" : "X86-64",
+  "roots_installed" : 0,
+  "bug_type" : "309",
+  "procLaunch" : "2026-01-03 20:53:00.0663 +0100",
+  "procStartAbsTime" : 8253866229841,
+  "procExitAbsTime" : 8254123091377,
+  "procName" : "Skumring",
+  "procPath" : "\/private\/var\/folders\/*\/Skumring.app\/Contents\/MacOS\/Skumring",
+  "bundleInfo" : {"CFBundleShortVersionString":"0.1.0","CFBundleVersion":"1","CFBundleIdentifier":"app.skumring.Skumring"},
+  "storeInfo" : {"deviceIdentifierForVendor":"7BF73781-138B-5BD4-8A27-3397A0790C06","thirdParty":true},
+  "parentProc" : "launchd",
+  "parentPid" : 1,
+  "coalitionName" : "app.skumring.Skumring",
+  "crashReporterKey" : "8B3BF1CB-6835-BD17-8F55-B60677264030",
+  "appleIntelligenceStatus" : {"state":"unavailable","reasons":["selectedLanguageDoesNotMatchSelectedSiriLanguageInfo(system: en-GB, siri: nb)","selectedLanguageDoesNotMatchSelectedSiriLanguage"]},
+  "developerMode" : 1,
+  "codeSigningID" : "app.skumring.Skumring",
+  "codeSigningTeamID" : "",
+  "codeSigningFlags" : 570425861,
+  "codeSigningValidationCategory" : 10,
+  "codeSigningTrustLevel" : 4294967295,
+  "codeSigningAuxiliaryInfo" : 0,
+  "bootSessionUUID" : "7C1D75DD-0630-4108-90A3-388CB47EC80D",
+  "wakeTime" : 11036,
+  "sleepWakeUUID" : "FFC22D9A-B7DE-4FAE-969E-53AEEA48B781",
+  "sip" : "enabled",
+  "exception" : {"codes":"0x0000000000000001, 0x0000000000000000","rawCodes":[1,0],"type":"EXC_BAD_INSTRUCTION","signal":"SIGILL"},
+  "termination" : {"flags":0,"code":4,"namespace":"SIGNAL","indicator":"Illegal instruction: 4","byProc":"exc handler","byPid":94570},
+  "extMods" : {"caller":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"system":{"thread_create":0,"thread_set_state":48,"task_for_pid":122},"targeted":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"warnings":0},
+  "faultingThread" : 2,
+  "threads" : [{"id":18630014,"threadState":{"flavor":"x86_THREAD_STATE","rbp":{"value":48391396524032},"r12":{"value":48391396524032},"rosetta":{"tmp2":{"value":140703370989388},"tmp1":{"value":140705718922352},"tmp0":{"value":18446744073709551615}},"rbx":{"value":48391396524032},"r8":{"value":140703458431213},"r15":{"value":2},"r10":{"value":48391396524032},"rdx":{"value":8589934592},"rdi":{"value":4294967295},"r9":{"value":48391396524032},"r13":{"value":21592279046},"rflags":{"value":643},"rax":{"value":268451845},"rsp":{"value":0},"r11":{"value":0},"rcx":{"value":21592279046},"r14":{"value":48391396524032},"rsi":{"value":2}},"queue":"com.apple.main-thread","frames":[{"imageOffset":140705718922112,"imageIndex":7},{"imageOffset":2894,"symbol":"mach_msg2_trap","symbolLocation":10,"imageIndex":8},{"imageOffset":61260,"symbol":"mach_msg2_internal","symbolLocation":83,"imageIndex":8},{"imageOffset":31651,"symbol":"mach_msg_overwrite","symbolLocation":574,"imageIndex":8},{"imageOffset":3655,"symbol":"mach_msg","symbolLocation":19,"imageIndex":8},{"imageOffset":389921,"symbol":"__CFRunLoopServiceMachPort","symbolLocation":145,"imageIndex":9},{"imageOffset":384534,"symbol":"__CFRunLoopRun","symbolLocation":1354,"imageIndex":9},{"imageOffset":1111790,"symbol":"_CFRunLoopRunSpecificWithOptions","symbolLocation":496,"imageIndex":9},{"imageOffset":681071,"symbol":"RunCurrentEventLoopInMode","symbolLocation":287,"imageIndex":10},{"imageOffset":693579,"symbol":"ReceiveNextEventCommon","symbolLocation":606,"imageIndex":10},{"imageOffset":2298727,"symbol":"_BlockUntilNextEventMatchingListInMode","symbolLocation":37,"imageIndex":10},{"imageOffset":5357020,"symbol":"_DPSBlockUntilNextEventMatchingListInMode","symbolLocation":172,"imageIndex":11},{"imageOffset":136793,"symbol":"_DPSNextEvent","symbolLocation":800,"imageIndex":11},{"imageOffset":12341754,"symbol":"-[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]","symbolLocation":1268,"imageIndex":11},{"imageOffset":12340429,"symbol":"-[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:]","symbolLocation":67,"imageIndex":11},{"imageOffset":101627,"symbol":"-[NSApplication run]","symbolLocation":472,"imageIndex":11},{"imageOffset":17387,"symbol":"NSApplicationMain","symbolLocation":800,"imageIndex":11},{"imageOffset":841051,"imageIndex":12},{"imageOffset":3802353,"imageIndex":12},{"imageOffset":6038203,"imageIndex":12},{"imageOffset":41822,"sourceFile":"\/<compiler-generated>","symbol":"static SkumringApp.$main()","symbolLocation":30,"imageIndex":4},{"imageOffset":42585,"sourceFile":"SkumringApp.swift","symbol":"__debug_main_executable_dylib_entry_point","symbolLocation":9,"imageIndex":4},{"imageOffset":26497,"symbol":"start","symbolLocation":3457,"imageIndex":0}]},{"id":18630021,"name":"com.apple.rosetta.exceptionserver","threadState":{"flavor":"x86_THREAD_STATE","rbp":{"value":9908489551872},"r12":{"value":8589934592},"rosetta":{"tmp2":{"value":0},"tmp1":{"value":4514010699619},"tmp0":{"value":10337986281472}},"rbx":{"value":4514010699619},"r8":{"value":2307},"r15":{"value":4898947072},"r10":{"value":3},"rdx":{"value":0},"rdi":{"value":0},"r9":{"value":1},"r13":{"value":4485048944},"rflags":{"value":582},"rax":{"value":268451845},"rsp":{"value":10337986281472},"r11":{"value":0},"rcx":{"value":17314086914},"r14":{"value":140705722685156},"rsi":{"value":2616}},"frames":[]},{"triggered":true,"id":18630036,"threadState":{"r13":{"value":105553132394048},"rflags":{"value":518},"rax":{"value":16721664485553668160},"rosetta":{"tmp2":{"value":140705722685136},"tmp1":{"value":550},"tmp0":{"value":140703369404783}},"r14":{"value":8},"rsi":{"value":2048},"r8":{"value":3240337425},"rdx":{"value":0},"r10":{"value":3240099840},"r9":{"value":127},"r15":{"value":105553132440032},"rbx":{"value":105553151198848},"r11":{"value":22},"rip":{"value":140703369404783,"matchesCrashFrame":1},"rbp":{"value":13052867376},"rsp":{"value":13052867360},"r12":{"value":140703366701504,"symbolLocation":0,"symbol":"objc_msgSend"},"rcx":{"value":3238238230},"flavor":"x86_THREAD_STATE","rdi":{"value":128}},"queue":"*\/accessQueue","frames":[{"imageOffset":16751,"symbol":"_dispatch_assert_queue_fail","symbolLocation":102,"imageIndex":13},{"imageOffset":200667,"symbol":"dispatch_assert_queue$V2.cold.1","symbolLocation":109,"imageIndex":13},{"imageOffset":16647,"symbol":"dispatch_assert_queue","symbolLocation":55,"imageIndex":13},{"imageOffset":18627,"symbol":"_swift_task_checkIsolatedSwift","symbolLocation":19,"imageIndex":14},{"imageOffset":310071,"symbol":"swift_task_isCurrentExecutorWithFlagsImpl(swift::SerialExecutorRef, swift::swift_task_is_current_executor_flag)","symbolLocation":407,"imageIndex":14},{"imageOffset":1431171,"sourceFile":"NowPlayingService.swift","symbol":"closure #1 in NowPlayingService.loadArtwork(url:)","symbolLocation":115,"imageIndex":4},{"imageOffset":1432396,"sourceFile":"\/<compiler-generated>","symbol":"thunk for @escaping @callee_guaranteed (@unowned CGSize) -> (@owned NSImage)","symbolLocation":60,"imageIndex":4},{"imageOffset":841960,"symbol":"-[MPMediaItemArtwork jpegDataWithSize:]","symbolLocation":20,"imageIndex":15},{"imageOffset":2211265,"symbol":"___MPToMRNowPlayingInfoDictionary_block_invoke","symbolLocation":338,"imageIndex":15},{"imageOffset":3895037,"symbol":"specialized _SwiftDeferredNSDictionary.enumerateKeysAndObjects(options:using:)","symbolLocation":701,"imageIndex":16},{"imageOffset":1609605,"symbol":"@objc _SwiftDeferredNSDictionary.enumerateKeysAndObjects(options:using:)","symbolLocation":37,"imageIndex":16},{"imageOffset":2210581,"symbol":"_MPToMRNowPlayingInfoDictionary","symbolLocation":189,"imageIndex":15},{"imageOffset":2209946,"symbol":"-[MPNowPlayingInfoCenter(NowPlayingInfo) _onQueue_pushNowPlayingInfoAndRetry:]","symbolLocation":267,"imageIndex":15},{"imageOffset":5817,"symbol":"_dispatch_call_block_and_release","symbolLocation":12,"imageIndex":13},{"imageOffset":97262,"symbol":"_dispatch_client_callout","symbolLocation":6,"imageIndex":13},{"imageOffset":33883,"symbol":"_dispatch_lane_serial_drain","symbolLocation":779,"imageIndex":13},{"imageOffset":36521,"symbol":"_dispatch_lane_invoke","symbolLocation":382,"imageIndex":13},{"imageOffset":73026,"symbol":"_dispatch_root_queue_drain_deferred_wlh","symbolLocation":275,"imageIndex":13},{"imageOffset":71429,"symbol":"_dispatch_workloop_worker_thread","symbolLocation":871,"imageIndex":13},{"imageOffset":10345,"symbol":"_pthread_wqthread","symbolLocation":298,"imageIndex":17},{"imageOffset":6211,"symbol":"start_wqthread","symbolLocation":15,"imageIndex":17}]},{"id":18630049,"frames":[],"threadState":{"flavor":"x86_THREAD_STATE","rbp":{"value":18446744073709551615},"r12":{"value":0},"rosetta":{"tmp2":{"value":0},"tmp1":{"value":0},"tmp0":{"value":0}},"rbx":{"value":0},"r8":{"value":0},"r15":{"value":0},"r10":{"value":0},"rdx":{"value":13053448192},"rdi":{"value":0},"r9":{"value":0},"r13":{"value":0},"rflags":{"value":531},"rax":{"value":13053984768},"rsp":{"value":409604},"r11":{"value":0},"rcx":{"value":19459},"r14":{"value":0},"rsi":{"value":0}}},{"id":18630078,"name":"com.apple.NSEventThread","threadState":{"flavor":"x86_THREAD_STATE","rbp":{"value":127556233723904},"r12":{"value":127556233723904},"rosetta":{"tmp2":{"value":140703370989388},"tmp1":{"value":140705718922352},"tmp0":{"value":18446744073709551615}},"rbx":{"value":127556233723904},"r8":{"value":140703904518987,"objc-selector":"release"},"r15":{"value":2},"r10":{"value":127556233723904},"rdx":{"value":8589934592},"rdi":{"value":4294967295},"r9":{"value":127556233723904},"r13":{"value":21592279046},"rflags":{"value":643},"rax":{"value":268451845},"rsp":{"value":0},"r11":{"value":0},"rcx":{"value":21592279046},"r14":{"value":127556233723904},"rsi":{"value":2}},"frames":[{"imageOffset":140705718922112,"imageIndex":7},{"imageOffset":2894,"symbol":"mach_msg2_trap","symbolLocation":10,"imageIndex":8},{"imageOffset":61260,"symbol":"mach_msg2_internal","symbolLocation":83,"imageIndex":8},{"imageOffset":31651,"symbol":"mach_msg_overwrite","symbolLocation":574,"imageIndex":8},{"imageOffset":3655,"symbol":"mach_msg","symbolLocation":19,"imageIndex":8},{"imageOffset":389921,"symbol":"__CFRunLoopServiceMachPort","symbolLocation":145,"imageIndex":9},{"imageOffset":384534,"symbol":"__CFRunLoopRun","symbolLocation":1354,"imageIndex":9},{"imageOffset":1111790,"symbol":"_CFRunLoopRunSpecificWithOptions","symbolLocation":496,"imageIndex":9},{"imageOffset":815841,"symbol":"_NSEventThread","symbolLocation":158,"imageIndex":11},{"imageOffset":24141,"symbol":"_pthread_start","symbolLocation":115,"imageIndex":17},{"imageOffset":6231,"symbol":"thread_start","symbolLocation":15,"imageIndex":17}]},{"id":18630111,"frames":[],"threadState":{"flavor":"x86_THREAD_STATE","rbp":{"value":18446744073709551615},"r12":{"value":0},"rosetta":{"tmp2":{"value":0},"tmp1":{"value":0},"tmp0":{"value":0}},"rbx":{"value":0},"r8":{"value":0},"r15":{"value":0},"r10":{"value":0},"rdx":{"value":13055102976},"rdi":{"value":0},"r9":{"value":0},"r13":{"value":0},"rflags":{"value":531},"rax":{"value":13055639552},"rsp":{"value":409604},"r11":{"value":0},"rcx":{"value":55299},"r14":{"value":0},"rsi":{"value":0}}},{"id":18630113,"frames":[],"threadState":{"flavor":"x86_THREAD_STATE","rbp":{"value":18446744073709551615},"r12":{"value":0},"rosetta":{"tmp2":{"value":0},"tmp1":{"value":0},"tmp0":{"value":0}},"rbx":{"value":0},"r8":{"value":0},"r15":{"value":0},"r10":{"value":0},"rdx":{"value":13056217088},"rdi":{"value":0},"r9":{"value":0},"r13":{"value":0},"rflags":{"value":531},"rax":{"value":13056753664},"rsp":{"value":409604},"r11":{"value":0},"rcx":{"value":54787},"r14":{"value":0},"rsi":{"value":0}}}],
+  "usedImages" : [
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 8640442368,
+    "size" : 647168,
+    "uuid" : "2378f215-945e-342f-aecb-fee14f38b7b0",
+    "path" : "\/usr\/lib\/dyld",
+    "name" : "dyld"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 140703124578304,
+    "size" : 196608,
+    "uuid" : "8cf3c8e3-0df7-3e4e-80e8-6b2222cee790",
+    "path" : "\/usr\/libexec\/rosetta\/runtime",
+    "name" : "runtime"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4477976576,
+    "size" : 425984,
+    "uuid" : "88a8aedf-2038-335d-96b4-cd3949374c9d",
+    "path" : "\/Library\/Apple\/*\/libRosettaRuntime",
+    "name" : "libRosettaRuntime"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 4343603200,
+    "CFBundleShortVersionString" : "0.1.0",
+    "CFBundleIdentifier" : "app.skumring.Skumring",
+    "size" : 16384,
+    "uuid" : "e534b1ce-481b-36c3-ad06-ead98049c51d",
+    "path" : "\/private\/var\/folders\/*\/Skumring.app\/Contents\/MacOS\/Skumring",
+    "name" : "Skumring",
+    "CFBundleVersion" : "1"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 4489420800,
+    "size" : 1966080,
+    "uuid" : "4480e219-7f51-375a-9a4b-72c70dd627f1",
+    "path" : "\/private\/var\/folders\/*\/Skumring.app\/Contents\/MacOS\/Skumring.debug.dylib",
+    "name" : "Skumring.debug.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 4565704704,
+    "size" : 53248,
+    "uuid" : "156c3766-fff1-3737-9fa6-b7331ae7d6b4",
+    "path" : "\/usr\/lib\/libobjc-trampolines.dylib",
+    "name" : "libobjc-trampolines.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 4758491136,
+    "CFBundleShortVersionString" : "341.11",
+    "CFBundleIdentifier" : "com.apple.AGXMetalG16X",
+    "size" : 9990144,
+    "uuid" : "66f7295c-a010-31c4-9634-6b8eaa04aa8e",
+    "path" : "\/System\/Library\/Extensions\/AGXMetalG16X.bundle\/Contents\/MacOS\/AGXMetalG16X",
+    "name" : "AGXMetalG16X",
+    "CFBundleVersion" : "341.11"
+  },
+  {
+    "size" : 0,
+    "source" : "A",
+    "base" : 0,
+    "uuid" : "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703370928128,
+    "size" : 252184,
+    "uuid" : "ce814508-262b-322e-8a46-4536cd339217",
+    "path" : "\/usr\/lib\/system\/libsystem_kernel.dylib",
+    "name" : "libsystem_kernel.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703371468800,
+    "CFBundleShortVersionString" : "6.9",
+    "CFBundleIdentifier" : "com.apple.CoreFoundation",
+    "size" : 4955116,
+    "uuid" : "4e67f1e0-4d3b-3d32-beed-643144cb6e39",
+    "path" : "\/System\/Library\/Frameworks\/CoreFoundation.framework\/Versions\/A\/CoreFoundation",
+    "name" : "CoreFoundation",
+    "CFBundleVersion" : "4109.1.401"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703586725888,
+    "CFBundleShortVersionString" : "2.1.1",
+    "CFBundleIdentifier" : "com.apple.HIToolbox",
+    "size" : 3003006,
+    "uuid" : "3f45e7bf-1948-3eb6-b980-ed8f7287c1c7",
+    "path" : "\/System\/Library\/Frameworks\/Carbon.framework\/Versions\/A\/Frameworks\/HIToolbox.framework\/Versions\/A\/HIToolbox",
+    "name" : "HIToolbox"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703436402688,
+    "CFBundleShortVersionString" : "6.9",
+    "CFBundleIdentifier" : "com.apple.AppKit",
+    "size" : 25133321,
+    "uuid" : "e4bb63fb-a308-38ff-b444-ba4dfd8d5f88",
+    "path" : "\/System\/Library\/Frameworks\/AppKit.framework\/Versions\/C\/AppKit",
+    "name" : "AppKit",
+    "CFBundleVersion" : "2685.20.119"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140707977412608,
+    "CFBundleShortVersionString" : "7.1.13.1.401",
+    "CFBundleIdentifier" : "com.apple.SwiftUI",
+    "size" : 19270879,
+    "uuid" : "847140f6-855c-3ab5-b403-2329a8b48d9e",
+    "path" : "\/System\/Library\/Frameworks\/SwiftUI.framework\/Versions\/A\/SwiftUI",
+    "name" : "SwiftUI",
+    "CFBundleVersion" : "7.1.13.1.401"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703369388032,
+    "size" : 293154,
+    "uuid" : "739ba346-03d1-3971-8a37-8dd406758d54",
+    "path" : "\/usr\/lib\/system\/libdispatch.dylib",
+    "name" : "libdispatch.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140725263691776,
+    "size" : 445672,
+    "uuid" : "c3d0c86a-e9f8-36bd-9640-7ab45c2ec9a9",
+    "path" : "\/usr\/lib\/swift\/libswift_Concurrency.dylib",
+    "name" : "libswift_Concurrency.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140707877343232,
+    "CFBundleShortVersionString" : "1.0",
+    "CFBundleIdentifier" : "com.apple.MediaPlayer",
+    "size" : 3100258,
+    "uuid" : "a5289a20-74c2-3f02-90a9-dccb06f581ba",
+    "path" : "\/System\/Library\/Frameworks\/MediaPlayer.framework\/Versions\/A\/MediaPlayer",
+    "name" : "MediaPlayer",
+    "CFBundleVersion" : "4025.200.19"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703705214976,
+    "size" : 5191716,
+    "uuid" : "f32c7f44-0a28-33db-9170-542de764f9d7",
+    "path" : "\/usr\/lib\/swift\/libswiftCore.dylib",
+    "name" : "libswiftCore.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703371182080,
+    "size" : 49192,
+    "uuid" : "0bbbf390-18b3-3d55-b170-13d66408e098",
+    "path" : "\/usr\/lib\/system\/libsystem_pthread.dylib",
+    "name" : "libsystem_pthread.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "x86_64",
+    "base" : 140703366676480,
+    "size" : 282388,
+    "uuid" : "b4b6e8fe-1bd5-3787-b8e2-33d9b54601dd",
+    "path" : "\/usr\/lib\/libobjc.A.dylib",
+    "name" : "libobjc.A.dylib"
+  }
+],
+  "sharedCache" : {
+  "base" : 140703325388800,
+  "size" : 30064771072,
+  "uuid" : "faee8556-9f53-34e0-993d-91f106d2d299"
+},
+  "vmSummary" : "ReadOnly portion of Libraries: Total=1.3G resident=0K(0%) swapped_out_or_unallocated=1.3G(100%)\nWritable regions: Total=2.8G written=2516K(0%) resident=2516K(0%) swapped_out=0K(0%) unallocated=2.8G(100%)\n\n                                VIRTUAL   REGION \nREGION TYPE                        SIZE    COUNT (non-coalesced) \n===========                     =======  ======= \nAccelerate framework               128K        1 \nActivity Tracing                   256K        1 \nAttributeGraph Data               1024K        1 \nColorSync                           12K        2 \nCoreAnimation                      664K      142 \nCoreGraphics                        16K        3 \nCoreUI image data                  224K        4 \nFoundation                          16K        1 \nKernel Alloc Once                    8K        1 \nMALLOC                             2.6G      111 \nMALLOC guard page                  384K       24 \nRosetta Arena                     4096K        2 \nRosetta Generic                   3256K      811 \nRosetta IndirectBranch            2048K        1 \nRosetta JIT                      128.0M        1 \nRosetta Return Stack               120K       12 \nRosetta Thread Context             120K       12 \nSQLite page cache                  384K        3 \nSTACK GUARD                         12K        3 \nStack                             10.6M        6 \nStack Guard                       56.0M        3 \nVM_ALLOCATE                       3196K       17 \nVM_ALLOCATE (reserved)               4K        1         reserved VM address space (unallocated)\n__CTF                               824        1 \n__DATA                            37.0M      979 \n__DATA_CONST                     117.7M     1024 \n__DATA_DIRTY                      8407K      868 \n__FONT_DATA                        2352        1 \n__INFO_FILTER                         8        1 \n__LINKEDIT                       158.8M       12 \n__LLVM_COV                          44K        1 \n__OBJC_RO                         64.2M        1 \n__OBJC_RW                         2563K        2 \n__TEXT                             1.2G     1043 \n__TPRO_CONST                         4K        1 \nmapped file                      302.4M       56 \npage table in kernel              2516K        1 \nshared memory                     2360K       16 \n===========                     =======  ======= \nTOTAL                              4.7G     5170 \nTOTAL, minus reserved VM space     4.7G     5170 \n",
+  "legacyInfo" : {
+  "threadTriggered" : {
+    "queue" : "*\/accessQueue"
+  }
+},
+  "logWritingSignature" : "0150879344d0d13502430f47b1f1af1aff6cbd4e",
+  "trialInfo" : {
+  "rollouts" : [
+
+  ],
+  "experiments" : [
+
+  ]
+}
+}
+
+Model: Mac16,6, BootROM 13822.41.1, proc 16:12:4 processors, 64 GB, SMC
+Graphics: Apple M4 Max, Apple M4 Max, Built-In
+Display: Color LCD, 3024 x 1964 Retina, Main, MirrorOff, Online
+Memory Module: LPDDR5, Hynix
+AirPort: spairport_wireless_card_type_wifi (0x14E4, 0x4388), wl0: Oct  3 2025 00:48:50 version 23.41.7.0.41.51.200 FWID 01-8b09c4e0
+IO80211_driverkit-1530.16 "IO80211_driverkit-1530.16" Oct 10 2025 22:56:35
+AirPort:
+Bluetooth: Version (null), 0 services, 0 devices, 0 incoming serial ports
+Network Service: Wi-Fi, AirPort, en0
+Network Service: Tailscale, VPN (io.tailscale.ipn.macos), utun7
+Thunderbolt Bus: MacBook Pro, Apple Inc.
+Thunderbolt Bus: MacBook Pro, Apple Inc.
+Thunderbolt Bus: MacBook Pro, Apple Inc.
