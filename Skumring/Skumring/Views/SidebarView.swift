@@ -23,6 +23,9 @@ struct SidebarView: View {
     
     /// Items loaded from the built-in pack
     @State private var builtInItems: [LibraryItem] = []
+
+    /// Playlists loaded from the built-in pack
+    @State private var builtInPlaylists: [Playlist] = []
     
     /// Loader for built-in pack content
     private let builtInPackLoader = BuiltInPackLoader()
@@ -44,6 +47,10 @@ struct SidebarView: View {
             Section("Built-in Pack") {
                 Label("All Curated", systemImage: "star")
                     .tag(SidebarItem.builtInPack)
+                
+                ForEach(builtInPlaylists) { playlist in
+                    builtInPlaylistRow(for: playlist)
+                }
                 
                 ForEach(builtInItems) { item in
                     builtInItemRow(for: item)
@@ -84,12 +91,20 @@ struct SidebarView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 28, height: 28)
             }
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    appModel.showSettingsSheet = true
+                } label: {
+                    Image(systemName: "gearshape")
+                }
+                .help("Settings")
+            }
         }
         .safeAreaInset(edge: .bottom) {
             sidebarFooter
         }
         .task {
-            await loadBuiltInItems()
+            await loadBuiltInContent()
         }
         .alert("Delete Playlist?", isPresented: .init(
             get: { playlistToDelete != nil },
@@ -163,6 +178,28 @@ struct SidebarView: View {
         }
         .tag(SidebarItem.builtInItem(item.id))
         // No context menu - built-in items cannot be deleted
+    }
+
+    // MARK: - Built-in Playlist Row
+
+    @ViewBuilder
+    private func builtInPlaylistRow(for playlist: Playlist) -> some View {
+        Label {
+            HStack(spacing: 4) {
+                Text(playlist.name)
+                
+                Text("curated")
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(.quaternary, in: Capsule())
+            }
+        } icon: {
+            Image(systemName: "music.note.list")
+        }
+        .tag(SidebarItem.builtInPlaylist(playlist.id))
     }
     
     /// Returns the appropriate icon for a built-in item based on its kind
@@ -321,13 +358,15 @@ struct SidebarView: View {
     // MARK: - Built-in Pack Loading
     
     /// Loads items from the built-in pack asynchronously
-    private func loadBuiltInItems() async {
+    private func loadBuiltInContent() async {
         do {
-            builtInItems = try await builtInPackLoader.loadItemsAsync()
+            let result = try await builtInPackLoader.loadAsync()
+            builtInItems = result.pack.items
+            builtInPlaylists = result.pack.playlists
         } catch {
             // If loading fails, items remain empty. User can still use "All Curated" to see
             // the full built-in pack view which has its own error handling.
-            print("Failed to load built-in items for sidebar: \(error.localizedDescription)")
+            print("Failed to load built-in content for sidebar: \(error.localizedDescription)")
         }
     }
 }

@@ -231,7 +231,9 @@ struct HomeView: View {
                             playlist: playlist,
                             items: itemsForPlaylist(playlist),
                             artworkCache: artworkCache,
-                            onPlay: { await playPlaylist(playlist) }
+                            onOpen: {
+                                appModel.selectedSidebarItem = .builtInPlaylist(playlist.id)
+                            }
                         )
                     }
                 }
@@ -454,7 +456,7 @@ private struct PlaylistCard: View {
     let playlist: Playlist
     let items: [LibraryItem]
     let artworkCache: ArtworkCache
-    let onPlay: () async -> Void
+    let onOpen: () -> Void
     
     /// Get first item's artwork for the card
     private var coverArtworkURL: URL? {
@@ -463,9 +465,7 @@ private struct PlaylistCard: View {
     
     var body: some View {
         Button {
-            Task {
-                await onPlay()
-            }
+            onOpen()
         } label: {
             VStack(alignment: .leading, spacing: 8) {
                 // Artwork grid or placeholder

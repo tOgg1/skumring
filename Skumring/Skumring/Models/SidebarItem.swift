@@ -17,6 +17,9 @@ enum SidebarItem: Hashable, Sendable {
     
     /// A specific item from the built-in pack
     case builtInItem(UUID)
+
+    /// A specific playlist from the built-in pack
+    case builtInPlaylist(UUID)
     
     /// All items in the library
     case allItems

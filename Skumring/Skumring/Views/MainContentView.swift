@@ -63,6 +63,9 @@ struct MainContentView: View {
             
         case .builtInItem(let itemID):
             BuiltInItemDetailView(itemID: itemID)
+
+        case .builtInPlaylist(let playlistID):
+            BuiltInPlaylistView(playlistID: playlistID)
         }
     }
     
@@ -226,6 +229,151 @@ struct PlaylistView: View {
         guard !items.isEmpty else { return }
         Task {
             try? await playbackController.playQueue(items: items, startingAt: 0)
+        }
+    }
+}
+
+/// View for displaying a built-in playlist from the curated pack.
+///
+/// Uses the same presentation as PlaylistView, but resolves items from
+/// the built-in pack rather than the user library.
+struct BuiltInPlaylistView: View {
+    let playlistID: UUID
+    
+    /// Loader for built-in pack content
+    private let builtInPackLoader = BuiltInPackLoader()
+    
+    @Environment(PlaybackController.self) private var playbackController
+    
+    /// Artwork cache for item thumbnails
+    private let artworkCache = ArtworkCache()
+    
+    @State private var playlist: Playlist?
+    @State private var items: [LibraryItem] = []
+    @State private var loadError: Error?
+    
+    var body: some View {
+        Group {
+            if let playlist {
+                if items.isEmpty {
+                    emptyStateView
+                } else {
+                    contentView(for: playlist)
+                }
+            } else if loadError != nil {
+                ContentUnavailableView(
+                    "Playlist Not Found",
+                    systemImage: "music.note.list",
+                    description: Text("This curated playlist could not be loaded.")
+                )
+            } else {
+                ProgressView("Loading...")
+            }
+        }
+        .navigationTitle(playlist?.name ?? "Playlist")
+        .task {
+            await loadPlaylist()
+        }
+    }
+    
+    // MARK: - Content View
+    
+    private func contentView(for playlist: Playlist) -> some View {
+        VStack(spacing: 0) {
+            playlistHeader(for: playlist)
+            
+            Divider()
+            
+            List {
+                ForEach(items) { item in
+                    PlaylistContentRow(
+                        item: item,
+                        isPlaying: playbackController.currentItem?.id == item.id,
+                        artworkCache: artworkCache,
+                        onPlay: { playItem(item) },
+                        onPlayNext: { playNextItem(item) },
+                        onAddToQueue: { addToQueue(item) }
+                    )
+                }
+            }
+            .listStyle(.inset)
+        }
+    }
+    
+    private func playlistHeader(for playlist: Playlist) -> some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(playlist.name)
+                    .font(.title2.bold())
+                
+                Text("\(playlist.itemCount) items")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+            
+            Button {
+                playAll()
+            } label: {
+                Label("Play All", systemImage: "play.fill")
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(items.isEmpty)
+        }
+        .padding()
+    }
+    
+    private var emptyStateView: some View {
+        ContentUnavailableView {
+            Label("Empty Playlist", systemImage: "music.note.list")
+        } description: {
+            Text("This curated playlist does not contain any items yet.")
+        }
+    }
+    
+    // MARK: - Actions
+    
+    private func playItem(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.play(item: item)
+        }
+    }
+    
+    private func playNextItem(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.playNext(item)
+        }
+    }
+    
+    private func addToQueue(_ item: LibraryItem) {
+        Task {
+            try? await playbackController.addToQueue(item)
+        }
+    }
+    
+    private func playAll() {
+        guard !items.isEmpty else { return }
+        Task {
+            try? await playbackController.playQueue(items: items, startingAt: 0)
+        }
+    }
+    
+    // MARK: - Data Loading
+    
+    private func loadPlaylist() async {
+        do {
+            let result = try await builtInPackLoader.loadAsync()
+            guard let playlist = result.pack.playlists.first(where: { $0.id == playlistID }) else {
+                loadError = NSError(domain: "BuiltInPlaylistView", code: 404, userInfo: nil)
+                return
+            }
+            self.playlist = playlist
+            items = playlist.itemIDs.compactMap { id in
+                result.pack.items.first { $0.id == id }
+            }
+        } catch {
+            loadError = error
         }
     }
 }
