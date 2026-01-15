@@ -47,6 +47,9 @@ final class AppModel {
     
     /// Controls triggering the import file picker (triggered by File > Import... or empty state CTA)
     var showImportPicker: Bool = false
+
+    /// Controls visibility of the Settings sheet
+    var showSettingsSheet: Bool = false
     
     // MARK: - Fullscreen State
     

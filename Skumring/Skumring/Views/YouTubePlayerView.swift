@@ -4,21 +4,9 @@ import WebKit
 /// SwiftUI wrapper for WKWebView that embeds a YouTube player via IFrame API
 struct YouTubePlayerView: NSViewRepresentable {
     let player: YouTubePlayer
-    
-    /// Shared persistent data store for YouTube authentication
-    /// Uses the default data store which persists cookies and session data to disk
-    private static let persistentDataStore: WKWebsiteDataStore = .default()
-    
+
     func makeNSView(context: Context) -> WKWebView {
-        let configuration = WKWebViewConfiguration()
-        configuration.mediaTypesRequiringUserActionForPlayback = []
-        
-        // Use persistent data store to preserve YouTube sign-in across app launches
-        // This allows YouTube Premium subscribers to stay logged in and get ad-free playback
-        configuration.websiteDataStore = Self.persistentDataStore
-        
-        // Enable JavaScript
-        configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        let configuration = YouTubeWebViewConfig.makeConfiguration()
         
         // Set up the user content controller for JS -> Swift messages
         let contentController = configuration.userContentController
@@ -28,7 +16,7 @@ struct YouTubePlayerView: NSViewRepresentable {
         webView.navigationDelegate = context.coordinator
         
         // Set a standard Safari User-Agent to avoid YouTube blocking
-        webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
+        webView.customUserAgent = YouTubeWebViewConfig.userAgent
         
         // Allow inspection in Safari Developer Tools (debug only)
         #if DEBUG
