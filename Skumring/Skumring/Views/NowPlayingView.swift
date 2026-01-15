@@ -25,8 +25,19 @@ struct NowPlayingView: View {
     
     /// Cache for artwork images
     private let artworkCache = ArtworkCache()
+
+    var showsNavigationTitle: Bool = true
     
     var body: some View {
+        if showsNavigationTitle {
+            content
+                .navigationTitle("Now Playing")
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
         GeometryReader { geometry in
             if playbackController.currentItem != nil {
                 // Active playback layout
@@ -45,7 +56,6 @@ struct NowPlayingView: View {
                 emptyState
             }
         }
-        .navigationTitle("Now Playing")
     }
     
     // MARK: - Media Player Area

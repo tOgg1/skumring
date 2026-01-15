@@ -10,13 +10,25 @@ struct MainContentView: View {
     @Environment(LibraryStore.self) private var libraryStore
     
     var body: some View {
-        Group {
-            if let selectedItem = appModel.selectedSidebarItem {
-                contentView(for: selectedItem)
-            } else {
-                emptyStateView
+        ZStack {
+            Group {
+                if let selectedItem = appModel.selectedSidebarItem {
+                    contentView(for: selectedItem)
+                } else {
+                    emptyStateView
+                }
             }
+
+            // Keep NowPlayingView alive to prevent YouTube playback teardown on navigation.
+            NowPlayingView(showsNavigationTitle: isNowPlayingSelected)
+                .opacity(isNowPlayingSelected ? 1 : 0)
+                .allowsHitTesting(isNowPlayingSelected)
+                .accessibilityHidden(!isNowPlayingSelected)
         }
+    }
+
+    private var isNowPlayingSelected: Bool {
+        appModel.selectedSidebarItem == .nowPlaying
     }
     
     // MARK: - Content Routing
@@ -29,7 +41,7 @@ struct MainContentView: View {
             HomeView()
             
         case .nowPlaying:
-            NowPlayingView()
+            Color.clear
             
         case .builtInPack:
             BuiltInPackView()
