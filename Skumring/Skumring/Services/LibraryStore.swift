@@ -87,6 +87,7 @@ final class LibraryStore {
     /// - Parameter item: The item to add
     func addItem(_ item: LibraryItem) {
         items.append(item)
+        persistChanges()
     }
     
     /// Updates an existing item in the library.
@@ -100,6 +101,7 @@ final class LibraryStore {
             return
         }
         items[index] = item
+        persistChanges()
     }
     
     /// Removes an item from the library and all playlists.
@@ -115,6 +117,7 @@ final class LibraryStore {
         for index in playlists.indices {
             playlists[index].removeItem(id)
         }
+        persistChanges()
     }
     
     /// Finds an item by its ID.
@@ -132,6 +135,7 @@ final class LibraryStore {
     /// - Parameter playlist: The playlist to add
     func addPlaylist(_ playlist: Playlist) {
         playlists.append(playlist)
+        persistChanges()
     }
     
     /// Updates an existing playlist.
@@ -145,6 +149,7 @@ final class LibraryStore {
             return
         }
         playlists[index] = playlist
+        persistChanges()
     }
     
     /// Removes a playlist from the library.
@@ -152,6 +157,7 @@ final class LibraryStore {
     /// - Parameter id: The ID of the playlist to delete
     func deletePlaylist(id: UUID) {
         playlists.removeAll { $0.id == id }
+        persistChanges()
     }
     
     /// Finds a playlist by its ID.
@@ -211,5 +217,15 @@ final class LibraryStore {
         let data = try decoder.decode(LibraryData.self, from: jsonData)
         items = data.items
         playlists = data.playlists
+    }
+
+    // MARK: - Private Helpers
+
+    private func persistChanges() {
+        do {
+            try save()
+        } catch {
+            print("Failed to save library: \(error.localizedDescription)")
+        }
     }
 }
