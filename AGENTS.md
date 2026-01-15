@@ -1,272 +1,51 @@
-# AGENTS.md — Project Agent Operating Manual
+# AGENTS.md: Skumring 
 
-This repo is commonly worked on by MULTIPLE AGENTS IN PARALLEL, often in the SAME working directory.
-Assume the workspace may change while you work.
+This is the repository of the Skumring Mac OS Desktop application.
 
-If anything is unclear or conflicts with observed reality, STOP and ask rather than guessing.
+It is a desktop application designed to play lists of focus music from streams, youtube or radio.
 
----
+## Code structure
 
-## 0) Repo Quick Facts (EDIT PER REPO)
+- Code lives in src/
+- Tests live in tests/
+- Business logic should have reasonable test coverage
+- Files should be mostly small and atomic; split when large
+- Simple easy-to-understand code
 
-- Project: <name>
-- Primary stack: <e.g. bun / node / python / go / rust>
-- “How to run” (authoritative): `agent_docs/runbooks/dev.md`
-- “How to test” (authoritative): `agent_docs/runbooks/test.md`
-- “How to release/deploy” (if applicable): `agent_docs/runbooks/release.md`
-- Repo map / key directories: `agent_docs/repo_map.md`
-- Known pitfalls: `agent_docs/gotchas.md`
+## UI
 
----
+- stylish modern native Mac OS 26 Tahoe glass
+- pretty, simple, easy to look at and use
 
-## 1) Non‑negotiables (read first)
+## UX
 
-### Multi-agent coordination is mandatory
+- Good user experience is the most important thing
+- Clear user stories
+- obvious patterns and simple graphics
 
-- Before editing files, coordinate via **MCP Agent Mail**.
-- Reserve the paths you will touch (leases) and announce intent.
-- Only edit files you have reserved (or have explicit permission to share).
+## Multi-agent workflow
 
-### No destructive actions without explicit approval
+- There are multiple agents working here.
+- By default everyone works on `main`
+- Use `sv take` to take ownership of files when your edits are comprehensive; avoid using exclusive locks unless you are refactoring entire files
+    - Use short ttls (a few minutes)
+- ignore changes you dont know. this is very common. just do your work and commit your changes.
+- create only new workspaces with `sv` when there are great chances of conflicts with other agents.
 
-Do NOT run (or propose as a “quick fix”) without explicit user approval:
-- `git reset --hard`
-- `git clean -fd` (or variants)
-- `rm -rf` (or any delete/overwrite command with broad scope)
-- anything that deletes data, generated artifacts, or repo history
+## Docs
 
-When in doubt: ask first.
+- All documentation for the project can be found inside `agent_docs/`.
+- Full produdct doc in @PRODUCT_SPECIFICATION.md
+- More docs in @agent_docs/
 
-### Keep diffs scoped
+## Tools
 
-- No drive-by refactors.
-- No mass reformatting.
-- No “cleanup” outside the leased scope.
-
----
-
-## 2) General workflow
-
-1) Read the root README.md.
-2) Read the index: `agent_docs/README.md`
-3) Check MCP Agent Mail:
-   - read inbox / recent thread activity
-   - see if leases already exist on your target paths
-4) Pick/confirm the task source (Beads is default):
-   - `bd ready --json`
-5) Announce intent (Agent Mail):
-   - task id (if any), goal, target paths, expected outputs
-6) Reserve files BEFORE editing (Agent Mail leases):
-   - reserve the specific files/dirs you’ll change
-7 optional) Pull relevant memory for non-trivial work:
-   - `cm context "<what you are about to do>" --json`
-8 optional) Before implementing something that might have been solved already:
-   - `cass search "<keywords>" --robot --limit 5`
-9) Implement the task you are assigned.
-10) ALWAYS close the beads task before you hand off to the user again.
-
----
-
-## 3) Coordination Protocol (MCP Agent Mail)
-
-Use Agent Mail for:
-- work announcements + status updates
-- file reservations (leases)
-- handoffs (“what changed / what to test / what’s next”)
-
-Rules:
-- Acquire leases before editing.
-- If you hit a conflict, do not brute-force. Coordinate (adjust scope, wait, or get permission).
-- Release leases when done.
-- Post a final handoff message at the end of your work session.
-
-If MCP Agent Mail tools are not available in your harness/runtime, tell the user immediately.
-
----
-
-## 4) Task System (Beads is default)
-
-Beads (`bd`) is the canonical task tracker.
-
-- Quickstart to get a full overview over bd functionality: `bd quickstart`.
-- Find ready work: `bd ready --json`
-- Claim work: `bd update <id> --status in_progress --json`
-- Create follow-ups: `bd create "Title" -t task -p 2 --json`
-- Close work: `bd close <id> --reason "…" --json`
-
-Project state:
-- `.beads/` is authoritative and should be committed alongside related code changes.
-- Do not hand-edit beads JSONL; use `bd`.
-
----
-
-## 5) Quality Gate (Definition of Done)
-
-Before you call work “done” or hand off:
-
-1) Run the repo’s test/build/lint gates:
-   - Follow `agent_docs/runbooks/test.md`
-2) Run UBS bug scan (scope to changed files when possible):
-   - preferred: `ubs --staged` (if staging is in use)
-   - otherwise: `ubs --diff` (or `ubs .` for full scan)
-3) Summarize:
-   - what changed
-   - how verified (exact commands)
-   - risks / follow-ups
-
----
-
-## 6) Git & PR Workflow (multi-agent safe)
-
-### Commit messages
-- Use a simple descriptive title. No strict column limits.
-- Use a richer body explaining in detail what the commit does and why it exists.
-
-### Default workflow: “Commit pass” (current)
-In many projects, agents do not commit continuously.
-Instead, we group changes into logical commits in a commit pass.
-
-If you are NOT the integrator for this task:
-- avoid committing/pushing unless explicitly requested
-- leave a clean handoff summary + suggested commit grouping
-- do not stage/commit unrelated changes
-
-### Optional workflow: Continuous commits (allowed when explicitly chosen)
-If the team chooses continuous commits for a task:
-- keep commits small and coherent
-- do not commit broken states unless explicitly agreed
-- always stage explicitly (see below)
-
-### Critical staging rule in shared working dirs
-- NEVER use `git add -A` in a multi-agent shared working directory.
-- Always stage explicit paths:
-  - `git add path/to/file1 path/to/file2`
-- Always verify:
-  - `git diff --cached`
-  - `git status`
-
-### PR expectations
-A PR description must include:
-- What changed (bullets)
-- Why (goal/context)
-- How verified (exact commands + results)
-- Risk areas / follow-ups
-- Links/refs: Beads id(s) + Agent Mail thread (if available)
-
----
-
-## 7) Tool Quick Reference (and how to learn more)
-
-### MCP Agent Mail (coordination + leases)
-- Use the MCP tools provided by your harness for:
-  - inbox/thread reads, send message, acknowledge
-  - file leases/reservations and releases
-- Learn more:
-  - If the harness supports listing MCP tools, do that.
-  - Otherwise ask the user for the local integration commands.
-
-### Beads — `bd` (tasks)
-- Start here: `bd quickstart`
-- Help: `bd --help`
-- Ready work: `bd ready --json`
-
-### Beads Viewer — `bv` (triage / planning)
-- IMPORTANT: avoid interactive TUI unless explicitly requested.
-- Prefer robot outputs (examples; adjust to your version):
-  - `bv --robot-triage`
-  - `bv --robot-next`
-- Help: `bv --help`
-
-### CASS — `cass` (cross-agent history search)
-- IMPORTANT: never run bare `cass` (interactive).
-- Prefer:
-  - `cass health`
-  - `cass search "<q>" --robot --limit 5`
-  - `cass capabilities --json`
-  - `cass robot-docs guide`
-- Help: `cass --help`
-
-### CASS Memory — `cm` (procedural memory)
-- Before non-trivial tasks:
-  - `cm context "<task>" --json`
-- Help: `cm --help`
-
-### Ultimate Bug Scanner — `ubs` (bug scan)
-- Preferred: `ubs --staged` (or `ubs --diff`)
-- Full scan: `ubs .`
-- Help: `ubs --help`
-
----
-
-## 8) Keeping agent docs healthy (required habit)
-
-If you learn something that will save future time, update `agent_docs/`:
-- new command or workflow -> update runbook
-- architectural constraint -> add a decision doc
-- recurring failure mode -> add to gotchas
-
-Keep `AGENTS.md` short and operational.
-Put repo-specific, evolving knowledge in `agent_docs/`.
-
-<!-- bv-agent-instructions-v1 -->
-
----
-
-## Beads Workflow Integration
-
-This project uses [beads_viewer](https://github.com/Dicklesworthstone/beads_viewer) for issue tracking. Issues are stored in `.beads/` and tracked in git.
-
-### Essential Commands
-
-```bash
-# View issues (launches TUI - avoid in automated sessions)
-bv
-
-# CLI commands for agents (use these instead)
-bd ready              # Show issues ready to work (no blockers)
-bd list --status=open # All open issues
-bd show <id>          # Full issue details with dependencies
-bd create --title="..." --type=task --priority=2
-bd update <id> --status=in_progress
-bd close <id> --reason="Completed"
-bd close <id1> <id2>  # Close multiple issues at once
-bd sync               # Commit and push changes
-```
-
-### Workflow Pattern
-
-1. **Start**: Run `bd ready` to find actionable work
-2. **Claim**: Use `bd update <id> --status=in_progress`
-3. **Work**: Implement the task
-4. **Complete**: Use `bd close <id>`
-5. **Sync**: Always run `bd sync` at session end
-
-### Key Concepts
-
-- **Dependencies**: Issues can block other issues. `bd ready` shows only unblocked work.
-- **Priority**: P0=critical, P1=high, P2=medium, P3=low, P4=backlog (use numbers, not words)
-- **Types**: task, bug, feature, epic, question, docs
-- **Blocking**: `bd dep add <issue> <depends-on>` to add dependencies
-
-### Session Protocol
-
-**Before ending any session, run this checklist:**
-
-```bash
-git status              # Check what changed
-git add <files>         # Stage code changes
-bd sync                 # Commit beads changes
-git commit -m "..."     # Commit code
-bd sync                 # Commit any new beads changes
-git push                # Push to remote
-```
-
-### Best Practices
-
-- Check `bd ready` at session start to find available work
-- Update status as you work (in_progress → closed)
-- Create new issues with `bd create` when you discover tasks
-- Use descriptive titles and set appropriate priority/type
-- Always `bd sync` before ending session
-
-<!-- end-bv-agent-instructions -->
+- Use `sv` for worktree management; `sv --robot-help`
+    - Use `sv lease` to register leases on files your work on, or see other leases
+    - Use `sv hoist` to merge your work from a workspace when finished. use `--close-tasks` if tasks are associated with ws
+    -
+- Use `sv tasks` for task management; `sv task --robot-help`
+- Use `fmail` for interagent communication;
+    - Use `fmail register` whenever starting new work to get your alias
+    - Send messages using your current task id as topic. otherwise send on `global`.
+    - Use `fmail watch` to wait for messages on a topic if you need confirmation from another agent.
