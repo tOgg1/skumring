@@ -61,6 +61,10 @@
 		F8A1B2C32D4E5F6700000130 /* MenuBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */; };
 		F8A1B2C32D4E5F6700000140 /* MiniPlayerPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */; };
 		F8A1B2C32D4E5F6700000150 /* BrandColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000151 /* BrandColors.swift */; };
+		F8A1B2C32D4E5F6700000160 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000161 /* SettingsView.swift */; };
+		F8A1B2C32D4E5F6700000162 /* YouTubeLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000163 /* YouTubeLoginView.swift */; };
+		F8A1B2C32D4E5F6700000164 /* YouTubeWebViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A1B2C32D4E5F6700000165 /* YouTubeWebViewConfig.swift */; };
+		F8A1B2C32D4E5F6700002001 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = F8A1B2C32D4E5F6700002000 /* Inject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +119,9 @@
 		F8A1B2C32D4E5F6700000131 /* MenuBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarService.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000141 /* MiniPlayerPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerPopoverView.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700000151 /* BrandColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandColors.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000161 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000163 /* YouTubeLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeLoginView.swift; sourceTree = "<group>"; };
+		F8A1B2C32D4E5F6700000165 /* YouTubeWebViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeWebViewConfig.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001000 /* SkumringTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkumringTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A1B2C32D4E5F6700001011 /* LibraryItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryItemTests.swift; sourceTree = "<group>"; };
 		F8A1B2C32D4E5F6700001012 /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
@@ -129,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8A1B2C32D4E5F6700002001 /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,9 +233,12 @@
 				F8A1B2C32D4E5F6700000111 /* NowPlayingView.swift */,
 				F8A1B2C32D4E5F6700000065 /* PlaylistEditorView.swift */,
 				F8A1B2C32D4E5F67000000E1 /* QueueView.swift */,
+				F8A1B2C32D4E5F6700000161 /* SettingsView.swift */,
 				F8A1B2C32D4E5F6700000043 /* SidebarView.swift */,
 				F8A1B2C32D4E5F6700000081 /* YouTubePlayerContainerView.swift */,
+				F8A1B2C32D4E5F6700000163 /* YouTubeLoginView.swift */,
 				F8A1B2C32D4E5F6700000006 /* YouTubePlayerView.swift */,
+				F8A1B2C32D4E5F6700000165 /* YouTubeWebViewConfig.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -278,6 +289,9 @@
 			dependencies = (
 			);
 			name = Skumring;
+			packageProductDependencies = (
+				F8A1B2C32D4E5F6700002000 /* Inject */,
+			);
 			productName = Skumring;
 			productReference = F8A1B2C32D4E5F670000000B /* Skumring.app */;
 			productType = "com.apple.product-type.application";
@@ -331,6 +345,9 @@
 			productRefGroup = F8A1B2C32D4E5F6700000011 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (
+				F8A1B2C32D4E5F6700002002 /* Inject */,
+			);
 			targets = (
 				F8A1B2C32D4E5F6700000012 /* Skumring */,
 				F8A1B2C32D4E5F6700001030 /* SkumringTests */,
@@ -408,6 +425,9 @@
 				F8A1B2C32D4E5F6700000130 /* MenuBarService.swift in Sources */,
 				F8A1B2C32D4E5F6700000140 /* MiniPlayerPopoverView.swift in Sources */,
 				F8A1B2C32D4E5F6700000150 /* BrandColors.swift in Sources */,
+				F8A1B2C32D4E5F6700000160 /* SettingsView.swift in Sources */,
+				F8A1B2C32D4E5F6700000162 /* YouTubeLoginView.swift in Sources */,
+				F8A1B2C32D4E5F6700000164 /* YouTubeWebViewConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +463,25 @@
 			targetProxy = F8A1B2C32D4E5F6700001040 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F8A1B2C32D4E5F6700002002 /* Inject */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F8A1B2C32D4E5F6700002000 /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8A1B2C32D4E5F6700002002 /* Inject */;
+			productName = Inject;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F8A1B2C32D4E5F6700000018 /* Debug */ = {
@@ -584,6 +623,11 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.skumring.Skumring;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -629,6 +673,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.skumring.SkumringTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;

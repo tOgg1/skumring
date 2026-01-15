@@ -1,4 +1,5 @@
 import SwiftUI
+import Inject
 
 /// A compact mini-player view displayed in the menu bar popover.
 ///
@@ -26,6 +27,7 @@ import SwiftUI
 struct MiniPlayerPopoverView: View {
     @Environment(PlaybackController.self) private var playbackController
     @Environment(LibraryStore.self) private var libraryStore
+    @ObserveInjection private var inject
     
     /// Artwork thumbnail size
     private let artworkSize: CGFloat = 48
@@ -46,6 +48,7 @@ struct MiniPlayerPopoverView: View {
         }
         .padding(16)
         .frame(width: 280)
+        .enableInjection()
     }
     
     // MARK: - Track Info Section

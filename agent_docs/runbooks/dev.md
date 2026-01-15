@@ -46,5 +46,17 @@ open "$HOME/Applications/Skumring.app"
 ## Scripted helper (optional)
 If you just want a quick local run during dev, `scripts/run_app.sh` is still available.
 
+## Hot reload (Inject)
+Hot reload is wired via the `Inject` Swift package and Debug linker flags.
+
+1) Install InjectionIII from https://github.com/johnno1962/InjectionIII/releases and move it to `/Applications`.
+2) Open InjectionIII, select `Skumring/Skumring.xcodeproj`.
+3) Run the app in Debug from Xcode.
+4) Save a Swift file — the view should reload without full restart.
+
+Notes:
+- If you add new types or change initializer signatures, you may need a full rebuild.
+- State can reset on injection; re-open the view if needed.
+
 ## Common issues
 - App icon does not update: delete the old app from Applications and re-copy.

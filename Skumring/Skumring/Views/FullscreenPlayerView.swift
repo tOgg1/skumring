@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import Inject
 
 /// A fullscreen view for the YouTube player.
 ///
@@ -17,6 +18,7 @@ import AppKit
 struct FullscreenPlayerView: View {
     @Environment(PlaybackController.self) private var playbackController
     @Environment(AppModel.self) private var appModel
+    @ObserveInjection private var inject
     
     /// Controls overlay visibility on hover
     @State private var isHovering = false
@@ -87,6 +89,7 @@ struct FullscreenPlayerView: View {
             // Reset fullscreen state when window is closed
             appModel.isFullscreen = false
         }
+        .enableInjection()
     }
     
     // MARK: - Native Fullscreen

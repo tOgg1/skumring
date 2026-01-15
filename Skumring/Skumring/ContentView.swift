@@ -1,4 +1,5 @@
 import SwiftUI
+import Inject
 
 /// Main content view with NavigationSplitView layout and NowPlayingBar.
 ///
@@ -15,6 +16,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(PlaybackController.self) private var playbackController
+    @ObserveInjection private var inject
     
     /// Controls the visibility of the sidebar column
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
@@ -29,20 +31,24 @@ struct ContentView: View {
             SidebarView()
         } detail: {
             MainContentView()
-        }
-        .navigationSplitViewStyle(.balanced)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            // Now playing bar - floats over content with glass effect
-            // Clicking on it navigates to Now Playing view
-            NowPlayingBar()
-                .onTapGesture {
-                    if playbackController.currentItem != nil {
-                        appModel.selectedSidebarItem = .nowPlaying
-                    }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    // Now playing bar - floats over content with glass effect
+                    // Clicking on it navigates to Now Playing view
+                    NowPlayingBar()
+                        .onTapGesture {
+                            if playbackController.currentItem != nil {
+                                appModel.selectedSidebarItem = .nowPlaying
+                            }
+                        }
                 }
         }
+        .navigationSplitViewStyle(.balanced)
         .sheet(isPresented: $appModel.showAddItemSheet) {
             AddItemSheet()
+        }
+        .sheet(isPresented: $appModel.showSettingsSheet) {
+            SettingsView()
         }
         .onChange(of: playbackController.currentItem?.id) { oldValue, newValue in
             // Auto-navigate to Now Playing when playback starts
@@ -51,6 +57,7 @@ struct ContentView: View {
                 appModel.selectedSidebarItem = .nowPlaying
             }
         }
+        .enableInjection()
     }
 }
 
